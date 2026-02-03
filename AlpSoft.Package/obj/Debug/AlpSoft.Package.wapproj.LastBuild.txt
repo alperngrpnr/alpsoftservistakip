@@ -1,0 +1,11 @@
+C:\Users\alper\source\repos\alpsoftservistakip\AlpSoft.Package\Images\SplashScreen.scale-200.png
+C:\Users\alper\source\repos\alpsoftservistakip\AlpSoft.Package\Images\LockScreenLogo.scale-200.png
+C:\Users\alper\source\repos\alpsoftservistakip\AlpSoft.Package\Images\Square150x150Logo.scale-200.png
+C:\Users\alper\source\repos\alpsoftservistakip\AlpSoft.Package\Images\Square44x44Logo.scale-200.png
+C:\Users\alper\source\repos\alpsoftservistakip\AlpSoft.Package\Images\Square44x44Logo.targetsize-24_altform-unplated.png
+C:\Users\alper\source\repos\alpsoftservistakip\AlpSoft.Package\Images\StoreLogo.png
+C:\Users\alper\source\repos\alpsoftservistakip\AlpSoft.Package\Images\Wide310x150Logo.scale-200.png
+C:\Users\alper\source\repos\alpsoftservistakip\AlpSoft.Package\bin\AnyCPU\Debug\resources.pri
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\bin\Debug\alpsoftservistakip.exe
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\bin\Debug\alpsoftservistakip.exe.config
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\bin\Debug\alpsoftservistakip.pdb

@@ -1,0 +1,74 @@
+﻿<Window x:Class="alpsoftservistakip.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Alpsoft - Giriş" Height="550" Width="400" 
+        WindowStartupLocation="CenterScreen" WindowStyle="None" 
+        AllowsTransparency="True" Background="Transparent">
+
+    <Border Background="White" CornerRadius="25">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="15" Color="#DDAAAAAA" Direction="270" ShadowDepth="5"/>
+        </Border.Effect>
+
+        <Grid>
+            <StackPanel Margin="35,10,35,10">
+                <TextBlock Text="ALPSOFT" Foreground="#FF252B36" FontSize="32" FontWeight="Bold" HorizontalAlignment="Center"/>
+                <TextBlock Text="Kullanıcı Girişi" Foreground="#888" FontSize="14" HorizontalAlignment="Center" Margin="0,5,0,20"/>
+
+                <Image Source="https://cdn-icons-png.flaticon.com/512/295/295128.png" Height="80" Margin="0,0,0,20"/>
+
+                <TextBlock Text="E-posta" Foreground="#555" Margin="5,0,0,5" FontWeight="SemiBold"/>
+                <Border BorderBrush="#EEE" BorderThickness="2" CornerRadius="10" Background="#F5F5F5" Margin="0,0,0,15">
+                    <TextBox x:Name="txtUser" BorderThickness="0" Background="Transparent" Padding="12" FontSize="16"/>
+                </Border>
+
+                <TextBlock Text="Şifre" Foreground="#555" Margin="5,0,0,5" FontWeight="SemiBold"/>
+                <Border BorderBrush="#EEE" BorderThickness="2" CornerRadius="10" Background="#F5F5F5" Margin="0,0,0,5">
+                    <PasswordBox x:Name="txtPass" BorderThickness="0" Background="Transparent" Padding="12" FontSize="16"/>
+                </Border>
+
+                <TextBlock Text="Şifremi Unuttum" Foreground="#FFF5C721" FontSize="12" 
+                           HorizontalAlignment="Right" Margin="0,0,5,10" Cursor="Hand"
+                           MouseLeftButtonUp="SifremiUnuttum_Click"/>
+
+                <CheckBox x:Name="chkHatirla" Content="E-postamı Hatırla" Foreground="#777" 
+                          FontSize="13" Margin="5,0,0,15" Cursor="Hand">
+                    <CheckBox.Style>
+                        <Style TargetType="CheckBox">
+                            <Setter Property="VerticalContentAlignment" Value="Center"/>
+                        </Style>
+                    </CheckBox.Style>
+                </CheckBox>
+
+                <Button x:Name="btnLogin" Content="GİRİŞ YAP" Background="#FFF5C721" Foreground="#FF252B36" 
+                        Height="50" FontWeight="Bold" FontSize="16" Cursor="Hand" Click="btnLogin_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border x:Name="btnBorder" Background="{TemplateBinding Background}" CornerRadius="12">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="btnBorder" Property="Background" Value="#FFF5C721"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,15,0,0">
+                    <TextBlock Text="Hesabın yok mu?" Foreground="#777" FontSize="13"/>
+                    <TextBlock Text=" Kayıt Ol" Foreground="#FFF5C721" FontSize="13" FontWeight="Bold" 
+                               Cursor="Hand" MouseLeftButtonUp="KayitOl_Click" Margin="5,0,0,0"/>
+                </StackPanel>
+
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

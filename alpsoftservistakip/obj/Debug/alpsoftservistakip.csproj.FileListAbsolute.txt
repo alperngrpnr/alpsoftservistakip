@@ -1,0 +1,73 @@
+C:\Users\alper\source\repos\AlpSoft Servis Takip\deneme\bin\Debug\alpsoftservistakip.exe.config
+C:\Users\alper\source\repos\AlpSoft Servis Takip\deneme\bin\Debug\alpsoftservistakip.exe
+C:\Users\alper\source\repos\AlpSoft Servis Takip\deneme\bin\Debug\alpsoftservistakip.pdb
+C:\Users\alper\source\repos\AlpSoft Servis Takip\deneme\obj\Debug\alpsoftservistakip.csproj.AssemblyReference.cache
+C:\Users\alper\source\repos\AlpSoft Servis Takip\deneme\obj\Debug\Window10.baml
+C:\Users\alper\source\repos\AlpSoft Servis Takip\deneme\obj\Debug\Window8.baml
+C:\Users\alper\source\repos\AlpSoft Servis Takip\deneme\obj\Debug\App.baml
+C:\Users\alper\source\repos\AlpSoft Servis Takip\deneme\obj\Debug\Window1.g.cs
+C:\Users\alper\source\repos\AlpSoft Servis Takip\deneme\obj\Debug\Window10.g.cs
+C:\Users\alper\source\repos\AlpSoft Servis Takip\deneme\obj\Debug\Window2.g.cs
+C:\Users\alper\source\repos\AlpSoft Servis Takip\deneme\obj\Debug\Window3.g.cs
+C:\Users\alper\source\repos\AlpSoft Servis Takip\deneme\obj\Debug\Window4.g.cs
+C:\Users\alper\source\repos\AlpSoft Servis Takip\deneme\obj\Debug\Window5.g.cs
+C:\Users\alper\source\repos\AlpSoft Servis Takip\deneme\obj\Debug\Window6.g.cs
+C:\Users\alper\source\repos\AlpSoft Servis Takip\deneme\obj\Debug\Window7.g.cs
+C:\Users\alper\source\repos\AlpSoft Servis Takip\deneme\obj\Debug\Window8.g.cs
+C:\Users\alper\source\repos\AlpSoft Servis Takip\deneme\obj\Debug\Window9.g.cs
+C:\Users\alper\source\repos\AlpSoft Servis Takip\deneme\obj\Debug\App.g.cs
+C:\Users\alper\source\repos\AlpSoft Servis Takip\deneme\obj\Debug\alpsoftservistakip_MarkupCompile.cache
+C:\Users\alper\source\repos\AlpSoft Servis Takip\deneme\obj\Debug\alpsoftservistakip_MarkupCompile.lref
+C:\Users\alper\source\repos\AlpSoft Servis Takip\deneme\obj\Debug\Window1.baml
+C:\Users\alper\source\repos\AlpSoft Servis Takip\deneme\obj\Debug\Window2.baml
+C:\Users\alper\source\repos\AlpSoft Servis Takip\deneme\obj\Debug\Window3.baml
+C:\Users\alper\source\repos\AlpSoft Servis Takip\deneme\obj\Debug\Window4.baml
+C:\Users\alper\source\repos\AlpSoft Servis Takip\deneme\obj\Debug\Window5.baml
+C:\Users\alper\source\repos\AlpSoft Servis Takip\deneme\obj\Debug\Window6.baml
+C:\Users\alper\source\repos\AlpSoft Servis Takip\deneme\obj\Debug\Window7.baml
+C:\Users\alper\source\repos\AlpSoft Servis Takip\deneme\obj\Debug\Window9.baml
+C:\Users\alper\source\repos\AlpSoft Servis Takip\deneme\obj\Debug\alpsoftservistakip.g.resources
+C:\Users\alper\source\repos\AlpSoft Servis Takip\deneme\obj\Debug\alpsoftservistakip.Properties.Resources.resources
+C:\Users\alper\source\repos\AlpSoft Servis Takip\deneme\obj\Debug\alpsoftservistakip.csproj.GenerateResource.cache
+C:\Users\alper\source\repos\AlpSoft Servis Takip\deneme\obj\Debug\alpsoftservistakip.csproj.CoreCompileInputs.cache
+C:\Users\alper\source\repos\AlpSoft Servis Takip\deneme\obj\Debug\alpsoftservistakip.exe
+C:\Users\alper\source\repos\AlpSoft Servis Takip\deneme\obj\Debug\alpsoftservistakip.pdb
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\bin\Debug\alpsoftservistakip.exe.config
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\bin\Debug\alpsoftservistakip.exe.manifest
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\bin\Debug\alpsoftservistakip.application
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\bin\Debug\alpsoftservistakip.exe
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\bin\Debug\alpsoftservistakip.pdb
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Debug\alpsoftservistakip.csproj.AssemblyReference.cache
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Debug\alpsoftservistakip.exe.config
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Debug\Window10.baml
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Debug\Window8.baml
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Debug\App.baml
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Debug\Window1.g.cs
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Debug\Window10.g.cs
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Debug\Window2.g.cs
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Debug\Window3.g.cs
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Debug\Window4.g.cs
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Debug\Window5.g.cs
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Debug\Window6.g.cs
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Debug\Window7.g.cs
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Debug\Window8.g.cs
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Debug\Window9.g.cs
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Debug\App.g.cs
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Debug\alpsoftservistakip_MarkupCompile.cache
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Debug\alpsoftservistakip_MarkupCompile.lref
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Debug\Window1.baml
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Debug\Window2.baml
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Debug\Window3.baml
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Debug\Window4.baml
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Debug\Window5.baml
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Debug\Window6.baml
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Debug\Window7.baml
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Debug\Window9.baml
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Debug\alpsoftservistakip.g.resources
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Debug\alpsoftservistakip.Properties.Resources.resources
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Debug\alpsoftservistakip.csproj.GenerateResource.cache
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Debug\alpsoftservistakip.csproj.CoreCompileInputs.cache
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Debug\alpsoftservistakip.exe.manifest
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Debug\alpsoftservistakip.application
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Debug\alpsoftservistakip.exe
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Debug\alpsoftservistakip.pdb

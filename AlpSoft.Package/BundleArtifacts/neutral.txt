@@ -1,0 +1,2 @@
+MainPackage=C:\Users\alper\source\repos\alpsoftservistakip\AlpSoft.Package\bin\AnyCPU\Debug\AlpSoft.Package_1.0.4.0_AnyCPU_Debug.msix
+SymbolPackage=C:\Users\alper\source\repos\alpsoftservistakip\AlpSoft.Package\obj\Debug\Symbols\AlpSoft.Package_1.0.4.0_AnyCPU_Debug.appxsym

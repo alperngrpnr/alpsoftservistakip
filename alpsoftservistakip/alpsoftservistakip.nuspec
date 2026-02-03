@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>AlpSoftServisTakip</id>
+    <version>1.0.8</version>
+    <title>AlpSoft Servis Takip</title>
+    <authors>AlpErenGurpinar</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Yeni Nesil teknik servis takip programı</description>
+    <releaseNotes>İlk sürüm yayınlandı.</releaseNotes>
+    <copyright>Copyright 2024</copyright>
+    <tags>Servis Takip</tags>
+  </metadata>
+  <files>
+    <file src="bin\Release\**" target="lib\net45\" />
+  </files>
+</package>

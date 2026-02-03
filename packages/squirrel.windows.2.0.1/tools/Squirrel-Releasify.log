@@ -1,0 +1,390 @@
+﻿[11/01/26 19:41:13] info: Program: Starting Squirrel Updater: --releasify AlpSoftServisTakip.1.0.0.nupkg
+[11/01/26 19:41:13] info: Program: Bootstrapper EXE found at:C:\Users\alper\source\repos\alpsoftservistakip\packages\squirrel.windows.2.0.1\tools\Setup.exe
+[11/01/26 19:41:13] fatal: Finished with unhandled exception: System.IO.FileNotFoundException: Could not find file 'AlpSoftServisTakip.1.0.0.nupkg'.
+File name: 'AlpSoftServisTakip.1.0.0.nupkg'
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.File.InternalCopy(String sourceFileName, String destFileName, Boolean overwrite, Boolean checkHost)
+   at Squirrel.Update.Program.Releasify(String package, String targetDir, String packagesDir, String bootstrapperExe, String backgroundGif, String signingOpts, String baseUrl, String setupIcon, Boolean generateMsi, Boolean packageAs64Bit, String frameworkVersion, Boolean generateDeltas)
+   at Squirrel.Update.Program.executeCommandLine(String[] args)
+   at Squirrel.Update.Program.main(String[] args)
+[11/01/26 19:55:33] info: Program: Starting Squirrel Updater: --releasify AlpSoftServisTakip.1.0.0.nupkg
+[11/01/26 19:55:33] info: Program: Bootstrapper EXE found at:C:\Users\alper\source\repos\alpsoftservistakip\packages\squirrel.windows.2.0.1\tools\Setup.exe
+[11/01/26 19:55:33] info: Program: Creating release package: C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip.1.0.0.nupkg
+[11/01/26 19:55:33] fatal: Finished with unhandled exception: System.IO.FileFormatException: File contains corrupted data.
+   at MS.Internal.IO.Zip.ZipIOEndOfCentralDirectoryBlock.FindPosition(Stream archiveStream)
+   at MS.Internal.IO.Zip.ZipIOEndOfCentralDirectoryBlock.SeekableLoad(ZipIOBlockManager blockManager)
+   at MS.Internal.IO.Zip.ZipArchive..ctor(Stream archiveStream, FileMode mode, FileAccess access, Boolean streaming, Boolean ownStream)
+   at MS.Internal.IO.Zip.ZipArchive.OpenOnStream(Stream stream, FileMode mode, FileAccess access, Boolean streaming)
+   at System.IO.Packaging.ZipPackage..ctor(Stream s, FileMode mode, FileAccess access, Boolean streaming)
+   at System.IO.Packaging.Package.Open(Stream stream, FileMode packageMode, FileAccess packageAccess, Boolean streaming)
+   at NuGet.ZipPackage.EnsureManifest()
+   at Squirrel.ReleasePackage.get_SuggestedReleaseFileName()
+   at Squirrel.Update.Program.Releasify(String package, String targetDir, String packagesDir, String bootstrapperExe, String backgroundGif, String signingOpts, String baseUrl, String setupIcon, Boolean generateMsi, Boolean packageAs64Bit, String frameworkVersion, Boolean generateDeltas)
+   at Squirrel.Update.Program.executeCommandLine(String[] args)
+   at Squirrel.Update.Program.main(String[] args)
+[11/01/26 19:57:14] info: Program: Starting Squirrel Updater: --releasify AlpSoftServisTakip.1.0.0.nupkg
+[11/01/26 19:57:14] info: Program: Bootstrapper EXE found at:C:\Users\alper\source\repos\alpsoftservistakip\packages\squirrel.windows.2.0.1\tools\Setup.exe
+[11/01/26 19:57:14] info: Program: Creating release package: C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip.1.0.0.nupkg
+[11/01/26 19:57:14] info: ReleasePackage: Creating release package: C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip.1.0.0.nupkg => C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip-1.0.0-full.nupkg
+[11/01/26 19:57:14] info: ReleasePackage: Extracting dependent packages: []
+[11/01/26 19:57:14] info: ReleasePackage: Removing unnecessary data
+[11/01/26 19:57:15] info: Program: Building embedded zip file for Setup.exe
+[11/01/26 19:57:21] info: Program: Starting Squirrel Updater: --releasify AlpSoftServisTakip.1.0.0.nupkg
+[11/01/26 19:57:21] info: Program: Bootstrapper EXE found at:C:\Users\alper\source\repos\alpsoftservistakip\packages\squirrel.windows.2.0.1\tools\Setup.exe
+[11/01/26 19:57:21] info: Program: Creating release package: C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip.1.0.0.nupkg
+[11/01/26 19:57:21] info: ReleasePackage: Creating release package: C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip.1.0.0.nupkg => C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip-1.0.0-full.nupkg
+[11/01/26 19:57:22] info: ReleasePackage: Extracting dependent packages: []
+[11/01/26 19:57:22] info: ReleasePackage: Removing unnecessary data
+[11/01/26 19:57:23] info: Program: Building embedded zip file for Setup.exe
+[11/01/26 19:57:25] info: Program: Finished Squirrel Updater
+[11/01/26 20:37:25] info: Program: Starting Squirrel Updater: --releasify AlpSoftServisTakip.1.0.1.nupkg
+[11/01/26 20:37:25] info: Program: Bootstrapper EXE found at:C:\Users\alper\source\repos\alpsoftservistakip\packages\squirrel.windows.2.0.1\tools\Setup.exe
+[11/01/26 20:37:25] info: Program: Creating release package: C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip.1.0.1.nupkg
+[11/01/26 20:37:25] info: ReleasePackage: Creating release package: C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip.1.0.1.nupkg => C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip-1.0.1-full.nupkg
+[11/01/26 20:37:25] info: ReleasePackage: Extracting dependent packages: []
+[11/01/26 20:37:25] info: ReleasePackage: Removing unnecessary data
+[11/01/26 20:37:26] info: DeltaPackageBuilder: Extracting .\Releases\AlpSoftServisTakip-1.0.0-full.nupkg and C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip-1.0.1-full.nupkg into C:\Users\alper\AppData\Local\SquirrelTemp\tempb
+[11/01/26 20:37:26] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip.application => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip.application
+[11/01/26 20:37:26] warn: DeltaPackageBuilder: We really couldn't create a delta for alpsoftservistakip.application: System.DivideByZeroException: Attempted to divide by zero.
+   at Squirrel.Bsdiff.BinaryPatchUtility.Create(Byte[] oldData, Byte[] newData, Stream output)
+   at Squirrel.DeltaPackageBuilder.createDeltaForSingleFile(FileInfo targetFile, DirectoryInfo workingDirectory, Dictionary`2 baseFileListing)
+[11/01/26 20:37:27] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip.exe => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip.exe
+[11/01/26 20:37:27] info: DeltaPackageBuilder: \lib\net45\alpsoftservistakip.exe.config hasn't changed, writing dummy file
+[11/01/26 20:37:27] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip.exe.manifest => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip.exe.manifest
+[11/01/26 20:37:27] warn: DeltaPackageBuilder: We really couldn't create a delta for alpsoftservistakip.exe.manifest: System.DivideByZeroException: Attempted to divide by zero.
+   at Squirrel.Bsdiff.BinaryPatchUtility.Create(Byte[] oldData, Byte[] newData, Stream output)
+   at Squirrel.DeltaPackageBuilder.createDeltaForSingleFile(FileInfo targetFile, DirectoryInfo workingDirectory, Dictionary`2 baseFileListing)
+[11/01/26 20:37:27] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip.pdb => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip.pdb
+[11/01/26 20:37:27] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip_ExecutionStub.exe => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip_ExecutionStub.exe
+[11/01/26 20:37:27] info: DeltaPackageBuilder: \lib\net45\DeltaCompressionDotNet.dll hasn't changed, writing dummy file
+[11/01/26 20:37:27] info: DeltaPackageBuilder: \lib\net45\DeltaCompressionDotNet.MsDelta.dll hasn't changed, writing dummy file
+[11/01/26 20:37:27] info: DeltaPackageBuilder: \lib\net45\DeltaCompressionDotNet.PatchApi.dll hasn't changed, writing dummy file
+[11/01/26 20:37:27] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.dll hasn't changed, writing dummy file
+[11/01/26 20:37:27] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Mdb.dll hasn't changed, writing dummy file
+[11/01/26 20:37:27] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Mdb.pdb hasn't changed, writing dummy file
+[11/01/26 20:37:27] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.pdb hasn't changed, writing dummy file
+[11/01/26 20:37:27] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Pdb.dll hasn't changed, writing dummy file
+[11/01/26 20:37:27] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Pdb.pdb hasn't changed, writing dummy file
+[11/01/26 20:37:27] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Rocks.dll hasn't changed, writing dummy file
+[11/01/26 20:37:27] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Rocks.pdb hasn't changed, writing dummy file
+[11/01/26 20:37:27] info: DeltaPackageBuilder: \lib\net45\NuGet.Squirrel.dll hasn't changed, writing dummy file
+[11/01/26 20:37:27] info: DeltaPackageBuilder: \lib\net45\NuGet.Squirrel.pdb hasn't changed, writing dummy file
+[11/01/26 20:37:27] info: DeltaPackageBuilder: \lib\net45\SharpCompress.dll hasn't changed, writing dummy file
+[11/01/26 20:37:27] info: DeltaPackageBuilder: \lib\net45\Squirrel.dll hasn't changed, writing dummy file
+[11/01/26 20:37:27] info: DeltaPackageBuilder: \lib\net45\Squirrel.pdb hasn't changed, writing dummy file
+[11/01/26 20:37:27] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\app.publish\alpsoftservistakip.exe => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\app.publish\alpsoftservistakip.exe
+[11/01/26 20:37:28] info: Program: Building embedded zip file for Setup.exe
+[11/01/26 20:37:30] info: Program: Finished Squirrel Updater
+[11/01/26 20:45:14] info: Program: Starting Squirrel Updater: --releasify AlpSoftServisTakip.1.0.1.nupkg
+[11/01/26 20:45:14] info: Program: Bootstrapper EXE found at:C:\Users\alper\source\repos\alpsoftservistakip\packages\squirrel.windows.2.0.1\tools\Setup.exe
+[11/01/26 20:45:14] info: Program: Creating release package: C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip.1.0.1.nupkg
+[11/01/26 20:45:15] info: ReleasePackage: Creating release package: C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip.1.0.1.nupkg => C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip-1.0.1-full.nupkg
+[11/01/26 20:45:15] info: ReleasePackage: Extracting dependent packages: []
+[11/01/26 20:45:15] info: ReleasePackage: Removing unnecessary data
+[11/01/26 20:45:16] info: DeltaPackageBuilder: Extracting .\Releases\AlpSoftServisTakip-1.0.0-full.nupkg and C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip-1.0.1-full.nupkg into C:\Users\alper\AppData\Local\SquirrelTemp\tempb
+[11/01/26 20:45:16] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip.application => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip.application
+[11/01/26 20:45:16] warn: DeltaPackageBuilder: We really couldn't create a delta for alpsoftservistakip.application: System.DivideByZeroException: Attempted to divide by zero.
+   at Squirrel.Bsdiff.BinaryPatchUtility.Create(Byte[] oldData, Byte[] newData, Stream output)
+   at Squirrel.DeltaPackageBuilder.createDeltaForSingleFile(FileInfo targetFile, DirectoryInfo workingDirectory, Dictionary`2 baseFileListing)
+[11/01/26 20:45:16] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip.exe => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip.exe
+[11/01/26 20:45:17] info: DeltaPackageBuilder: \lib\net45\alpsoftservistakip.exe.config hasn't changed, writing dummy file
+[11/01/26 20:45:17] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip.exe.manifest => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip.exe.manifest
+[11/01/26 20:45:17] warn: DeltaPackageBuilder: We really couldn't create a delta for alpsoftservistakip.exe.manifest: System.DivideByZeroException: Attempted to divide by zero.
+   at Squirrel.Bsdiff.BinaryPatchUtility.Create(Byte[] oldData, Byte[] newData, Stream output)
+   at Squirrel.DeltaPackageBuilder.createDeltaForSingleFile(FileInfo targetFile, DirectoryInfo workingDirectory, Dictionary`2 baseFileListing)
+[11/01/26 20:45:17] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip.pdb => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip.pdb
+[11/01/26 20:45:17] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip_ExecutionStub.exe => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip_ExecutionStub.exe
+[11/01/26 20:45:17] info: DeltaPackageBuilder: \lib\net45\DeltaCompressionDotNet.dll hasn't changed, writing dummy file
+[11/01/26 20:45:17] info: DeltaPackageBuilder: \lib\net45\DeltaCompressionDotNet.MsDelta.dll hasn't changed, writing dummy file
+[11/01/26 20:45:17] info: DeltaPackageBuilder: \lib\net45\DeltaCompressionDotNet.PatchApi.dll hasn't changed, writing dummy file
+[11/01/26 20:45:17] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.dll hasn't changed, writing dummy file
+[11/01/26 20:45:17] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Mdb.dll hasn't changed, writing dummy file
+[11/01/26 20:45:17] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Mdb.pdb hasn't changed, writing dummy file
+[11/01/26 20:45:17] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.pdb hasn't changed, writing dummy file
+[11/01/26 20:45:17] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Pdb.dll hasn't changed, writing dummy file
+[11/01/26 20:45:17] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Pdb.pdb hasn't changed, writing dummy file
+[11/01/26 20:45:17] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Rocks.dll hasn't changed, writing dummy file
+[11/01/26 20:45:17] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Rocks.pdb hasn't changed, writing dummy file
+[11/01/26 20:45:17] info: DeltaPackageBuilder: \lib\net45\NuGet.Squirrel.dll hasn't changed, writing dummy file
+[11/01/26 20:45:17] info: DeltaPackageBuilder: \lib\net45\NuGet.Squirrel.pdb hasn't changed, writing dummy file
+[11/01/26 20:45:17] info: DeltaPackageBuilder: \lib\net45\SharpCompress.dll hasn't changed, writing dummy file
+[11/01/26 20:45:17] info: DeltaPackageBuilder: \lib\net45\Squirrel.dll hasn't changed, writing dummy file
+[11/01/26 20:45:17] info: DeltaPackageBuilder: \lib\net45\Squirrel.pdb hasn't changed, writing dummy file
+[11/01/26 20:45:17] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\app.publish\alpsoftservistakip.exe => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\app.publish\alpsoftservistakip.exe
+[11/01/26 20:45:17] info: Program: Building embedded zip file for Setup.exe
+[11/01/26 20:45:20] info: Program: Finished Squirrel Updater
+[11/01/26 20:46:21] info: Program: Starting Squirrel Updater: --releasify AlpSoftServisTakip.1.0.2.nupkg
+[11/01/26 20:46:21] info: Program: Bootstrapper EXE found at:C:\Users\alper\source\repos\alpsoftservistakip\packages\squirrel.windows.2.0.1\tools\Setup.exe
+[11/01/26 20:46:21] info: Program: Creating release package: C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip.1.0.2.nupkg
+[11/01/26 20:46:21] info: ReleasePackage: Creating release package: C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip.1.0.2.nupkg => C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip-1.0.2-full.nupkg
+[11/01/26 20:46:22] info: ReleasePackage: Extracting dependent packages: []
+[11/01/26 20:46:22] info: ReleasePackage: Removing unnecessary data
+[11/01/26 20:46:23] info: DeltaPackageBuilder: Extracting .\Releases\AlpSoftServisTakip-1.0.1-full.nupkg and C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip-1.0.2-full.nupkg into C:\Users\alper\AppData\Local\SquirrelTemp\tempb
+[11/01/26 20:46:23] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip.application => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip.application
+[11/01/26 20:46:23] warn: DeltaPackageBuilder: We really couldn't create a delta for alpsoftservistakip.application: System.DivideByZeroException: Attempted to divide by zero.
+   at Squirrel.Bsdiff.BinaryPatchUtility.Create(Byte[] oldData, Byte[] newData, Stream output)
+   at Squirrel.DeltaPackageBuilder.createDeltaForSingleFile(FileInfo targetFile, DirectoryInfo workingDirectory, Dictionary`2 baseFileListing)
+[11/01/26 20:46:23] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip.exe => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip.exe
+[11/01/26 20:46:24] info: DeltaPackageBuilder: \lib\net45\alpsoftservistakip.exe.config hasn't changed, writing dummy file
+[11/01/26 20:46:24] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip.exe.manifest => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip.exe.manifest
+[11/01/26 20:46:24] warn: DeltaPackageBuilder: We really couldn't create a delta for alpsoftservistakip.exe.manifest: System.DivideByZeroException: Attempted to divide by zero.
+   at Squirrel.Bsdiff.BinaryPatchUtility.Create(Byte[] oldData, Byte[] newData, Stream output)
+   at Squirrel.DeltaPackageBuilder.createDeltaForSingleFile(FileInfo targetFile, DirectoryInfo workingDirectory, Dictionary`2 baseFileListing)
+[11/01/26 20:46:24] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip.pdb => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip.pdb
+[11/01/26 20:46:24] warn: DeltaPackageBuilder: We really couldn't create a delta for alpsoftservistakip.pdb: System.DivideByZeroException: Attempted to divide by zero.
+   at Squirrel.Bsdiff.BinaryPatchUtility.Create(Byte[] oldData, Byte[] newData, Stream output)
+   at Squirrel.DeltaPackageBuilder.createDeltaForSingleFile(FileInfo targetFile, DirectoryInfo workingDirectory, Dictionary`2 baseFileListing)
+[11/01/26 20:46:24] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip_ExecutionStub.exe => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip_ExecutionStub.exe
+[11/01/26 20:46:24] info: DeltaPackageBuilder: \lib\net45\DeltaCompressionDotNet.dll hasn't changed, writing dummy file
+[11/01/26 20:46:24] info: DeltaPackageBuilder: \lib\net45\DeltaCompressionDotNet.MsDelta.dll hasn't changed, writing dummy file
+[11/01/26 20:46:24] info: DeltaPackageBuilder: \lib\net45\DeltaCompressionDotNet.PatchApi.dll hasn't changed, writing dummy file
+[11/01/26 20:46:24] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.dll hasn't changed, writing dummy file
+[11/01/26 20:46:24] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Mdb.dll hasn't changed, writing dummy file
+[11/01/26 20:46:24] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Mdb.pdb hasn't changed, writing dummy file
+[11/01/26 20:46:24] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.pdb hasn't changed, writing dummy file
+[11/01/26 20:46:24] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Pdb.dll hasn't changed, writing dummy file
+[11/01/26 20:46:24] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Pdb.pdb hasn't changed, writing dummy file
+[11/01/26 20:46:24] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Rocks.dll hasn't changed, writing dummy file
+[11/01/26 20:46:24] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Rocks.pdb hasn't changed, writing dummy file
+[11/01/26 20:46:24] info: DeltaPackageBuilder: \lib\net45\NuGet.Squirrel.dll hasn't changed, writing dummy file
+[11/01/26 20:46:24] info: DeltaPackageBuilder: \lib\net45\NuGet.Squirrel.pdb hasn't changed, writing dummy file
+[11/01/26 20:46:24] info: DeltaPackageBuilder: \lib\net45\SharpCompress.dll hasn't changed, writing dummy file
+[11/01/26 20:46:24] info: DeltaPackageBuilder: \lib\net45\Squirrel.dll hasn't changed, writing dummy file
+[11/01/26 20:46:24] info: DeltaPackageBuilder: \lib\net45\Squirrel.pdb hasn't changed, writing dummy file
+[11/01/26 20:46:24] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\app.publish\alpsoftservistakip.exe => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\app.publish\alpsoftservistakip.exe
+[11/01/26 20:46:24] info: Program: Building embedded zip file for Setup.exe
+[11/01/26 20:46:27] info: Program: Finished Squirrel Updater
+[11/01/26 20:57:39] info: Program: Starting Squirrel Updater: --releasify AlpSoftServisTakip.1.0.3.nupkg
+[11/01/26 20:57:39] info: Program: Bootstrapper EXE found at:C:\Users\alper\source\repos\alpsoftservistakip\packages\squirrel.windows.2.0.1\tools\Setup.exe
+[11/01/26 20:57:39] info: Program: Creating release package: C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip.1.0.3.nupkg
+[11/01/26 20:57:40] info: ReleasePackage: Creating release package: C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip.1.0.3.nupkg => C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip-1.0.3-full.nupkg
+[11/01/26 20:57:40] info: ReleasePackage: Extracting dependent packages: []
+[11/01/26 20:57:40] info: ReleasePackage: Removing unnecessary data
+[11/01/26 20:57:41] info: DeltaPackageBuilder: Extracting .\Releases\AlpSoftServisTakip-1.0.2-full.nupkg and C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip-1.0.3-full.nupkg into C:\Users\alper\AppData\Local\SquirrelTemp\tempb
+[11/01/26 20:57:41] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip.application => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip.application
+[11/01/26 20:57:41] warn: DeltaPackageBuilder: We really couldn't create a delta for alpsoftservistakip.application: System.DivideByZeroException: Attempted to divide by zero.
+   at Squirrel.Bsdiff.BinaryPatchUtility.Create(Byte[] oldData, Byte[] newData, Stream output)
+   at Squirrel.DeltaPackageBuilder.createDeltaForSingleFile(FileInfo targetFile, DirectoryInfo workingDirectory, Dictionary`2 baseFileListing)
+[11/01/26 20:57:41] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip.exe => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip.exe
+[11/01/26 20:57:42] info: DeltaPackageBuilder: \lib\net45\alpsoftservistakip.exe.config hasn't changed, writing dummy file
+[11/01/26 20:57:42] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip.exe.manifest => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip.exe.manifest
+[11/01/26 20:57:42] warn: DeltaPackageBuilder: We really couldn't create a delta for alpsoftservistakip.exe.manifest: System.DivideByZeroException: Attempted to divide by zero.
+   at Squirrel.Bsdiff.BinaryPatchUtility.Create(Byte[] oldData, Byte[] newData, Stream output)
+   at Squirrel.DeltaPackageBuilder.createDeltaForSingleFile(FileInfo targetFile, DirectoryInfo workingDirectory, Dictionary`2 baseFileListing)
+[11/01/26 20:57:42] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip.pdb => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip.pdb
+[11/01/26 20:57:42] warn: DeltaPackageBuilder: We really couldn't create a delta for alpsoftservistakip.pdb: System.DivideByZeroException: Attempted to divide by zero.
+   at Squirrel.Bsdiff.BinaryPatchUtility.Create(Byte[] oldData, Byte[] newData, Stream output)
+   at Squirrel.DeltaPackageBuilder.createDeltaForSingleFile(FileInfo targetFile, DirectoryInfo workingDirectory, Dictionary`2 baseFileListing)
+[11/01/26 20:57:42] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip_ExecutionStub.exe => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip_ExecutionStub.exe
+[11/01/26 20:57:42] info: DeltaPackageBuilder: \lib\net45\DeltaCompressionDotNet.dll hasn't changed, writing dummy file
+[11/01/26 20:57:42] info: DeltaPackageBuilder: \lib\net45\DeltaCompressionDotNet.MsDelta.dll hasn't changed, writing dummy file
+[11/01/26 20:57:42] info: DeltaPackageBuilder: \lib\net45\DeltaCompressionDotNet.PatchApi.dll hasn't changed, writing dummy file
+[11/01/26 20:57:42] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.dll hasn't changed, writing dummy file
+[11/01/26 20:57:42] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Mdb.dll hasn't changed, writing dummy file
+[11/01/26 20:57:42] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Mdb.pdb hasn't changed, writing dummy file
+[11/01/26 20:57:42] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.pdb hasn't changed, writing dummy file
+[11/01/26 20:57:42] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Pdb.dll hasn't changed, writing dummy file
+[11/01/26 20:57:42] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Pdb.pdb hasn't changed, writing dummy file
+[11/01/26 20:57:42] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Rocks.dll hasn't changed, writing dummy file
+[11/01/26 20:57:42] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Rocks.pdb hasn't changed, writing dummy file
+[11/01/26 20:57:42] info: DeltaPackageBuilder: \lib\net45\NuGet.Squirrel.dll hasn't changed, writing dummy file
+[11/01/26 20:57:42] info: DeltaPackageBuilder: \lib\net45\NuGet.Squirrel.pdb hasn't changed, writing dummy file
+[11/01/26 20:57:42] info: DeltaPackageBuilder: \lib\net45\SharpCompress.dll hasn't changed, writing dummy file
+[11/01/26 20:57:42] info: DeltaPackageBuilder: \lib\net45\Squirrel.dll hasn't changed, writing dummy file
+[11/01/26 20:57:42] info: DeltaPackageBuilder: \lib\net45\Squirrel.pdb hasn't changed, writing dummy file
+[11/01/26 20:57:42] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\app.publish\alpsoftservistakip.exe => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\app.publish\alpsoftservistakip.exe
+[11/01/26 20:57:42] info: Program: Building embedded zip file for Setup.exe
+[11/01/26 20:57:45] info: Program: Finished Squirrel Updater
+[11/01/26 21:32:33] info: Program: Starting Squirrel Updater: --releasify AlpSoftServisTakip.1.0.4.nupkg
+[11/01/26 21:32:33] info: Program: Bootstrapper EXE found at:C:\Users\alper\source\repos\alpsoftservistakip\packages\squirrel.windows.2.0.1\tools\Setup.exe
+[11/01/26 21:32:33] info: Program: Creating release package: C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip.1.0.4.nupkg
+[11/01/26 21:32:33] info: ReleasePackage: Creating release package: C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip.1.0.4.nupkg => C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip-1.0.4-full.nupkg
+[11/01/26 21:32:33] info: ReleasePackage: Extracting dependent packages: []
+[11/01/26 21:32:33] info: ReleasePackage: Removing unnecessary data
+[11/01/26 21:32:34] info: DeltaPackageBuilder: Extracting .\Releases\AlpSoftServisTakip-1.0.3-full.nupkg and C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip-1.0.4-full.nupkg into C:\Users\alper\AppData\Local\SquirrelTemp\tempb
+[11/01/26 21:32:34] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip.application => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip.application
+[11/01/26 21:32:34] warn: DeltaPackageBuilder: We really couldn't create a delta for alpsoftservistakip.application: System.DivideByZeroException: Attempted to divide by zero.
+   at Squirrel.Bsdiff.BinaryPatchUtility.Create(Byte[] oldData, Byte[] newData, Stream output)
+   at Squirrel.DeltaPackageBuilder.createDeltaForSingleFile(FileInfo targetFile, DirectoryInfo workingDirectory, Dictionary`2 baseFileListing)
+[11/01/26 21:32:34] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip.exe => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip.exe
+[11/01/26 21:32:35] info: DeltaPackageBuilder: \lib\net45\alpsoftservistakip.exe.config hasn't changed, writing dummy file
+[11/01/26 21:32:35] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip.exe.manifest => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip.exe.manifest
+[11/01/26 21:32:35] warn: DeltaPackageBuilder: We really couldn't create a delta for alpsoftservistakip.exe.manifest: System.DivideByZeroException: Attempted to divide by zero.
+   at Squirrel.Bsdiff.BinaryPatchUtility.Create(Byte[] oldData, Byte[] newData, Stream output)
+   at Squirrel.DeltaPackageBuilder.createDeltaForSingleFile(FileInfo targetFile, DirectoryInfo workingDirectory, Dictionary`2 baseFileListing)
+[11/01/26 21:32:35] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip.pdb => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip.pdb
+[11/01/26 21:32:35] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip_ExecutionStub.exe => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip_ExecutionStub.exe
+[11/01/26 21:32:35] info: DeltaPackageBuilder: \lib\net45\DeltaCompressionDotNet.dll hasn't changed, writing dummy file
+[11/01/26 21:32:35] info: DeltaPackageBuilder: \lib\net45\DeltaCompressionDotNet.MsDelta.dll hasn't changed, writing dummy file
+[11/01/26 21:32:35] info: DeltaPackageBuilder: \lib\net45\DeltaCompressionDotNet.PatchApi.dll hasn't changed, writing dummy file
+[11/01/26 21:32:35] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.dll hasn't changed, writing dummy file
+[11/01/26 21:32:35] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Mdb.dll hasn't changed, writing dummy file
+[11/01/26 21:32:35] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Mdb.pdb hasn't changed, writing dummy file
+[11/01/26 21:32:35] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.pdb hasn't changed, writing dummy file
+[11/01/26 21:32:35] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Pdb.dll hasn't changed, writing dummy file
+[11/01/26 21:32:35] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Pdb.pdb hasn't changed, writing dummy file
+[11/01/26 21:32:35] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Rocks.dll hasn't changed, writing dummy file
+[11/01/26 21:32:35] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Rocks.pdb hasn't changed, writing dummy file
+[11/01/26 21:32:35] info: DeltaPackageBuilder: \lib\net45\NuGet.Squirrel.dll hasn't changed, writing dummy file
+[11/01/26 21:32:35] info: DeltaPackageBuilder: \lib\net45\NuGet.Squirrel.pdb hasn't changed, writing dummy file
+[11/01/26 21:32:35] info: DeltaPackageBuilder: \lib\net45\SharpCompress.dll hasn't changed, writing dummy file
+[11/01/26 21:32:35] info: DeltaPackageBuilder: \lib\net45\Squirrel.dll hasn't changed, writing dummy file
+[11/01/26 21:32:35] info: DeltaPackageBuilder: \lib\net45\Squirrel.pdb hasn't changed, writing dummy file
+[11/01/26 21:32:35] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\app.publish\alpsoftservistakip.exe => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\app.publish\alpsoftservistakip.exe
+[11/01/26 21:32:35] info: Program: Building embedded zip file for Setup.exe
+[11/01/26 21:40:03] info: Program: Starting Squirrel Updater: --releasify AlpSoftServisTakip.1.0.5.nupkg
+[11/01/26 21:40:03] info: Program: Bootstrapper EXE found at:C:\Users\alper\source\repos\alpsoftservistakip\packages\squirrel.windows.2.0.1\tools\Setup.exe
+[11/01/26 21:40:03] info: Program: Creating release package: C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip.1.0.5.nupkg
+[11/01/26 21:40:03] info: ReleasePackage: Creating release package: C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip.1.0.5.nupkg => C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip-1.0.5-full.nupkg
+[11/01/26 21:40:03] info: ReleasePackage: Extracting dependent packages: []
+[11/01/26 21:40:03] info: ReleasePackage: Removing unnecessary data
+[11/01/26 21:40:04] info: DeltaPackageBuilder: Extracting .\Releases\AlpSoftServisTakip-1.0.4-full.nupkg and C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip-1.0.5-full.nupkg into C:\Users\alper\AppData\Local\SquirrelTemp\tempb
+[11/01/26 21:40:04] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip.application => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip.application
+[11/01/26 21:40:04] warn: DeltaPackageBuilder: We really couldn't create a delta for alpsoftservistakip.application: System.DivideByZeroException: Attempted to divide by zero.
+   at Squirrel.Bsdiff.BinaryPatchUtility.Create(Byte[] oldData, Byte[] newData, Stream output)
+   at Squirrel.DeltaPackageBuilder.createDeltaForSingleFile(FileInfo targetFile, DirectoryInfo workingDirectory, Dictionary`2 baseFileListing)
+[11/01/26 21:40:04] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip.exe => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip.exe
+[11/01/26 21:40:05] info: DeltaPackageBuilder: \lib\net45\alpsoftservistakip.exe.config hasn't changed, writing dummy file
+[11/01/26 21:40:05] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip.exe.manifest => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip.exe.manifest
+[11/01/26 21:40:05] warn: DeltaPackageBuilder: We really couldn't create a delta for alpsoftservistakip.exe.manifest: System.DivideByZeroException: Attempted to divide by zero.
+   at Squirrel.Bsdiff.BinaryPatchUtility.Create(Byte[] oldData, Byte[] newData, Stream output)
+   at Squirrel.DeltaPackageBuilder.createDeltaForSingleFile(FileInfo targetFile, DirectoryInfo workingDirectory, Dictionary`2 baseFileListing)
+[11/01/26 21:40:05] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip.pdb => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip.pdb
+[11/01/26 21:40:05] warn: DeltaPackageBuilder: We really couldn't create a delta for alpsoftservistakip.pdb: System.DivideByZeroException: Attempted to divide by zero.
+   at Squirrel.Bsdiff.BinaryPatchUtility.Create(Byte[] oldData, Byte[] newData, Stream output)
+   at Squirrel.DeltaPackageBuilder.createDeltaForSingleFile(FileInfo targetFile, DirectoryInfo workingDirectory, Dictionary`2 baseFileListing)
+[11/01/26 21:40:05] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip_ExecutionStub.exe => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip_ExecutionStub.exe
+[11/01/26 21:40:05] info: DeltaPackageBuilder: \lib\net45\DeltaCompressionDotNet.dll hasn't changed, writing dummy file
+[11/01/26 21:40:05] info: DeltaPackageBuilder: \lib\net45\DeltaCompressionDotNet.MsDelta.dll hasn't changed, writing dummy file
+[11/01/26 21:40:05] info: DeltaPackageBuilder: \lib\net45\DeltaCompressionDotNet.PatchApi.dll hasn't changed, writing dummy file
+[11/01/26 21:40:05] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.dll hasn't changed, writing dummy file
+[11/01/26 21:40:05] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Mdb.dll hasn't changed, writing dummy file
+[11/01/26 21:40:05] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Mdb.pdb hasn't changed, writing dummy file
+[11/01/26 21:40:05] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.pdb hasn't changed, writing dummy file
+[11/01/26 21:40:05] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Pdb.dll hasn't changed, writing dummy file
+[11/01/26 21:40:05] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Pdb.pdb hasn't changed, writing dummy file
+[11/01/26 21:40:05] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Rocks.dll hasn't changed, writing dummy file
+[11/01/26 21:40:05] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Rocks.pdb hasn't changed, writing dummy file
+[11/01/26 21:40:05] info: DeltaPackageBuilder: \lib\net45\NuGet.Squirrel.dll hasn't changed, writing dummy file
+[11/01/26 21:40:05] info: DeltaPackageBuilder: \lib\net45\NuGet.Squirrel.pdb hasn't changed, writing dummy file
+[11/01/26 21:40:05] info: DeltaPackageBuilder: \lib\net45\SharpCompress.dll hasn't changed, writing dummy file
+[11/01/26 21:40:05] info: DeltaPackageBuilder: \lib\net45\Squirrel.dll hasn't changed, writing dummy file
+[11/01/26 21:40:05] info: DeltaPackageBuilder: \lib\net45\Squirrel.pdb hasn't changed, writing dummy file
+[11/01/26 21:40:05] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\app.publish\alpsoftservistakip.exe => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\app.publish\alpsoftservistakip.exe
+[11/01/26 21:40:05] info: Program: Building embedded zip file for Setup.exe
+[11/01/26 21:44:38] info: Program: Starting Squirrel Updater: --releasify AlpSoftServisTakip.1.0.6.nupkg
+[11/01/26 21:44:38] info: Program: Bootstrapper EXE found at:C:\Users\alper\source\repos\alpsoftservistakip\packages\squirrel.windows.2.0.1\tools\Setup.exe
+[11/01/26 21:44:38] info: Program: Creating release package: C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip.1.0.6.nupkg
+[11/01/26 21:44:38] info: ReleasePackage: Creating release package: C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip.1.0.6.nupkg => C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip-1.0.6-full.nupkg
+[11/01/26 21:44:38] info: ReleasePackage: Extracting dependent packages: []
+[11/01/26 21:44:38] info: ReleasePackage: Removing unnecessary data
+[11/01/26 21:44:39] info: DeltaPackageBuilder: Extracting .\Releases\AlpSoftServisTakip-1.0.5-full.nupkg and C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip-1.0.6-full.nupkg into C:\Users\alper\AppData\Local\SquirrelTemp\tempb
+[11/01/26 21:44:40] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip.application => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip.application
+[11/01/26 21:44:40] warn: DeltaPackageBuilder: We really couldn't create a delta for alpsoftservistakip.application: System.DivideByZeroException: Attempted to divide by zero.
+   at Squirrel.Bsdiff.BinaryPatchUtility.Create(Byte[] oldData, Byte[] newData, Stream output)
+   at Squirrel.DeltaPackageBuilder.createDeltaForSingleFile(FileInfo targetFile, DirectoryInfo workingDirectory, Dictionary`2 baseFileListing)
+[11/01/26 21:44:40] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip.exe => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip.exe
+[11/01/26 21:44:40] info: DeltaPackageBuilder: \lib\net45\alpsoftservistakip.exe.config hasn't changed, writing dummy file
+[11/01/26 21:44:40] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip.exe.manifest => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip.exe.manifest
+[11/01/26 21:44:40] warn: DeltaPackageBuilder: We really couldn't create a delta for alpsoftservistakip.exe.manifest: System.DivideByZeroException: Attempted to divide by zero.
+   at Squirrel.Bsdiff.BinaryPatchUtility.Create(Byte[] oldData, Byte[] newData, Stream output)
+   at Squirrel.DeltaPackageBuilder.createDeltaForSingleFile(FileInfo targetFile, DirectoryInfo workingDirectory, Dictionary`2 baseFileListing)
+[11/01/26 21:44:40] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip.pdb => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip.pdb
+[11/01/26 21:44:40] warn: DeltaPackageBuilder: We really couldn't create a delta for alpsoftservistakip.pdb: System.DivideByZeroException: Attempted to divide by zero.
+   at Squirrel.Bsdiff.BinaryPatchUtility.Create(Byte[] oldData, Byte[] newData, Stream output)
+   at Squirrel.DeltaPackageBuilder.createDeltaForSingleFile(FileInfo targetFile, DirectoryInfo workingDirectory, Dictionary`2 baseFileListing)
+[11/01/26 21:44:40] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip_ExecutionStub.exe => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip_ExecutionStub.exe
+[11/01/26 21:44:41] info: DeltaPackageBuilder: \lib\net45\DeltaCompressionDotNet.dll hasn't changed, writing dummy file
+[11/01/26 21:44:41] info: DeltaPackageBuilder: \lib\net45\DeltaCompressionDotNet.MsDelta.dll hasn't changed, writing dummy file
+[11/01/26 21:44:41] info: DeltaPackageBuilder: \lib\net45\DeltaCompressionDotNet.PatchApi.dll hasn't changed, writing dummy file
+[11/01/26 21:44:41] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.dll hasn't changed, writing dummy file
+[11/01/26 21:44:41] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Mdb.dll hasn't changed, writing dummy file
+[11/01/26 21:44:41] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Mdb.pdb hasn't changed, writing dummy file
+[11/01/26 21:44:41] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.pdb hasn't changed, writing dummy file
+[11/01/26 21:44:41] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Pdb.dll hasn't changed, writing dummy file
+[11/01/26 21:44:41] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Pdb.pdb hasn't changed, writing dummy file
+[11/01/26 21:44:41] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Rocks.dll hasn't changed, writing dummy file
+[11/01/26 21:44:41] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Rocks.pdb hasn't changed, writing dummy file
+[11/01/26 21:44:41] info: DeltaPackageBuilder: \lib\net45\NuGet.Squirrel.dll hasn't changed, writing dummy file
+[11/01/26 21:44:41] info: DeltaPackageBuilder: \lib\net45\NuGet.Squirrel.pdb hasn't changed, writing dummy file
+[11/01/26 21:44:41] info: DeltaPackageBuilder: \lib\net45\SharpCompress.dll hasn't changed, writing dummy file
+[11/01/26 21:44:41] info: DeltaPackageBuilder: \lib\net45\Squirrel.dll hasn't changed, writing dummy file
+[11/01/26 21:44:41] info: DeltaPackageBuilder: \lib\net45\Squirrel.pdb hasn't changed, writing dummy file
+[11/01/26 21:44:41] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\app.publish\alpsoftservistakip.exe => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\app.publish\alpsoftservistakip.exe
+[11/01/26 21:44:41] info: Program: Building embedded zip file for Setup.exe
+[11/01/26 23:49:39] info: Program: Starting Squirrel Updater: --releasify AlpSoftServisTakip.1.0.7.nupkg
+[11/01/26 23:49:39] info: Program: Bootstrapper EXE found at:C:\Users\alper\source\repos\alpsoftservistakip\packages\squirrel.windows.2.0.1\tools\Setup.exe
+[11/01/26 23:49:39] info: Program: Creating release package: C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip.1.0.7.nupkg
+[11/01/26 23:49:39] info: ReleasePackage: Creating release package: C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip.1.0.7.nupkg => C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip-1.0.7-full.nupkg
+[11/01/26 23:49:40] info: ReleasePackage: Extracting dependent packages: []
+[11/01/26 23:49:40] info: ReleasePackage: Removing unnecessary data
+[11/01/26 23:49:41] info: DeltaPackageBuilder: Extracting .\Releases\AlpSoftServisTakip-1.0.6-full.nupkg and C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip-1.0.7-full.nupkg into C:\Users\alper\AppData\Local\SquirrelTemp\tempb
+[11/01/26 23:49:41] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip.application => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip.application
+[11/01/26 23:49:41] warn: DeltaPackageBuilder: We really couldn't create a delta for alpsoftservistakip.application: System.DivideByZeroException: Attempted to divide by zero.
+   at Squirrel.Bsdiff.BinaryPatchUtility.Create(Byte[] oldData, Byte[] newData, Stream output)
+   at Squirrel.DeltaPackageBuilder.createDeltaForSingleFile(FileInfo targetFile, DirectoryInfo workingDirectory, Dictionary`2 baseFileListing)
+[11/01/26 23:49:42] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip.exe => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip.exe
+[11/01/26 23:49:42] info: DeltaPackageBuilder: \lib\net45\alpsoftservistakip.exe.config hasn't changed, writing dummy file
+[11/01/26 23:49:42] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip.exe.manifest => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip.exe.manifest
+[11/01/26 23:49:42] warn: DeltaPackageBuilder: We really couldn't create a delta for alpsoftservistakip.exe.manifest: System.DivideByZeroException: Attempted to divide by zero.
+   at Squirrel.Bsdiff.BinaryPatchUtility.Create(Byte[] oldData, Byte[] newData, Stream output)
+   at Squirrel.DeltaPackageBuilder.createDeltaForSingleFile(FileInfo targetFile, DirectoryInfo workingDirectory, Dictionary`2 baseFileListing)
+[11/01/26 23:49:42] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip.pdb => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip.pdb
+[11/01/26 23:49:42] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip_ExecutionStub.exe => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip_ExecutionStub.exe
+[11/01/26 23:49:42] info: DeltaPackageBuilder: \lib\net45\DeltaCompressionDotNet.dll hasn't changed, writing dummy file
+[11/01/26 23:49:42] info: DeltaPackageBuilder: \lib\net45\DeltaCompressionDotNet.MsDelta.dll hasn't changed, writing dummy file
+[11/01/26 23:49:42] info: DeltaPackageBuilder: \lib\net45\DeltaCompressionDotNet.PatchApi.dll hasn't changed, writing dummy file
+[11/01/26 23:49:42] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.dll hasn't changed, writing dummy file
+[11/01/26 23:49:42] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Mdb.dll hasn't changed, writing dummy file
+[11/01/26 23:49:42] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Mdb.pdb hasn't changed, writing dummy file
+[11/01/26 23:49:42] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.pdb hasn't changed, writing dummy file
+[11/01/26 23:49:42] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Pdb.dll hasn't changed, writing dummy file
+[11/01/26 23:49:42] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Pdb.pdb hasn't changed, writing dummy file
+[11/01/26 23:49:42] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Rocks.dll hasn't changed, writing dummy file
+[11/01/26 23:49:42] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Rocks.pdb hasn't changed, writing dummy file
+[11/01/26 23:49:42] info: DeltaPackageBuilder: \lib\net45\NuGet.Squirrel.dll hasn't changed, writing dummy file
+[11/01/26 23:49:42] info: DeltaPackageBuilder: \lib\net45\NuGet.Squirrel.pdb hasn't changed, writing dummy file
+[11/01/26 23:49:42] info: DeltaPackageBuilder: \lib\net45\SharpCompress.dll hasn't changed, writing dummy file
+[11/01/26 23:49:42] info: DeltaPackageBuilder: \lib\net45\Squirrel.dll hasn't changed, writing dummy file
+[11/01/26 23:49:42] info: DeltaPackageBuilder: \lib\net45\Squirrel.pdb hasn't changed, writing dummy file
+[11/01/26 23:49:42] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\app.publish\alpsoftservistakip.exe => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\app.publish\alpsoftservistakip.exe
+[11/01/26 23:49:43] info: Program: Building embedded zip file for Setup.exe
+[11/01/26 23:49:45] info: Program: Finished Squirrel Updater
+[12/01/26 00:09:01] info: Program: Starting Squirrel Updater: --releasify AlpSoftServisTakip.1.0.8.nupkg
+[12/01/26 00:09:01] info: Program: Bootstrapper EXE found at:C:\Users\alper\source\repos\alpsoftservistakip\packages\squirrel.windows.2.0.1\tools\Setup.exe
+[12/01/26 00:09:01] info: Program: Creating release package: C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip.1.0.8.nupkg
+[12/01/26 00:09:01] info: ReleasePackage: Creating release package: C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip.1.0.8.nupkg => C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip-1.0.8-full.nupkg
+[12/01/26 00:09:02] info: ReleasePackage: Extracting dependent packages: []
+[12/01/26 00:09:02] info: ReleasePackage: Removing unnecessary data
+[12/01/26 00:09:03] info: DeltaPackageBuilder: Extracting .\Releases\AlpSoftServisTakip-1.0.7-full.nupkg and C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\Releases\AlpSoftServisTakip-1.0.8-full.nupkg into C:\Users\alper\AppData\Local\SquirrelTemp\tempb
+[12/01/26 00:09:03] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip.application => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip.application
+[12/01/26 00:09:03] warn: DeltaPackageBuilder: We really couldn't create a delta for alpsoftservistakip.application: System.DivideByZeroException: Attempted to divide by zero.
+   at Squirrel.Bsdiff.BinaryPatchUtility.Create(Byte[] oldData, Byte[] newData, Stream output)
+   at Squirrel.DeltaPackageBuilder.createDeltaForSingleFile(FileInfo targetFile, DirectoryInfo workingDirectory, Dictionary`2 baseFileListing)
+[12/01/26 00:09:03] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip.exe => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip.exe
+[12/01/26 00:09:04] info: DeltaPackageBuilder: \lib\net45\alpsoftservistakip.exe.config hasn't changed, writing dummy file
+[12/01/26 00:09:04] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip.exe.manifest => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip.exe.manifest
+[12/01/26 00:09:04] warn: DeltaPackageBuilder: We really couldn't create a delta for alpsoftservistakip.exe.manifest: System.DivideByZeroException: Attempted to divide by zero.
+   at Squirrel.Bsdiff.BinaryPatchUtility.Create(Byte[] oldData, Byte[] newData, Stream output)
+   at Squirrel.DeltaPackageBuilder.createDeltaForSingleFile(FileInfo targetFile, DirectoryInfo workingDirectory, Dictionary`2 baseFileListing)
+[12/01/26 00:09:04] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip.pdb => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip.pdb
+[12/01/26 00:09:04] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\alpsoftservistakip_ExecutionStub.exe => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\alpsoftservistakip_ExecutionStub.exe
+[12/01/26 00:09:04] info: DeltaPackageBuilder: \lib\net45\DeltaCompressionDotNet.dll hasn't changed, writing dummy file
+[12/01/26 00:09:04] info: DeltaPackageBuilder: \lib\net45\DeltaCompressionDotNet.MsDelta.dll hasn't changed, writing dummy file
+[12/01/26 00:09:04] info: DeltaPackageBuilder: \lib\net45\DeltaCompressionDotNet.PatchApi.dll hasn't changed, writing dummy file
+[12/01/26 00:09:04] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.dll hasn't changed, writing dummy file
+[12/01/26 00:09:04] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Mdb.dll hasn't changed, writing dummy file
+[12/01/26 00:09:04] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Mdb.pdb hasn't changed, writing dummy file
+[12/01/26 00:09:04] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.pdb hasn't changed, writing dummy file
+[12/01/26 00:09:04] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Pdb.dll hasn't changed, writing dummy file
+[12/01/26 00:09:04] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Pdb.pdb hasn't changed, writing dummy file
+[12/01/26 00:09:04] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Rocks.dll hasn't changed, writing dummy file
+[12/01/26 00:09:04] info: DeltaPackageBuilder: \lib\net45\Mono.Cecil.Rocks.pdb hasn't changed, writing dummy file
+[12/01/26 00:09:04] info: DeltaPackageBuilder: \lib\net45\NuGet.Squirrel.dll hasn't changed, writing dummy file
+[12/01/26 00:09:04] info: DeltaPackageBuilder: \lib\net45\NuGet.Squirrel.pdb hasn't changed, writing dummy file
+[12/01/26 00:09:04] info: DeltaPackageBuilder: \lib\net45\SharpCompress.dll hasn't changed, writing dummy file
+[12/01/26 00:09:04] info: DeltaPackageBuilder: \lib\net45\Squirrel.dll hasn't changed, writing dummy file
+[12/01/26 00:09:04] info: DeltaPackageBuilder: \lib\net45\Squirrel.pdb hasn't changed, writing dummy file
+[12/01/26 00:09:04] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\app.publish\alpsoftservistakip.exe => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\app.publish\alpsoftservistakip.exe
+[12/01/26 00:09:04] info: Program: Building embedded zip file for Setup.exe
+[12/01/26 00:09:07] info: Program: Finished Squirrel Updater

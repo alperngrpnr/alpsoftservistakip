@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<AppInstaller
+	Uri="https://raw.githubusercontent.com/alperngrpnr/alpsoftupdates/refs/heads/main/AlpSoft.appinstaller/AlpSoft.Package.appinstaller"
+	Version="1.0.4.0" xmlns="http://schemas.microsoft.com/appx/appinstaller/2017/2">
+	<MainBundle
+		Name="b92df244-0865-482c-b83d-ca1954007f6b"
+		Version="1.0.4.0"
+		Publisher="CN=alper"
+		Uri="https://raw.githubusercontent.com/alperngrpnr/alpsoftupdates/refs/heads/main/AlpSoft.appinstaller/AlpSoft.Package_1.0.4.0_Debug_Test/AlpSoft.Package_1.0.4.0_AnyCPU_Debug.msixbundle" />
+	<UpdateSettings>
+		<OnLaunch
+			HoursBetweenUpdateChecks="0" />
+	</UpdateSettings>
+</AppInstaller>
