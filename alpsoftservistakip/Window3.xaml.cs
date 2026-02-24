@@ -4,6 +4,9 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Windows;
 using System.Windows.Controls; // Buton, TextBox ve DataGrid için gereklidir.
+using System.Windows.Media.Animation;
+using System.Threading.Tasks;
+using Services = alpsoftservistakip.Services;
 
 namespace alpsoftservistakip
 {
@@ -157,10 +160,126 @@ namespace alpsoftservistakip
 
         private void AdminPanelKapat_Click(object sender, RoutedEventArgs e) => AdminPanelTabakasi.Visibility = Visibility.Collapsed;
 
-        // Diğer buton yönlendirmeleri (Window5, Window9 vb.) sende olduğu gibi kalabilir.
-        private void kayitlar_Click(object sender, RoutedEventArgs e) { Window5 win = new Window5(); win.Show(); this.Hide(); }
-        private void kayitolustur_Click(object sender, RoutedEventArgs e) { Window9 win = new Window9(); win.Show(); this.Hide(); }
-        private void disserviskayitlari_Click(object sender, RoutedEventArgs e) { Window7 win = new Window7(); win.Show(); this.Hide(); }
+        // Overlay navigation methods - Window5 içeriğini Page olarak göster
+        private void kayitlar_Click(object sender, RoutedEventArgs e) 
+        { 
+            // Direkt sayfayı göster - overlay zaten açıksa yeni sayfaya geçer
+            ShowOverlayPage(new Page5()); 
+        }
+        
+        private void kayitolustur_Click(object sender, RoutedEventArgs e) 
+        { 
+            ShowOverlayPage(new PageKayitOlustur()); 
+        }
+        
+        private void disserviskayitlari_Click(object sender, RoutedEventArgs e)
+        {
+            // Dış servis kayıt oluşturma sayfasını overlay içinde aç (yeni kayıt, ID=0)
+            Page6 page = new Page6(0);
+            ShowOverlayPage(page);
+        }
+
+        private void disserviskayitlari_Copy_Click(object sender, RoutedEventArgs e)
+        {
+            // Dış servis kayıtları sayfasını overlay içinde aç
+            PageDisServis page = new PageDisServis();
+            ShowOverlayPage(page);
+        }
+
+        // Element-level fade helpers for smooth in-window page transitions
+        private Task FadeOutElementAsync(UIElement el, int ms = 200)
+        {
+            var tcs = new TaskCompletionSource<bool>();
+            var da = new DoubleAnimation(0, TimeSpan.FromMilliseconds(ms));
+            da.FillBehavior = FillBehavior.Stop;
+            da.Completed += (s, e) =>
+            {
+                el.Dispatcher.Invoke(() => el.Opacity = 0);
+                tcs.SetResult(true);
+            };
+            el.Dispatcher.Invoke(() => el.BeginAnimation(UIElement.OpacityProperty, da));
+            return tcs.Task;
+        }
+
+        private Task FadeInElementAsync(UIElement el, int ms = 200)
+        {
+            var tcs = new TaskCompletionSource<bool>();
+            var da = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(ms));
+            da.FillBehavior = FillBehavior.Stop;
+            da.Completed += (s, e) =>
+            {
+                el.Dispatcher.Invoke(() => el.Opacity = 1);
+                tcs.SetResult(true);
+            };
+            el.Dispatcher.Invoke(() =>
+            {
+                el.Opacity = 0;
+                el.BeginAnimation(UIElement.OpacityProperty, da);
+            });
+            return tcs.Task;
+        }
+
+        private Task FadeToElementAsync(UIElement el, double to, int ms = 200)
+        {
+            var tcs = new TaskCompletionSource<bool>();
+            var da = new DoubleAnimation(to, TimeSpan.FromMilliseconds(ms));
+            da.FillBehavior = FillBehavior.Stop;
+            da.Completed += (s, e) =>
+            {
+                el.Dispatcher.Invoke(() => el.Opacity = to);
+                tcs.SetResult(true);
+            };
+            el.Dispatcher.Invoke(() => el.BeginAnimation(UIElement.OpacityProperty, da));
+            return tcs.Task;
+        }
+
+        public void ShowOverlayPage(System.Windows.Controls.Page page)
+        {
+            try
+            {
+                // Page5 için backdrop gösterme (blur sorunu için)
+                if (page is Page5)
+                {
+                    OverlayBackdrop.Visibility = Visibility.Collapsed;
+                    OverlayBackdrop.Opacity = 0;
+                }
+                else
+                {
+                    OverlayBackdrop.Visibility = Visibility.Visible;
+                    OverlayBackdrop.Opacity = 0.6;
+                }
+
+                OverlayFrame.Visibility = Visibility.Visible;
+                OverlayFrame.Opacity = 1;
+                
+                OverlayFrame.Navigate(page);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Geçiş sırasında hata: " + ex.Message);
+            }
+        }
+
+        public void HideOverlay()
+        {
+            try
+            {
+                // Animasyon yok, direkt kapat
+                OverlayFrame.Visibility = Visibility.Collapsed;
+                OverlayFrame.Content = null;
+                OverlayFrame.Opacity = 1;
+
+                OverlayBackdrop.Visibility = Visibility.Collapsed;
+                OverlayBackdrop.Opacity = 0;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Geçiş sırasında hata: " + ex.Message);
+                OverlayFrame.Visibility = Visibility.Collapsed;
+                OverlayFrame.Content = null;
+                OverlayFrame.Opacity = 1;
+            }
+        }
         private void AltPencere_Closing(object sender, CancelEventArgs e) { Application.Current.Shutdown(); }
 
         private void YetkiKontrolü()
@@ -170,6 +289,11 @@ namespace alpsoftservistakip
             {
                 btnAdminPanelAc.Visibility = Visibility.Collapsed;
             }
+        }
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }

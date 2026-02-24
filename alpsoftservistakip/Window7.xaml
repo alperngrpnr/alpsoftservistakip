@@ -3,12 +3,16 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:alpsoftservistakip"
+        xmlns:local="clr-namespace:alpsoftservistakip.Controls"
+        xmlns:vm="clr-namespace:alpsoftservistakip.ViewModels"
         mc:Ignorable="d"
         Title="Dış Servis Kayıtları" 
         MinHeight="800" MinWidth="1300" 
         WindowState="Maximized"
         WindowStartupLocation="CenterScreen">
+    <Window.DataContext>
+        <vm:Window7ViewModel/>
+    </Window.DataContext>
 
     <Window.Resources>
         <!-- DatePicker Style -->
@@ -203,9 +207,9 @@
         <Grid Grid.Row="0" Margin="20,0">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                 <Border CornerRadius="20" Background="White" BorderBrush="#DCDDE1" BorderThickness="1" Width="300" Height="40">
-                    <TextBox x:Name="aramadisservis1" Text="İsim veya Model Ara..." 
+                    <TextBox x:Name="aramadisservis1" Text="{Binding AramaMetni, UpdateSourceTrigger=PropertyChanged}" 
                              GotFocus="aramadisservis1_GotFocus" LostFocus="aramadisservis1_LostFocus" 
-                             TextChanged="aramadisservis1_TextChanged" Background="Transparent" 
+                             Background="Transparent" 
                              BorderThickness="0" VerticalContentAlignment="Center" Padding="15,0" Foreground="#7F8C8D"/>
                 </Border>
 
@@ -214,7 +218,7 @@
                     <StackPanel Orientation="Horizontal">
                         <DatePicker x:Name="dtpServisTarihi" 
                                     Width="180"
-                                    SelectedDateChanged="dtpServisTarihi_SelectedDateChanged"/>
+                                    SelectedDate="{Binding SecilenTarih}"/>
                     </StackPanel>
                 </Border>
 
@@ -224,12 +228,12 @@
                         Height="40" 
                         Width="150"
                         Style="{StaticResource ModernButtonStyle}"
-                        Click="btnFiltreTemizle_Click"/>
+                        Command="{Binding FiltreTemizleCommand}"/>
             </StackPanel>
 
             <Button x:Name="geridöndisservis" Content="← GERİ DÖN" FontWeight="Bold" Foreground="White" 
                     Background="#252B36" HorizontalAlignment="Right" VerticalAlignment="Center" 
-                    Width="160" Height="40" Click="geridöndisservis_Click">
+                    Width="160" Height="40" Command="{Binding GeriDonCommand}">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="20"/>
@@ -242,6 +246,7 @@
             <!-- ✅ MouseDoubleClick eventi eklendi -->
             <DataGrid x:Name="dgdisservisVeriler"
                       Style="{StaticResource ModernDataGridStyle}"
+                      ItemsSource="{Binding Veriler}"
                       MouseDoubleClick="disMouseDoubleClick">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="DIŞ SERVİS TARİHİ" 
@@ -318,5 +323,8 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Border>
+
+        <!-- Overlay host for in-window pages -->
+        <local:OverlayHost x:Name="OverlayHost" Panel.ZIndex="999"/>
     </Grid>
 </Window>

@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:alpsoftservistakip"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
@@ -13,12 +12,11 @@
         Title="Window11"
         Height="150"
         Width="400">
-    
+
     <Border CornerRadius="20" BorderThickness="1" Background="#FFF5C721">
         <Border.Effect>
             <DropShadowEffect BlurRadius="20" Direction="0" ShadowDepth="0" Opacity="0.15"/>
         </Border.Effect>
-
         <Grid Margin="25">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -27,40 +25,36 @@
             </Grid.RowDefinitions>
 
             <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,10">
-                <Image Source="/transparan AlpSoft.png" Width="50" Height="50" RenderOptions.BitmapScalingMode="HighQuality"/>
-
+                <Image Source="/transparan AlpSoft.png" Width="50" Height="50"
+                       RenderOptions.BitmapScalingMode="HighQuality"/>
                 <StackPanel VerticalAlignment="Center" Margin="15,0,0,0">
                     <TextBlock Text="ALPSOFT" FontSize="20" FontWeight="Bold" Foreground="Black"/>
                     <TextBlock Text="Teknik Servis Takip" FontSize="11" Foreground="#FF5C6767"/>
                 </StackPanel>
             </StackPanel>
 
-            <TextBlock x:Name="StatusLabel" Grid.Row="1" Text="Lütfen bekleyiniz..." 
-                       VerticalAlignment="Center" FontSize="13" Foreground="#34495E" FontStyle="Italic"/>
+            <TextBlock x:Name="StatusLabel" Grid.Row="1"
+                       Text="Lütfen bekleyiniz..."
+                       VerticalAlignment="Center"
+                       FontSize="13" Foreground="#34495E" FontStyle="Italic"/>
 
-            <Grid Grid.Row="2"
-                          Height="12"
-                          ClipToBounds="True"
-                          Margin="0,5,0,0">
-
-                <!-- Track -->
-                <Border Background="#E6E6E6"
-                CornerRadius="6"/>
-
-                <!-- Gerçek ProgressBar (gizli) -->
-                <ProgressBar x:Name="UpdateBar"
-                     Minimum="0"
-                     Maximum="100"
-                     Value="0"
-                     Opacity="0"/>
-
-                <!-- Görünen mavi bar -->
+            <!-- Bar alanı -->
+            <Grid x:Name="BarContainer"
+                  Grid.Row="2"
+                  Height="12"
+                  ClipToBounds="True"
+                  Margin="0,5,0,0"
+                  >
+                <!-- Gri arka plan -->
+                <Border Background="#E0E0E0" CornerRadius="6"/>
+                <!-- Mavi dolan bar -->
                 <Border x:Name="VisualBar"
-                Background="#3498DB"
-                CornerRadius="6"
-                HorizontalAlignment="Left"
-                Width="0"/>
+                        Background="#3498DB"
+                        CornerRadius="6"
+                        HorizontalAlignment="Left"
+                        Width="0"/>
             </Grid>
+
         </Grid>
     </Border>
 </Window>

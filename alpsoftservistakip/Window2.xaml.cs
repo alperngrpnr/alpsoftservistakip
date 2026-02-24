@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
+using Services = alpsoftservistakip.Services;
 
 namespace alpsoftservistakip
 {
@@ -28,7 +29,7 @@ namespace alpsoftservistakip
             // Hangi pencere olursa olsun, çarpıya basıldığında tüm uygulamayı kapatır
             Application.Current.Shutdown();
         }
-        private void BtnRegister_Click(object sender, RoutedEventArgs e)
+        private async void BtnRegister_Click(object sender, RoutedEventArgs e)
         {
             // 1. Girdileri Al ve Temizle
             string name = txtFullName.Text.Trim();
@@ -130,7 +131,7 @@ namespace alpsoftservistakip
                             trans.Commit();
                             MessageBox.Show("Kayıt Başarılı! 🎉");
 
-                            new LoginWindow().Show();
+                            await Services.NavigationService.ShowWindowAsync(new LoginWindow());
                             this.Close();
                         }
                         catch (Exception ex)

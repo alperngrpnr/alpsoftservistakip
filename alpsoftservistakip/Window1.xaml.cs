@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
+using Services = alpsoftservistakip.Services;
 
 namespace alpsoftservistakip
 {
@@ -32,7 +33,112 @@ namespace alpsoftservistakip
                 Application.Current.Shutdown();
         }
 
+        
+
         private void btnLogin_Click(object sender, RoutedEventArgs e)
+        {
+            login();
+        }
+
+        private string HashSifre(string sifre)
+        {
+            using (SHA256 sha = SHA256.Create())
+            {
+                byte[] bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(sifre));
+                StringBuilder builder = new StringBuilder();
+                foreach (var b in bytes)
+                    builder.Append(b.ToString("x2"));
+                return builder.ToString();
+            }
+        }
+
+        private void LoginWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(Properties.Settings.Default.HatirlananEposta))
+            {
+                txtUser.Text = Properties.Settings.Default.HatirlananEposta;
+                chkHatirla.IsChecked = true;
+                txtPass.Focus();
+            }
+        }
+
+        private void SifremiUnuttum_Click(object sender, MouseButtonEventArgs e)
+        {
+            string email = txtUser.Text.Trim();
+            if (string.IsNullOrEmpty(email))
+            {
+                MessageBox.Show("Lütfen önce e-posta kutusuna adresinizi yazın.");
+                return;
+            }
+
+            Random rnd = new Random();
+            string kod = rnd.Next(100000, 999999).ToString();
+            MailGonder(email, kod);
+
+            Window14 verifyWin = new Window14(kod, email);
+            verifyWin.ShowDialog();
+        }
+
+        private void MailGonder(string aliciEmail, string dogrulamaKodu)
+        {
+            try
+            {
+                var fromAddress = new MailAddress("alpsoft41@gmail.com", "Alpsoft Yazılım");
+                var toAddress = new MailAddress(aliciEmail);
+                string subject = "Şifre Sıfırlama Doğrulama Kodu";
+                string body = $"<div style='font-family:Arial;'><h2>ALPSOFT</h2><p>Kodunuz: <b>{dogrulamaKodu}</b></p></div>";
+
+                var smtp = new SmtpClient
+                {
+                    Host = "smtp.gmail.com",
+                    Port = 587,
+                    EnableSsl = true,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential(fromAddress.Address, "xuugdfgfhzmrtcji")
+                };
+
+                using (var message = new MailMessage(fromAddress, toAddress) { Subject = subject, Body = body, IsBodyHtml = true })
+                {
+                    smtp.Send(message);
+                }
+            }
+            catch (Exception ex) { MessageBox.Show("Mail hatası: " + ex.Message); }
+        }
+
+        private async void KayitOl_Click(object sender, MouseButtonEventArgs e)
+        {
+            await Services.NavigationService.ShowWindowAsync(new WindowRegister());
+            this.Close();
+        }
+
+
+        private void txtPass_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+
+                login();
+                e.Handled = true;
+            }
+        }
+
+        private void txtUser_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                login();
+                e.Handled = true;
+            }
+        }
+
+
+        private void txtUser_KeyDown(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void login()
         {
             string email = txtUser.Text.Trim();
             string password = txtPass.Password;
@@ -110,76 +216,6 @@ namespace alpsoftservistakip
             }
         }
 
-        private string HashSifre(string sifre)
-        {
-            using (SHA256 sha = SHA256.Create())
-            {
-                byte[] bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(sifre));
-                StringBuilder builder = new StringBuilder();
-                foreach (var b in bytes)
-                    builder.Append(b.ToString("x2"));
-                return builder.ToString();
-            }
-        }
-
-        private void LoginWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (!string.IsNullOrEmpty(Properties.Settings.Default.HatirlananEposta))
-            {
-                txtUser.Text = Properties.Settings.Default.HatirlananEposta;
-                chkHatirla.IsChecked = true;
-                txtPass.Focus();
-            }
-        }
-
-        private void SifremiUnuttum_Click(object sender, MouseButtonEventArgs e)
-        {
-            string email = txtUser.Text.Trim();
-            if (string.IsNullOrEmpty(email))
-            {
-                MessageBox.Show("Lütfen önce e-posta kutusuna adresinizi yazın.");
-                return;
-            }
-
-            Random rnd = new Random();
-            string kod = rnd.Next(100000, 999999).ToString();
-            MailGonder(email, kod);
-
-            Window14 verifyWin = new Window14(kod, email);
-            verifyWin.ShowDialog();
-        }
-
-        private void MailGonder(string aliciEmail, string dogrulamaKodu)
-        {
-            try
-            {
-                var fromAddress = new MailAddress("alpsoft41@gmail.com", "Alpsoft Yazılım");
-                var toAddress = new MailAddress(aliciEmail);
-                string subject = "Şifre Sıfırlama Doğrulama Kodu";
-                string body = $"<div style='font-family:Arial;'><h2>ALPSOFT</h2><p>Kodunuz: <b>{dogrulamaKodu}</b></p></div>";
-
-                var smtp = new SmtpClient
-                {
-                    Host = "smtp.gmail.com",
-                    Port = 587,
-                    EnableSsl = true,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential(fromAddress.Address, "xuugdfgfhzmrtcji")
-                };
-
-                using (var message = new MailMessage(fromAddress, toAddress) { Subject = subject, Body = body, IsBodyHtml = true })
-                {
-                    smtp.Send(message);
-                }
-            }
-            catch (Exception ex) { MessageBox.Show("Mail hatası: " + ex.Message); }
-        }
-
-        private void KayitOl_Click(object sender, MouseButtonEventArgs e)
-        {
-            new WindowRegister().Show();
-            this.Close();
-        }
+       
     }
 }

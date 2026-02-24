@@ -388,3 +388,20 @@ File name: 'AlpSoftServisTakip.1.0.0.nupkg'
 [12/01/26 00:09:04] info: DeltaPackageBuilder: Delta patching C:\Users\alper\AppData\Local\SquirrelTemp\tempa\lib\net45\app.publish\alpsoftservistakip.exe => C:\Users\alper\AppData\Local\SquirrelTemp\tempb\lib\net45\app.publish\alpsoftservistakip.exe
 [12/01/26 00:09:04] info: Program: Building embedded zip file for Setup.exe
 [12/01/26 00:09:07] info: Program: Finished Squirrel Updater
+[06/02/26 15:48:31] info: Program: Starting Squirrel Updater: --releasify .\alpsoftservistakip\alpsoftservistakip.1.0.9.nupkg
+[06/02/26 15:48:31] info: Program: Bootstrapper EXE found at:C:\Users\alper\source\repos\alpsoftservistakip\packages\squirrel.windows.2.0.1\tools\Setup.exe
+[06/02/26 15:48:31] info: Program: Creating release package: C:\Users\alper\source\repos\alpsoftservistakip\Releases\alpsoftservistakip.1.0.9.nupkg
+[06/02/26 15:48:31] info: ReleasePackage: Creating release package: C:\Users\alper\source\repos\alpsoftservistakip\Releases\alpsoftservistakip.1.0.9.nupkg => C:\Users\alper\source\repos\alpsoftservistakip\Releases\AlpSoftServisTakip-1.0.9-full.nupkg
+[06/02/26 15:48:31] info: ReleasePackage: Extracting dependent packages: []
+[06/02/26 15:48:31] info: ReleasePackage: Removing unnecessary data
+[06/02/26 15:48:32] info: Program: Building embedded zip file for Setup.exe
+[06/02/26 15:48:37] info: Program: Finished Squirrel Updater
+[06/02/26 20:54:10] info: Program: Starting Squirrel Updater: --releasify .\alpsoftservistakip.1.0.9.nupkg --signWithParams /f .\alpsoftservistakip\alpsoftservistakip_TemporaryKey.pfx /p Alperengurpinar4160552009
+[06/02/26 20:54:10] info: Program: Bootstrapper EXE found at:C:\Users\alper\source\repos\alpsoftservistakip\packages\squirrel.windows.2.0.1\tools\Setup.exe
+[06/02/26 20:54:10] fatal: Finished with unhandled exception: System.IO.FileNotFoundException: Could not find file '.\alpsoftservistakip.1.0.9.nupkg'.
+File name: '.\alpsoftservistakip.1.0.9.nupkg'
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.File.InternalCopy(String sourceFileName, String destFileName, Boolean overwrite, Boolean checkHost)
+   at Squirrel.Update.Program.Releasify(String package, String targetDir, String packagesDir, String bootstrapperExe, String backgroundGif, String signingOpts, String baseUrl, String setupIcon, Boolean generateMsi, Boolean packageAs64Bit, String frameworkVersion, Boolean generateDeltas)
+   at Squirrel.Update.Program.executeCommandLine(String[] args)
+   at Squirrel.Update.Program.main(String[] args)

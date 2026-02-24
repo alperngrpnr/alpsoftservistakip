@@ -7,6 +7,7 @@ using System.IO.Packaging;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using Services = alpsoftservistakip.Services;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -101,7 +102,7 @@ namespace alpsoftservistakip
             }
         }
 
-        private void Window7TablosunuYenile()
+        private async void Window7TablosunuYenile()
         {
             foreach (Window window in Application.Current.Windows)
             {
@@ -109,10 +110,13 @@ namespace alpsoftservistakip
                 {
                     if (!window7.IsVisible)
                     {
-                        window7.Show();
+                        await Services.NavigationService.ShowWindowAsync(window7);
                     }
-                    window7.Yenile();
-                    window7.Activate();
+                    else
+                    {
+                        window7.Yenile();
+                        window7.Activate();
+                    }
                     break;
                 }
             }

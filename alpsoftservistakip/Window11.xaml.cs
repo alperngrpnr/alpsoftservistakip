@@ -1,64 +1,143 @@
 ﻿using System;
-using System.Deployment.Application;
+using System.IO;
+using System.Net.Http;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Net;
 
 namespace alpsoftservistakip
 {
     public partial class Window11 : Window
     {
+        private const string CURRENT_VERSION = "1.6.3";
+        private const string VERSION_URL = "https://github.com/alperngrpnr/alpsoftupdates/releases/latest/download/version.txt";
+        private const string SETUP_URL = "https://github.com/alperngrpnr/alpsoftupdates/releases/latest/download/AlpsoftSetup.exe";
+
+        private double _currentProgress = 0;
+
         public Window11()
         {
             InitializeComponent();
             Loaded += Window_Loaded;
         }
 
-        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        private void BarContainer_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            await StartLoadingProcess();
+            UpdateVisualBar(_currentProgress);
         }
 
-        public async Task StartLoadingProcess()
+        private void SetProgress(double value, string message)
+        {
+            _currentProgress = Math.Max(0, Math.Min(100, value));
+            StatusLabel.Text = message;
+            UpdateVisualBar(_currentProgress);
+        }
+
+        private void UpdateVisualBar(double percent)
+        {
+            double totalWidth = BarContainer.ActualWidth;
+            if (totalWidth > 0)
+                VisualBar.Width = totalWidth * (percent / 100.0);
+        }
+
+        public async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
+            await Task.Delay(100);
+            await CheckForUpdates();
+        }
+
+        public async Task CheckForUpdates()
         {
             try
             {
-                StatusLabel.Text = "Sistem başlatılıyor...";
-                UpdateBar.Value = 10;
+                await Dispatcher.InvokeAsync(() =>
+                    SetProgress(10, "Güncellemeler kontrol ediliyor..."));
 
-                // Güncelleme kontrolü
-                if (ApplicationDeployment.IsNetworkDeployed)
+                using (HttpClient client = new HttpClient())
                 {
-                    ApplicationDeployment ad = ApplicationDeployment.CurrentDeployment;
-                    if (ad.CheckForUpdate())
+                    client.DefaultRequestHeaders.Add("User-Agent", "AlpsoftUpdater");
+
+                    string latestVersion = (await client.GetStringAsync(VERSION_URL)).Trim();
+
+                    await Dispatcher.InvokeAsync(() => SetProgress(20, "Sürüm kontrol edildi..."));
+
+                    if (new Version(latestVersion) > new Version(CURRENT_VERSION))
                     {
-                        StatusLabel.Text = "Güncelleme indiriliyor...";
-                        UpdateBar.Value = 50;
-                        ad.Update();
-                        MessageBox.Show("Güncelleme tamamlandı. Uygulama yeniden başlatılıyor.");
-                        System.Windows.Forms.Application.Restart();
-                        Application.Current.Shutdown();
+                        await DownloadAndInstallUpdate(latestVersion);
                         return;
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Güncelleme hatası: " + ex.Message);
+            }
 
-                // Yükleme animasyonu
-                for (int i = 20; i <= 100; i++)
+            await ContinueStartup();
+        }
+
+        private async Task DownloadAndInstallUpdate(string version)
+        {
+            string tempFile = Path.Combine(Path.GetTempPath(), "AlpsoftSetup.exe");
+            if (File.Exists(tempFile)) File.Delete(tempFile);
+
+            using (WebClient webClient = new WebClient())
+            {
+                webClient.Headers.Add("User-Agent", "AlpsoftUpdater");
+
+                webClient.DownloadProgressChanged += (s, e) =>
                 {
-                    UpdateBar.Value = i;
-                    StatusLabel.Text = $"Modüller yükleniyor... %{i}";
-                    await Task.Delay(20);
-                }
+                    Dispatcher.Invoke(() =>
+                        SetProgress(e.ProgressPercentage,
+                            $"Yeni sürüm indiriliyor: %{e.ProgressPercentage}"));
+                };
+
+                await webClient.DownloadFileTaskAsync(new Uri(SETUP_URL), tempFile);
             }
-            catch
+
+            await Dispatcher.InvokeAsync(() =>
+                SetProgress(100, "Kurulum tamamlandı, yeniden başlatılıyor..."));
+
+            await Task.Delay(500);
+
+            // Mevcut uygulamanın çalıştırılabilir dosyasının yolu
+            string appPath = Process.GetCurrentProcess().MainModule.FileName;
+
+            // Kurulum sessizce yapılsın, bitince uygulama otomatik başlasın
+            // /VERYSILENT: Hiç pencere göstermez
+            // /SUPPRESSMSGBOXES: Soru sormaz
+            // /NORESTART: Bilgisayarı yeniden başlatmaz
+            // CMD: 1 sn bekle (uygulama kapansın), kur, bitince uygulamayı başlat
+            string arguments = "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP-";
+            string cmd = $"/C timeout /t 1 > nul & start \"\" \"{tempFile}\" {arguments} & timeout /t 5 > nul & start \"\" \"{appPath}\"";
+
+            Process.Start(new ProcessStartInfo
             {
-                // sessiz geç
-            }
-            finally
+                FileName = "cmd.exe",
+                Arguments = cmd,
+                CreateNoWindow = true,
+                UseShellExecute = false
+            });
+
+            Environment.Exit(0);
+        }
+
+        private async Task ContinueStartup()
+        {
+            int startValue = (int)_currentProgress;
+
+            for (int i = startValue; i <= 100; i++)
             {
-                LoginWindow win = new LoginWindow();
-                win.Show();
-                Close();
+                await Dispatcher.InvokeAsync(() =>
+                    SetProgress(i, $"Sistem hazırlanıyor... %{i}"));
+
+                await Task.Delay(20);
             }
+
+            new LoginWindow().Show();
+            Close();
         }
     }
 }

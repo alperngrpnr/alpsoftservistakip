@@ -1,0 +1,513 @@
+<Page x:Class="alpsoftservistakip.PageKayitOlustur"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:local="clr-namespace:alpsoftservistakip.Controls"
+      mc:Ignorable="d"
+      Background="#FF252B36">
+
+    <Viewbox Stretch="Uniform">
+        <Grid Background="#FF252B36">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Aşağıdaki içerik, Window9.xaml içeriğinin birebir kopyasıdır -->
+
+            <GroupBox x:Name="servisbilgileri" Header="SERVİS BİLGİLERİ"
+            FontFamily="Segoe UI Black" FontWeight="Bold"
+            FontStyle="Italic" FontSize="16" BorderBrush="White" Margin="519,9,524,535" Foreground="White"/>
+
+            <GroupBox x:Name="cihazbilgileri" Header="CİHAZ BİLGİLERİ"
+            FontFamily="Segoe UI Black" FontWeight="Bold"
+            FontStyle="Italic" FontSize="16" BorderBrush="White" Margin="9,340,11,4" Foreground="White"/>
+
+            <GroupBox x:Name="garantibilgisi" Header="GARANTİ BİLGİSİ"
+            FontFamily="Segoe UI Black" FontWeight="Bold"
+            FontStyle="Italic" FontSize="16" BorderBrush="White" Margin="23,524,768,256" Height="95" Foreground="White"/>
+
+            <GroupBox x:Name="geneldurumu" Header="GENEL DURUMU"
+            FontFamily="Segoe UI Black" FontWeight="Bold"
+            FontStyle="Italic" FontSize="16" BorderBrush="White" Margin="627,524,25,255" Height="95" Foreground="White"/>
+
+            <GroupBox x:Name="sikayetiariza" Header="ŞİKAYETİ/ARIZA"
+            FontFamily="Segoe UI Black" FontWeight="Bold"
+            FontStyle="Italic" FontSize="16" BorderBrush="White" Margin="22,629,25,12" Foreground="White"/>
+
+            <Button x:Name="sarviskaydınıkaydet" Content="KAYDET"
+            FontSize="24"
+            Foreground="White"
+            Background="Red"
+            BorderThickness="0"
+            Cursor="Hand" 
+            FontFamily="Arial Black" RenderTransformOrigin="0.5,0" Panel.ZIndex="5" Command="{Binding KaydetCommand}" Margin="1031,124,158,693">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                        <Setter Property="RenderTransform">
+                            <Setter.Value>
+                                <ScaleTransform ScaleX="1" ScaleY="1"/>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}"
+                                    CornerRadius="15"
+                                    SnapsToDevicePixels="True">
+                                        <Border.Effect>
+                                            <DropShadowEffect Color="Black"
+                                            BlurRadius="30"
+                                            ShadowDepth="5"
+                                            Opacity="0.4"/>
+                                        </Border.Effect>
+                                        <ContentPresenter HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+
+                        <!-- Fare üstüne gelince sadece zoom efekti -->
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                            To="1.08" Duration="0:0:0.2" />
+                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                            To="1.08" Duration="0:0:0.2" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                            To="1" Duration="0:0:0.2" />
+                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                            To="1" Duration="0:0:0.2" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button x:Name="sarviskaydınıkaydet_Kopyala" Content="GERİ DÖN"
+            FontSize="24"
+            Foreground="White"
+            Background="#FFF5C721"
+            BorderThickness="0"
+            Cursor="Hand" 
+            FontFamily="Arial Black" RenderTransformOrigin="0.5,0" Panel.ZIndex="5" Command="{Binding GeriDonCommand}" Margin="1031,195,158,622">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                        <Setter Property="RenderTransform">
+                            <Setter.Value>
+                                <ScaleTransform ScaleX="1" ScaleY="1"/>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}"
+                                    CornerRadius="15"
+                                    SnapsToDevicePixels="True">
+                                        <Border.Effect>
+                                            <DropShadowEffect Color="Black"
+                                            BlurRadius="15"
+                                            ShadowDepth="3"
+                                            Opacity="0.4"/>
+                                        </Border.Effect>
+                                        <ContentPresenter HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+
+                        <!-- Fare üstüne gelince sadece zoom efekti -->
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                            To="1.08" Duration="0:0:0.2" />
+                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                            To="1.08" Duration="0:0:0.2" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                            To="1" Duration="0:0:0.2" />
+                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                            To="1" Duration="0:0:0.2" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <Border x:Name="fiyatbilgisi_skayit"
+            CornerRadius="10" Background="White"
+            BorderBrush="#2E2E2E" BorderThickness="1"
+            Padding="8" Margin="1069,707,61,79" Height="47">
+                <Border.Effect>
+                    <DropShadowEffect Color="#000000" BlurRadius="12" ShadowDepth="2" Opacity="0.35"/>
+                </Border.Effect>
+                <TextBox x:Name="fiyatbilgisi_skayit1"
+                Text="Fiyat Bilgisi"
+                GotFocus="fiyatbilgisi_skayit1_GotFocus"
+                LostFocus="fiyatbilgisi_skayit1_LostFocus"
+                Background="White" BorderThickness="0"
+                Foreground="#FF848484" FontSize="14"
+                VerticalContentAlignment="Center" Padding="5"/>
+            </Border>
+            <GroupBox x:Name="müşteribilgileri_Kopyala" Header="MÜŞTERİ BİLGİLERİ"
+            FontFamily="Segoe UI Black" FontWeight="Bold"
+            FontStyle="Italic" FontSize="16" BorderBrush="White" Margin="10,10,875,536" Foreground="White"/>
+            <Border x:Name="bayiadi_skayit1"
+            CornerRadius="10" 
+            Background="White"
+            BorderBrush="#2E2E2E" 
+            BorderThickness="1"
+            Padding="8" Margin="23,40,889,781" Height="47">
+                <Border.Effect>
+                    <DropShadowEffect Color="#000000" BlurRadius="12" ShadowDepth="2" Opacity="0.35"/>
+                </Border.Effect>
+
+                <TextBox x:Name="bayiadi_skayit"
+                Text="Bayi Adı"
+                GotFocus="bayiadi_skayit_GotFocus"
+                LostFocus="bayiadi_skayit_LostFocus"
+                Background="White" BorderThickness="0"
+                Foreground="#FF848484" FontSize="14"
+                VerticalContentAlignment="Center" Padding="5" />
+            </Border>
+            <Border x:Name="adsoyad_skayit1"
+            CornerRadius="10" 
+            Background="White"
+            BorderBrush="#2E2E2E" 
+            BorderThickness="1"
+            Padding="8" Margin="23,92,889,726" Height="47">
+                <Border.Effect>
+                    <DropShadowEffect Color="#000000" BlurRadius="12" ShadowDepth="2" Opacity="0.35"/>
+                </Border.Effect>
+
+                <TextBox x:Name="adsoyad_skayit"
+                Text="Ad Soyad*"
+                GotFocus="adsoyad_skayit_GotFocus"
+                LostFocus="adsoyad_skayit_LostFocus"
+                Background="White" BorderThickness="0"
+                Foreground="#FF848484" FontSize="14"
+                VerticalContentAlignment="Center" Padding="5"/>
+            </Border>
+            <Border x:Name="ceptelefonu_skayit1"
+            CornerRadius="10" Background="White"
+            BorderBrush="#2E2E2E" BorderThickness="1"
+            Padding="8" Margin="22,147,890,674" Height="47">
+                <Border.Effect>
+                    <DropShadowEffect Color="#000000" BlurRadius="12" ShadowDepth="2" Opacity="0.35"/>
+                </Border.Effect>
+                <TextBox x:Name="ceptelefonu_skayit"
+                Text="Cep Telefonu*"
+                PreviewTextInput="ceptelefonu_skayit_PreviewTextInput"
+                GotFocus="ceptelefonu_skayit_GotFocus"
+                LostFocus="ceptelefonu_skayit_LostFocus"
+                Background="White" BorderThickness="0"
+                Foreground="#FF848484" FontSize="14"
+                VerticalContentAlignment="Center" Padding="5" TextChanged="ceptelefonu_skayit_TextChanged"/>
+            </Border>
+            <Border x:Name="adres_skayit1"
+            CornerRadius="10" Background="White"
+            BorderBrush="#2E2E2E" BorderThickness="1"
+            Padding="8" Margin="23,200,889,621" Height="47">
+                <Border.Effect>
+                    <DropShadowEffect Color="#000000" BlurRadius="12" ShadowDepth="2" Opacity="0.35"/>
+                </Border.Effect>
+                <TextBox x:Name="adres_skayit"
+                Text="Adres"
+                GotFocus="adres_skayit_GotFocus"
+                LostFocus="adres_skayit_LostFocus"
+                Background="White" BorderThickness="0"
+                Foreground="#FF848484" FontSize="14"
+                VerticalContentAlignment="Center" Padding="5"/>
+            </Border>
+            <Border x:Name="eposta_skayit1"
+            CornerRadius="10" Background="White"
+            BorderBrush="#2E2E2E" BorderThickness="1"
+            Padding="8" Margin="22,259,890,569" Height="47">
+                <Border.Effect>
+                    <DropShadowEffect Color="#000000" BlurRadius="12" ShadowDepth="2" Opacity="0.35"/>
+                </Border.Effect>
+                <TextBox x:Name="eposta_skayit"
+                Text="E-Posta"
+                GotFocus="eposta_skayit_GotFocus"
+                LostFocus="eposta_skayit_LostFocus"
+                Background="White" BorderThickness="0"
+                Foreground="#FF848484" FontSize="14"
+                VerticalContentAlignment="Center" Padding="5"/>
+            </Border>
+            <Border x:Name="cihaztürü_skayit1"
+            CornerRadius="10" Background="White"
+            BorderBrush="#2E2E2E" BorderThickness="1"
+            Padding="8" Margin="22,366,890,459" Height="47">
+                <Border.Effect>
+                    <DropShadowEffect Color="#000000" BlurRadius="12" ShadowDepth="2" Opacity="0.35"/>
+                </Border.Effect>
+                <TextBox x:Name="cihaztürü_skayit"
+                Text="Cihaz Türü*"
+                GotFocus="cihaztürü_skayit_GotFocus"
+                LostFocus="cihaztürü_skayit_LostFocus"
+                Background="White" BorderThickness="0"
+                Foreground="#FF848484" FontSize="14"
+                VerticalContentAlignment="Center" Padding="5"/>
+            </Border>
+            <Border x:Name="marka_skayit1"
+            CornerRadius="10" Background="White"
+            BorderBrush="#2E2E2E" BorderThickness="1"
+            Padding="8" Margin="23,418,889,408" Height="47">
+                <Border.Effect>
+                    <DropShadowEffect Color="#000000" BlurRadius="12" ShadowDepth="2" Opacity="0.35"/>
+                </Border.Effect>
+                <TextBox x:Name="marka_skayit"
+                Text="Marka*"
+                GotFocus="marka_skayit_GotFocus"
+                LostFocus="marka_skayit_LostFocus"
+                Background="White" BorderThickness="0"
+                Foreground="#FF848484" FontSize="14"
+                VerticalContentAlignment="Center" Padding="5"/>
+            </Border>
+            <Border x:Name="model_skayit1"
+            CornerRadius="10" Background="White"
+            BorderBrush="#2E2E2E" BorderThickness="1"
+            Padding="8" Margin="22,468,890,358" Height="47">
+                <Border.Effect>
+                    <DropShadowEffect Color="#000000" BlurRadius="12" ShadowDepth="2" Opacity="0.35"/>
+                </Border.Effect>
+                <TextBox x:Name="model_skayit"
+                Text="Model*"
+                GotFocus="model_skayit_GotFocus"
+                LostFocus="model_skayit_LostFocus"
+                Background="White" BorderThickness="0"
+                Foreground="#FF848484" FontSize="14"
+                VerticalContentAlignment="Center" Padding="5"/>
+            </Border>
+            <Border x:Name="imeino_skayit1"
+            CornerRadius="10" Background="White"
+            BorderBrush="#2E2E2E" BorderThickness="1"
+            Padding="8" Margin="506,366,406,460" Height="47">
+                <Border.Effect>
+                    <DropShadowEffect Color="#000000" BlurRadius="12" ShadowDepth="2" Opacity="0.35"/>
+                </Border.Effect>
+                <TextBox x:Name="imeino_skayit"
+                Text="IMEI No"
+                PreviewTextInput="Imeino_PreviewTextInput"
+                PreviewKeyDown="Imeino_PreviewKeyDown"
+                GotFocus="imeino_skayit_GotFocus"
+                LostFocus="imeino_skayit_LostFocus"
+                Background="White" BorderThickness="0"
+                Foreground="#FF848484" FontSize="14"
+                VerticalContentAlignment="Center" Padding="5"
+                         MaxLength="156"/>
+            </Border>
+            <Border x:Name="ekbilgiler_skayit1"
+            CornerRadius="10" Background="White"
+            BorderBrush="#2E2E2E" BorderThickness="1"
+            Padding="8" Margin="506,419,406,359">
+                <Border.Effect>
+                    <DropShadowEffect Color="#000000" BlurRadius="12" ShadowDepth="2" Opacity="0.35"/>
+                </Border.Effect>
+                <TextBox x:Name="ekbilgiler_skayit"
+                Text="Ek Bilgiler"
+                GotFocus="ekbilgiler_skayit_GotFocus"
+                LostFocus="ekbilgiler_skayit_LostFocus"
+                Background="White" BorderThickness="0"
+                Foreground="#FF848484" FontSize="14"
+                VerticalContentAlignment="Center" Padding="5"/>
+            </Border>
+            <ComboBox
+            x:Name="servisdurumu" 
+            FontSize="16" 
+                
+            FontWeight="Bold" Tag="" Margin="584,124,598,720" SelectionChanged="servisdurumu_SelectionChanged" >
+                <ComboBoxItem Content="SERVİSTE"/>
+                <ComboBoxItem Content="BEKLİYOR"/>
+                <ComboBoxItem Content="PARÇA BEKLİYOR"/>
+                <ComboBoxItem Content="DIŞ SERVİSTE"/>
+                <ComboBoxItem Content="TESLİM EDİLECEK"/>
+                <ComboBoxItem Content="TESLİM EDİLDİ"/>
+            </ComboBox>
+            <Border x:Name="ilgiliteknisyen"
+            CornerRadius="10" Background="White"
+            BorderBrush="#2E2E2E" BorderThickness="1"
+            Padding="8" Margin="559,213,571,615" Height="47">
+                <Border.Effect>
+                    <DropShadowEffect Color="#000000" BlurRadius="12" ShadowDepth="2" Opacity="0.35"/>
+                </Border.Effect>
+                <TextBox x:Name="ilgiliteknisyen1"
+                Text="İlgili Teknisyen"
+                GotFocus="ilgiliteknisyen1_GotFocus"
+                LostFocus="ilgiliteknisyen1_LostFocus"
+                
+                Background="White" BorderThickness="0"
+                Foreground="#FF848484" FontSize="14"
+                VerticalContentAlignment="Center" Padding="5"/>
+            </Border>
+            <Label Content="SERVİS DURUMU&#xA;" FontSize="16" FontFamily="Bahnschrift" FontWeight="Bold" Margin="623,90,612,0" Height="27" VerticalAlignment="Top" Foreground="White"/>
+            <CheckBox x:Name="garantili" Content="GARANTİLİ"
+            FontSize="16"
+            FontWeight="SemiBold"
+            Cursor="Hand" Margin="479,569,809,282" Foreground="White"/>
+            <CheckBox x:Name="garantisiz" Content="GARANTİSİZ"
+            FontSize="16"
+            FontWeight="SemiBold"
+            Cursor="Hand" Margin="283,569,995,280" Foreground="White"/>
+            <CheckBox x:Name="servisgarantili"
+            Content="SERVİS GARANTİLİ"
+            FontSize="16"
+            FontWeight="SemiBold"
+            Cursor="Hand" Margin="62,569,1171,284" Foreground="White"/>
+            <CheckBox x:Name="yeni" Content="YENİ"
+            FontSize="16"
+            FontWeight="SemiBold"
+            Cursor="Hand" Margin="731,569,603,282" Foreground="White"/>
+            <CheckBox x:Name="eski" Content="ESKİ"
+            FontSize="16"
+            FontWeight="SemiBold"
+            Cursor="Hand" Margin="822,569,516,282" Foreground="White"/>
+            <CheckBox x:Name="tamirgörmüs" Content="TAMİR GÖRMÜŞ"
+            FontSize="16"
+            FontWeight="SemiBold"
+            Cursor="Hand" Margin="918,569,331,282" RenderTransformOrigin="0.5,0.5" Foreground="White">
+                <CheckBox.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform AngleX="0"/>
+                        <RotateTransform/>
+                        <TranslateTransform X="0"/>
+                    </TransformGroup>
+                </CheckBox.RenderTransform>
+            </CheckBox>
+            <CheckBox x:Name="yedeklemeyapilsin" Content="YEDEKLEME YAPILSIN"
+            FontSize="16"
+            FontWeight="SemiBold"
+            Cursor="Hand" Margin="1092,569,120,279" Foreground="White"/>
+            <Border x:Name="sikayetiariza_skayit1"
+            CornerRadius="10" Background="White"
+            BorderBrush="#2E2E2E" BorderThickness="1"
+            Padding="8" Margin="37,655,354,28">
+                <Border.Effect>
+                    <DropShadowEffect Color="#000000" BlurRadius="12" ShadowDepth="2" Opacity="0.35"/>
+                </Border.Effect>
+                <TextBox x:Name="sikayetiariza_skayit"
+                Text="Şikayet/Arıza*"
+                GotFocus="sikayetiariza_skayit_GotFocus"
+                LostFocus="sikayetiariza_skayit_LostFocus"
+                Background="White" BorderThickness="0"
+                Foreground="#FF848484" FontSize="14"
+                VerticalContentAlignment="Center" Padding="5" Margin="0,0,1,0"/>
+            </Border>
+            <GroupBox x:Name="servisbilgileri_Kopyala" Header="KONTROLLER"
+                FontFamily="Segoe UI Black" FontWeight="Bold"
+                FontStyle="Italic" FontSize="16" BorderBrush="White" Margin="871,9,12,535" Foreground="White"/>
+            <Border x:Name="servisdurumborder"
+                CornerRadius="10" Background="White"
+                BorderBrush="#2E2E2E" BorderThickness="1"
+                Padding="8" Margin="558,162,572,666" Height="47">
+                <Border.Effect>
+                    <DropShadowEffect Color="#000000" BlurRadius="12" ShadowDepth="2" Opacity="0.35"/>
+                </Border.Effect>
+                <TextBox x:Name="servisdurumtext"
+                    IsReadOnly="True"
+                   
+                
+                    Background="White" BorderThickness="0"
+                    Foreground="Black" FontSize="14"
+                    VerticalContentAlignment="Center" Padding="5" BorderBrush="Black"/>
+            </Border>
+            <Button x:Name="btksorgula" Content="SORGULA"
+                FontSize="24"
+                Foreground="White"
+                Background="Gray"
+                BorderThickness="0"
+                Cursor="Hand" 
+                FontFamily="Arial Black" RenderTransformOrigin="0.5,0" Panel.ZIndex="5" Click="btksorgula_Click" Margin="988,366,251,462" Height="47">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                        <Setter Property="RenderTransform">
+                            <Setter.Value>
+                                <ScaleTransform ScaleX="1" ScaleY="1"/>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}"
+                                        CornerRadius="15"
+                                        SnapsToDevicePixels="True">
+                                        <Border.Effect>
+                                            <DropShadowEffect Color="Black"
+                                                BlurRadius="15"
+                                                ShadowDepth="3"
+                                                Opacity="0.4"/>
+                                        </Border.Effect>
+                                        <ContentPresenter HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+
+                        <!-- Fare üstüne gelince sadece zoom efekti -->
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                To="1.08" Duration="0:0:0.2" />
+                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                To="1.08" Duration="0:0:0.2" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                To="1" Duration="0:0:0.2" />
+                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                To="1" Duration="0:0:0.2" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <local:OverlayHost x:Name="OverlayHost" Panel.ZIndex="999"/>
+        </Grid>
+    </Viewbox>
+</Page>
+
+
+

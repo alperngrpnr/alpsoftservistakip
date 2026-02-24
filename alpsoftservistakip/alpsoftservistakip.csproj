@@ -61,7 +61,7 @@
     <ApplicationIcon>Alpsoftlogo.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>D41FF062126C638A2D68DD5613C49C30A88B003C</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>A9965260FE09DCB24981EE33031E27A883AF21F4</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>alpsoftservistakip_TemporaryKey.pfx</ManifestKeyFile>
@@ -164,11 +164,11 @@
     <Compile Include="Window3.xaml.cs">
       <DependentUpon>Window3.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Window4.xaml.cs">
-      <DependentUpon>Window4.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Window5.xaml.cs">
       <DependentUpon>Window5.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Page3.xaml.cs">
+      <DependentUpon>Page3.xaml</DependentUpon>
     </Compile>
     <Compile Include="Window6.xaml.cs">
       <DependentUpon>Window6.xaml</DependentUpon>
@@ -181,6 +181,30 @@
     </Compile>
     <Compile Include="Window9.xaml.cs">
       <DependentUpon>Window9.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\NamespacePlaceholder.cs" />
+    <Compile Include="Services\NavigationService.cs" />
+    <Compile Include="Controls\OverlayHost.xaml.cs">
+      <DependentUpon>OverlayHost.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\RelayCommand.cs" />
+    <Compile Include="ViewModels\Window5ViewModel.cs" />
+    <Compile Include="ViewModels\Page3ViewModel.cs" />
+    <Compile Include="ViewModels\PageKayitOlusturViewModel.cs" />
+    <Compile Include="ViewModels\PageDisServisViewModel.cs" />
+    <Compile Include="ViewModels\Window7ViewModel.cs" />
+    <Compile Include="PageKayitOlustur.xaml.cs">
+      <DependentUpon>PageKayitOlustur.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PageDisServis.xaml.cs">
+      <DependentUpon>PageDisServis.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Page5.xaml.cs">
+      <DependentUpon>Page5.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Page6.xaml.cs">
+      <DependentUpon>Page6.xaml</DependentUpon>
     </Compile>
     <Page Include="Window1.xaml">
       <SubType>Designer</SubType>
@@ -210,7 +234,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Window4.xaml">
+    <Page Include="Page3.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -234,6 +258,26 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\OverlayHost.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PageKayitOlustur.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PageDisServis.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Page5.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Page6.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -253,6 +297,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="alpsoftservistakip_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

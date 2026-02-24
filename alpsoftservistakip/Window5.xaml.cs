@@ -6,180 +6,202 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.ComponentModel;
 using System.Windows.Media;
+using System.Threading.Tasks;
+using System.Windows.Media.Animation;
+using alpsoftservistakip.ViewModels;
 
 namespace alpsoftservistakip
 {
     public partial class Window5 : Window
     {
-        private readonly string connString =
-            "Server=91.247.168.204,1433;" +
-            "Database=alpsoftservistakip;" +
-            "User Id=sa;" +
-            "Password=Alperengurpinar4160552009;" +
-            "TrustServerCertificate=True;";
+        public Window5ViewModel ViewModel { get; private set; }
 
         public Window5()
         {
             InitializeComponent();
-            KayitlariListele();
+            ViewModel = new Window5ViewModel();
+            DataContext = ViewModel;
             this.Closing += AltPencere_Closing;
+            
+            if (dgVeriler != null)
+            {
+                dgVeriler.MouseDoubleClick += dgVeriler_MouseDoubleClick;
+            }
+        }
+
+        private void dgVeriler_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ViewModel?.KayitDetayCommand.Execute(dgVeriler.SelectedItem);
         }
 
         private void AltPencere_Closing(object sender, CancelEventArgs e)
         {
-            if (Application.Current.MainWindow != this)
-            {
-                e.Cancel = true;
-                Application.Current.MainWindow.Show();
-                Application.Current.MainWindow.Activate();
-                this.Hide();
-            }
+            //if (Application.Current.MainWindow != this)
+            //{
+            //    e.Cancel = true;
+            //    Application.Current.MainWindow.Show();
+            //    Application.Current.MainWindow.Activate();
+            //    this.Hide();
+            //}
         }
 
         public void KayitlariListele(string aramaMetni = "")
         {
-            if (dgVeriler == null) return;
-
-            // Güvenlik kontrolü
-            if (Class1.AktifKullanici == null)
-            {
-                MessageBox.Show("Oturum bilgisi bulunamadı.");
-                return;
-            }
-
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connString))
-                {
-                    conn.Open();
-
-                    // NOT: Eğer veritabanında 'CompanyId' sütunu yoksa ve hata alıyorsanız,
-                    // SQL tablonuza şu komutu çalıştırın: ALTER TABLE kayitlicihazlar ADD CompanyId INT;
-                    string sql = @"
-                        SELECT * FROM kayitlicihazlar
-                        WHERE CompanyId = @SirketID
-                        AND (@arama = '' OR
-                             IsimSoyisim LIKE '%' + @arama + '%' OR
-                             BayiAdi LIKE '%' + @arama + '%' OR
-                             CepTelefonu LIKE '%' + @arama + '%')
-                        ORDER BY ID DESC";
-
-                    using (SqlCommand cmd = new SqlCommand(sql, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@arama", aramaMetni ?? "");
-                        // Class1'den gelen şirket ID'sini kullanıyoruz
-                        cmd.Parameters.AddWithValue("@SirketID", Class1.AktifKullanici.SirketID);
-
-                        DataTable dt = new DataTable();
-                        new SqlDataAdapter(cmd).Fill(dt);
-                        dgVeriler.ItemsSource = dt.DefaultView;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                // Hata Invalid column name ise kullanıcıya SQL uyarısı ver
-                if (ex.Message.Contains("CompanyId"))
-                {
-                    MessageBox.Show("Veritabanı hatası: 'CompanyId' sütunu bulunamadı. Lütfen SQL tablonuza bu sütunu ekleyin.");
-                }
-                else
-                {
-                    MessageBox.Show("Veri çekme hatası: " + ex.Message);
-                }
-            }
-        }
-
-        private void _MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            if (dgVeriler.SelectedItem is DataRowView row)
-            {
-                int id = Convert.ToInt32(row["ID"]);
-                Window9 detay = new Window9(id);
-                detay.ShowDialog();
-                VerileriYukle();
-            }
+            ViewModel?.KayitlariListele(aramaMetni);
         }
 
         private void geridön_Click(object sender, RoutedEventArgs e)
         {
-            
-            this.Close();
+            // Show the main menu Page (Page3) inside the overlay frame for a smooth in-window transition
+            ShowOverlayPage(new Page3());
         }
 
-        private void arama_GotFocus(object sender, RoutedEventArgs e)
+        // Smooth fade helpers 🔧
+        private Task FadeOutAsync(Window window, int ms = 200)
         {
-            if (arama.Text.Trim() == "Servis kaydı ara...")
+            var tcs = new TaskCompletionSource<bool>();
+            var da = new DoubleAnimation(0, TimeSpan.FromMilliseconds(ms));
+            da.Completed += (s, e) => tcs.SetResult(true);
+            window.Dispatcher.Invoke(() => window.BeginAnimation(Window.OpacityProperty, da));
+            return tcs.Task;
+        }
+
+        private Task FadeInAsync(Window window, int ms = 200)
+        {
+            var tcs = new TaskCompletionSource<bool>();
+            var da = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(ms));
+            da.Completed += (s, e) => tcs.SetResult(true);
+            window.Dispatcher.Invoke(() =>
             {
-                arama.Text = "";
-                arama.Foreground = Brushes.Black;
+                window.Opacity = 0;
+                window.BeginAnimation(Window.OpacityProperty, da);
+            });
+            return tcs.Task;
+        }
+
+        // Element-level fade helpers for smooth in-window page transitions
+        private Task FadeOutElementAsync(UIElement el, int ms = 200)
+        {
+            var tcs = new TaskCompletionSource<bool>();
+            var da = new DoubleAnimation(0, TimeSpan.FromMilliseconds(ms));
+            da.FillBehavior = FillBehavior.Stop;
+            da.Completed += (s, e) =>
+            {
+                // Ensure final value is applied
+                el.Dispatcher.Invoke(() => el.Opacity = 0);
+                tcs.SetResult(true);
+            };
+            el.Dispatcher.Invoke(() => el.BeginAnimation(UIElement.OpacityProperty, da));
+            return tcs.Task;
+        }
+
+        private Task FadeInElementAsync(UIElement el, int ms = 200)
+        {
+            var tcs = new TaskCompletionSource<bool>();
+            var da = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(ms));
+            da.FillBehavior = FillBehavior.Stop;
+            da.Completed += (s, e) =>
+            {
+                // Ensure final value is applied
+                el.Dispatcher.Invoke(() => el.Opacity = 1);
+                tcs.SetResult(true);
+            };
+            el.Dispatcher.Invoke(() =>
+            {
+                // Start from current opacity but enforce 0 for a visible fade-in start
+                el.Opacity = 0;
+                el.BeginAnimation(UIElement.OpacityProperty, da);
+            });
+            return tcs.Task;
+        }
+
+        private Task FadeToElementAsync(UIElement el, double to, int ms = 200)
+        {
+            var tcs = new TaskCompletionSource<bool>();
+            var da = new DoubleAnimation(to, TimeSpan.FromMilliseconds(ms));
+            da.FillBehavior = FillBehavior.Stop;
+            da.Completed += (s, e) =>
+            {
+                el.Dispatcher.Invoke(() => el.Opacity = to);
+                tcs.SetResult(true);
+            };
+            el.Dispatcher.Invoke(() => el.BeginAnimation(UIElement.OpacityProperty, da));
+            return tcs.Task;
+        }
+
+        // Show a Page inside the overlay frame with smooth cross-fade
+        
+        public async void ShowOverlayPage(System.Windows.Controls.Page page)
+        {
+            try
+            {
+                // Ensure overlay is visible before navigation so layout/measure runs correctly
+                OverlayBackdrop.Visibility = Visibility.Visible;
+                OverlayBackdrop.Opacity = 0;
+
+                OverlayFrame.Visibility = Visibility.Visible;
+                OverlayFrame.Opacity = 0;
+                
+                // Sayfayı önce yükle, sonra animasyon yap
+                OverlayFrame.Navigate(page);
+                
+                // Sayfanın yüklenmesi için kısa bir bekleme (daha hızlı)
+                await Task.Delay(30);
+
+                // Fade backdrop and frame in (keep RootGrid visible) - daha hızlı animasyon
+                await Task.WhenAll(FadeToElementAsync(OverlayBackdrop, 0.6, 150), FadeInElementAsync(OverlayFrame, 150));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Geçiş sırasında hata: " + ex.Message);
             }
         }
 
-        private void arama_LostFocus(object sender, RoutedEventArgs e)
+        public async void HideOverlay()
         {
-            if (string.IsNullOrWhiteSpace(arama.Text))
+            try
             {
-                arama.Text = "Servis kaydı ara...";
-                arama.Foreground = Brushes.Gray;
-            }
-        }
+                // Daha hızlı animasyon
+                await Task.WhenAll(FadeOutElementAsync(OverlayFrame, 120), FadeToElementAsync(OverlayBackdrop, 0, 120));
+                // ensure overlay is collapsed and cleaned
+                OverlayFrame.Visibility = Visibility.Collapsed;
+                OverlayFrame.Content = null;
+                OverlayFrame.Opacity = 1; // reset for next use
 
-        private void arama_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (dgVeriler == null || arama.Text == "Servis kaydı ara...") return;
-            KayitlariListele(arama.Text);
+                // clean up overlay elements (RootGrid is left unchanged)
+                OverlayBackdrop.Visibility = Visibility.Collapsed;
+                OverlayBackdrop.Opacity = 0;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Geçiş sırasında hata: " + ex.Message);
+                // fallback: make sure UI isn't stuck invisible
+                OverlayFrame.Visibility = Visibility.Collapsed;
+                OverlayFrame.Content = null;
+                OverlayFrame.Opacity = 1;
+                RootGrid.Visibility = Visibility.Visible;
+                RootGrid.Opacity = 1;
+            }
         }
 
         public void VerileriYukle()
         {
-            string mevcutArama = (arama != null && arama.Text != "Servis kaydı ara...") ? arama.Text : "";
-            KayitlariListele(mevcutArama);
+            ViewModel?.VerileriYukle();
         }
 
-        private void dtpServisTarihi_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        private void arama_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (dgVeriler == null || dtpServisTarihi == null || !dtpServisTarihi.SelectedDate.HasValue)
-                return;
-
-            DateTime secilenTarih = dtpServisTarihi.SelectedDate.Value;
-
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connString))
-                {
-                    conn.Open();
-                    string sql = @"SELECT * FROM kayitlicihazlar 
-                                   WHERE CompanyId = @SirketID 
-                                   AND CAST(KayitTarihi AS DATE) = @secilenTarih
-                                   ORDER BY ID DESC";
-
-                    using (SqlCommand cmd = new SqlCommand(sql, conn))
-                    {// Window5 içindeki parametre satırı tam olarak bu olmalı:
-                        
-                        cmd.Parameters.AddWithValue("@SirketID", Class1.AktifKullanici.SirketID);
-                        cmd.Parameters.AddWithValue("@secilenTarih", secilenTarih.Date);
-
-                        DataTable dt = new DataTable();
-                        new SqlDataAdapter(cmd).Fill(dt);
-                        dgVeriler.ItemsSource = dt.DefaultView;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Tarih filtreleme hatası: " + ex.Message);
-            }
+            ViewModel?.AramaGotFocusCommand.Execute(null);
         }
 
-        private void btnFiltreTemizle_Click(object sender, RoutedEventArgs e)
+        private void arama_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (dtpServisTarihi == null || dgVeriler == null || arama == null) return;
+            ViewModel?.AramaLostFocusCommand.Execute(null);
+        }
 
-            dtpServisTarihi.SelectedDate = null;
-            arama.Text = "Servis kaydı ara...";
-            arama.Foreground = Brushes.Gray;
-            KayitlariListele("");
+        private void KAYITLAR_Closing(object sender, CancelEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }

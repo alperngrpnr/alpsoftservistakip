@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using Services = alpsoftservistakip.Services;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Text.RegularExpressions;
@@ -422,7 +423,7 @@ namespace alpsoftservistakip
             }
         }
 
-        private void Window5TablosunuYenile()
+        private async void Window5TablosunuYenile()
         {
             foreach (Window window in Application.Current.Windows)
             {
@@ -430,10 +431,13 @@ namespace alpsoftservistakip
                 {
                     if (!window5.IsVisible)
                     {
-                        window5.Show();
+                        await Services.NavigationService.ShowWindowAsync(window5);
                     }
-                    window5.VerileriYukle();
-                    window5.Activate();
+                    else
+                    {
+                        window5.VerileriYukle();
+                        window5.Activate();
+                    }
                     break;
                 }
             }
@@ -443,105 +447,89 @@ namespace alpsoftservistakip
 
         private void sarviskaydınıkaydet_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(adsoyad_skayit.Text) ||
-                adsoyad_skayit.Text == "Ad Soyad*" ||
-                string.IsNullOrWhiteSpace(ceptelefonu_skayit.Text) ||
-                ceptelefonu_skayit.Text == "Cep Telefonu*")
+            try
             {
-                MessageBox.Show("Lütfen yıldızlı alanları doldurun!", "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                using (SqlConnection conn = new SqlConnection(ConnectionString))
+                {
+                    conn.Open();
+
+                    string query = @"
+INSERT INTO Servisler
+(
+BayiAdi,
+IsimSoyisim,
+CepTelefonu,
+Adres,
+Eposta,
+CihazTuru,
+Marka,
+Model,
+ImeiNo,
+EkBilgiler,
+ServisDurumu,
+Teknisyen,
+SikayetAriza,
+Fiyat
+)
+VALUES
+(
+@BayiAdi,
+@IsimSoyisim,
+@CepTelefonu,
+@Adres,
+@Eposta,
+@CihazTuru,
+@Marka,
+@Model,
+@ImeiNo,
+@EkBilgiler,
+@ServisDurumu,
+@Teknisyen,
+@SikayetAriza,
+@Fiyat
+)";
+
+                    SqlCommand cmd = new SqlCommand(query, conn);
+
+                    // ✅ Boşsa NULL gönder
+                    object DB(string text)
+                    {
+                        return string.IsNullOrWhiteSpace(text)
+                            ? (object)DBNull.Value
+                            : text;
+                    }
+
+
+                    cmd.Parameters.AddWithValue("@BayiAdi", DB(bayiadi_skayit.Text));
+                    cmd.Parameters.AddWithValue("@IsimSoyisim", DB(adsoyad_skayit.Text));
+                    cmd.Parameters.AddWithValue("@CepTelefonu", DB(ceptelefonu_skayit.Text));
+                    cmd.Parameters.AddWithValue("@Adres", DB(adres_skayit.Text));
+                    cmd.Parameters.AddWithValue("@Eposta", DB(eposta_skayit.Text));
+                    cmd.Parameters.AddWithValue("@CihazTuru", DB(cihaztürü_skayit.Text));
+                    cmd.Parameters.AddWithValue("@Marka", DB(marka_skayit.Text));
+                    cmd.Parameters.AddWithValue("@Model", DB(model_skayit.Text));
+                    cmd.Parameters.AddWithValue("@ImeiNo", DB(imeino_skayit.Text));
+                    cmd.Parameters.AddWithValue("@EkBilgiler", DB(ekbilgiler_skayit.Text));
+                    cmd.Parameters.AddWithValue("@ServisDurumu", DB(servisdurumtext.Text));
+                    cmd.Parameters.AddWithValue("@Teknisyen", DB(ilgiliteknisyen1.Text));
+                    cmd.Parameters.AddWithValue("@SikayetAriza", DB(sikayetiariza_skayit.Text));
+                    cmd.Parameters.AddWithValue("@Fiyat", DB(fiyatbilgisi_skayit1.Text));
+
+                    cmd.ExecuteNonQuery();
+
+                    MessageBox.Show("✅ Kayıt başarıyla eklendi");
+                }
             }
-
-            using (SqlConnection con = new SqlConnection(ConnectionString))
+            catch (Exception ex)
             {
-                try
-                {
-                    con.Open();
-                    string query;
-
-                    if (_kayitId > 0)
-                    {
-                        query = @"UPDATE kayitlicihazlar SET 
-                            BayiAdi=@BayiAdi, IsimSoyisim=@IsimSoyisim, CepTelefonu=@CepTelefonu, Adres=@Adres, 
-                            EPosta=@EPosta, ServisTeknisyen=@ServisTeknisyen, ServisDurumu=@ServisDurumu, 
-                            CihazTuru=@CihazTuru, Marka=@Marka, Model=@Model, IMEI=@IMEI, 
-                            EkBilgiler=@EkBilgiler, Ariza=@Ariza, FiyatBilgisi=@FiyatBilgisi,
-                            Yeni=@Yeni, Eski=@Eski, TamirGormus=@TamirGormus, Garantili=@Garantili,
-                            Garantisiz=@Garantisiz, ServisGarantili=@ServisGarantili, YedeklemeYapilsin=@YedeklemeYapilsin
-                            WHERE ID=@ID";
-                    }
-                    else
-                    {
-                        query = @"INSERT INTO kayitlicihazlar 
-                            (KullaniciID, BayiAdi, IsimSoyisim, CepTelefonu, Adres, EPosta, 
-                            ServisTeknisyen, ServisDurumu, CihazTuru, Marka, Model, IMEI, 
-                            EkBilgiler, Ariza, FiyatBilgisi, Yeni, Eski, TamirGormus, 
-                            Garantili, Garantisiz, ServisGarantili, YedeklemeYapilsin) 
-                            VALUES 
-                            (@KullaniciID, @BayiAdi, @IsimSoyisim, @CepTelefonu, @Adres, @EPosta, 
-                            @ServisTeknisyen, @ServisDurumu, @CihazTuru, @Marka, @Model, @IMEI, 
-                            @EkBilgiler, @Ariza, @FiyatBilgisi, @Yeni, @Eski, @TamirGormus, 
-                            @Garantili, @Garantisiz, @ServisGarantili, @YedeklemeYapilsin)";
-                    }
-
-                    SqlCommand cmd = new SqlCommand(query, con);
-
-                    cmd.Parameters.AddWithValue("@BayiAdi", GetSqlValue(bayiadi_skayit, "Bayi Adı"));
-                    cmd.Parameters.AddWithValue("@IsimSoyisim", GetSqlValue(adsoyad_skayit, "Ad Soyad*"));
-                    cmd.Parameters.AddWithValue("@CepTelefonu", ceptelefonu_skayit.Text);
-                    cmd.Parameters.AddWithValue("@Adres", GetSqlValue(adres_skayit, "Adres"));
-                    cmd.Parameters.AddWithValue("@EPosta", GetSqlValue(eposta_skayit, "E-Posta"));
-                    cmd.Parameters.AddWithValue("@ServisTeknisyen", GetSqlValue(ilgiliteknisyen1, "İlgili Teknisyen"));
-                    cmd.Parameters.AddWithValue("@ServisDurumu", string.IsNullOrWhiteSpace(servisdurumtext.Text) ? (object)DBNull.Value : servisdurumtext.Text);
-                    cmd.Parameters.AddWithValue("@CihazTuru", GetSqlValue(cihaztürü_skayit, "Cihaz Türü*"));
-                    cmd.Parameters.AddWithValue("@Marka", GetSqlValue(marka_skayit, "Marka*"));
-                    cmd.Parameters.AddWithValue("@Model", GetSqlValue(model_skayit, "Model*"));
-                    cmd.Parameters.AddWithValue("@IMEI", GetSqlValue(imeino_skayit, "IMEI No"));
-                    cmd.Parameters.AddWithValue("@EkBilgiler", GetSqlValue(ekbilgiler_skayit, "Ek Bilgiler"));
-                    cmd.Parameters.AddWithValue("@Ariza", GetSqlValue(sikayetiariza_skayit, "Şikayet/Arıza*"));
-                    cmd.Parameters.AddWithValue("@FiyatBilgisi", GetSqlValue(fiyatbilgisi_skayit1, "Fiyat Bilgisi"));
-                    cmd.Parameters.AddWithValue("@Yeni", yeni.IsChecked ?? false);
-                    cmd.Parameters.AddWithValue("@Eski", eski.IsChecked ?? false);
-                    cmd.Parameters.AddWithValue("@TamirGormus", tamirgörmüs.IsChecked ?? false);
-                    cmd.Parameters.AddWithValue("@Garantili", garantili.IsChecked ?? false);
-                    cmd.Parameters.AddWithValue("@Garantisiz", garantisiz.IsChecked ?? false);
-                    cmd.Parameters.AddWithValue("@ServisGarantili", servisgarantili.IsChecked ?? false);
-                    cmd.Parameters.AddWithValue("@YedeklemeYapilsin", yedeklemeyapilsin.IsChecked ?? false);
-
-                    if (_kayitId == 0)
-                    {
-                        cmd.Parameters.AddWithValue("@KullaniciID", LoginWindow.aktifKullaniciID);
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue("@ID", _kayitId);
-                    }
-
-                    int etkilenenSatir = cmd.ExecuteNonQuery();
-
-                    if (etkilenenSatir == 0)
-                    {
-                        MessageBox.Show($"⚠️ Hiçbir satır güncellenmedi!\n\nID: {_kayitId}", "Uyarı");
-                        return;
-                    }
-
-                    string mesaj = _kayitId > 0 ? "✅ Kayıt başarıyla güncellendi!" : "✅ Yeni kayıt başarıyla eklendi!";
-                    MessageBox.Show(mesaj, "Başarılı", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                    _degisiklikVar = false; // ✅ Kaydettikten sonra sıfırla
-                    Window5TablosunuYenile();
-                    this.Close();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"❌ HATA:\n\n{ex.Message}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                MessageBox.Show("HATA: " + ex.Message);
             }
         }
 
+
         // --- GERİ DÖN BUTONU ---
 
-        private void sarviskaydınıkaydet_Kopyala_Click(object sender, RoutedEventArgs e)
+        private async void sarviskaydınıkaydet_Kopyala_Click(object sender, RoutedEventArgs e)
         {
             if (_degisiklikVar)
             {
@@ -556,7 +544,8 @@ namespace alpsoftservistakip
             }
 
             _degisiklikVar = false;
-            this.Close();
+            await Services.NavigationService.ShowWindowAsync(new Window3());
+            // keep current window state (don't open a new top-level window)
         }
 
         // --- DİĞER METOTLAR (TELEFON, IMEI vs.) ---

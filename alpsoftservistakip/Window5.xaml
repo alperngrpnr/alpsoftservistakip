@@ -10,7 +10,7 @@
         ResizeMode="CanResize"
         WindowState="Maximized"
         WindowStartupLocation="CenterScreen" 
-        MinHeight="720" MinWidth="1080">
+        MinHeight="720" MinWidth="1080" Closing="KAYITLAR_Closing">
 
     <Window.Resources>
         <!-- DatePicker Style -->
@@ -198,7 +198,7 @@
         </Style>
     </Window.Resources>
 
-    <Grid Background="#F4F7F9">
+    <Grid x:Name="RootGrid" Background="#F4F7F9">
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
             <RowDefinition Height="*"/>
@@ -216,8 +216,8 @@
                     <Border.Effect>
                         <DropShadowEffect Color="Black" BlurRadius="10" ShadowDepth="1" Opacity="0.1"/>
                     </Border.Effect>
-                    <TextBox x:Name="arama" TextChanged="arama_TextChanged"
-                             Text="Servis kaydı ara..."
+                    <TextBox x:Name="arama"
+                             Text="{Binding AramaMetni, UpdateSourceTrigger=PropertyChanged}"
                              GotFocus="arama_GotFocus"
                              LostFocus="arama_LostFocus"
                              Background="Transparent" BorderThickness="0"
@@ -233,7 +233,7 @@
                     <StackPanel Orientation="Horizontal">
                         <DatePicker x:Name="dtpServisTarihi" 
                                     Width="180"
-                                    SelectedDateChanged="dtpServisTarihi_SelectedDateChanged"/>
+                                    SelectedDate="{Binding SecilenTarih}"/>
                     </StackPanel>
                 </Border>
 
@@ -244,7 +244,7 @@
                         Height="40" 
                         Width="150"
                         Style="{StaticResource ModernButtonStyle}"
-                        Click="btnFiltreTemizle_Click"/>
+                        Command="{Binding FiltreTemizleCommand}"/>
             </StackPanel>
 
             <!-- Geri Dön Butonu -->
@@ -255,7 +255,7 @@
                     BorderThickness="0"
                     Cursor="Hand" 
                     FontWeight="Bold"
-                    Click="geridön_Click" 
+                    Command="{Binding GeriDonCommand}" 
                     HorizontalAlignment="Right" 
                     VerticalAlignment="Center" 
                     Width="150" Height="40">
@@ -274,10 +274,10 @@
 
             <DataGrid x:Name="dgVeriler"
                       Style="{StaticResource ModernDataGridStyle}" 
-                      ItemsSource="{Binding YourDataCollection}"
+                      ItemsSource="{Binding Kayitlar}"
                       AutoGenerateColumns="False"  
                       IsReadOnly="True" 
-                      MouseDoubleClick="_MouseDoubleClick" 
+                      MouseDoubleClick="dgVeriler_MouseDoubleClick" 
                       Margin="10"
                       HorizontalScrollBarVisibility="Auto"
                       VerticalScrollBarVisibility="Auto">
@@ -320,5 +320,11 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Border>
+
+        <!-- Overlay frame to show pages smoothly -->
+        <!-- Semi-transparent backdrop when showing overlay -->
+        <Rectangle x:Name="OverlayBackdrop" Grid.RowSpan="2" Fill="Black" Opacity="0" Visibility="Collapsed" Panel.ZIndex="998"/>
+        <Frame x:Name="OverlayFrame" Grid.RowSpan="2" NavigationUIVisibility="Hidden" Visibility="Collapsed" Background="Transparent" Panel.ZIndex="999"/>
+
     </Grid>
 </Window>

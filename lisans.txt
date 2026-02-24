@@ -1,0 +1,11 @@
+ALPSOFT SERVİS TAKİP SİSTEMİ - SON KULLANICI LİSANS SÖZLEŞMESİ (EULA)
+
+LİSANS VERİLMESİ: Bu yazılım Alpsoft tarafından geliştirilmiştir. Yazılımın tüm fikri mülkiyet hakları Alpsoft'a aittir.
+
+KULLANIM KOŞULLARI: Yazılım, teknik servis süreçlerini dijitalleştirmek amacıyla sunulmuştur. Kullanıcı, yazılımı sadece lisanslandığı amaç doğrultusunda kullanabilir.
+
+VERİ GÜVENLİĞİ VE YEDEKLEME: Alpsoft, sistem verilerinin güvenliği ve düzenli yedeklenmesi sorumluluğunu üstlenmektedir. Kullanıcı verileri, Alpsoft altyapısı üzerinde güvenli bir şekilde muhafaza edilir.
+
+GÜNCELLEMELER: Uygulama, geliştirme ve güvenlik amacıyla otomatik güncelleme yapma hakkını saklı tutar.
+
+Bu yazılımı kurarak verilerinizin Alpsoft güvencesiyle yedeklenmesini ve yukarıdaki tüm şartları kabul etmiş sayılırsınız.
