@@ -25,8 +25,45 @@ namespace alpsoftservistakip
         {
             if (dgdisservisVeriler.SelectedItem is DataRowView row)
             {
-                ViewModel?.KayitDetayCommand.Execute(row);
+                int id = GetServisKayitId(row);
+
+                Window3 mainWindow = Application.Current.Windows.OfType<Window3>().FirstOrDefault();
+                if (mainWindow != null)
+                {
+                    PageKayitOlustur detay = new PageKayitOlustur();
+                    var vm = detay.DataContext as ViewModels.PageKayitOlusturViewModel;
+                    if (vm != null)
+                    {
+                        if (id > 0)
+                        {
+                            vm.CarregarKayit(id);
+                        }
+                        else
+                        {
+                            vm.DisServisSatirindanYukle(row);
+                        }
+                    }
+                    mainWindow.ShowOverlayPage(detay);
+                }
             }
+        }
+
+        private int GetServisKayitId(DataRowView row)
+        {
+            string[] oncelikliKolonlar = { "ServisKayitID", "ServisKayitId", "CihazKayitID", "CihazKayitId", "KaynakKayitID", "KaynakKayitId" };
+
+            foreach (var kolon in oncelikliKolonlar)
+            {
+                if (row.DataView.Table.Columns.Contains(kolon) && row[kolon] != DBNull.Value)
+                {
+                    if (int.TryParse(row[kolon].ToString(), out int id) && id > 0)
+                    {
+                        return id;
+                    }
+                }
+            }
+
+            return 0;
         }
 
         private void aramadisservis1_GotFocus(object sender, RoutedEventArgs e)

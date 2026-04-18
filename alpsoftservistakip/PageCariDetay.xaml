@@ -1,0 +1,294 @@
+<Page x:Class="alpsoftservistakip.PageCariDetay"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:alpsoftservistakip"
+      mc:Ignorable="d" 
+      d:DesignHeight="800" d:DesignWidth="1200"
+      Background="#F0F4F8"
+      Title="PageCariDetay">
+
+    <Page.Resources>
+        <!-- Renkler -->
+        <SolidColorBrush x:Key="SecondaryDark" Color="#2C3E50"/>
+        <SolidColorBrush x:Key="PrimaryColor" Color="#3498DB"/>
+        <SolidColorBrush x:Key="RedColor" Color="#E74C3C"/>
+        <SolidColorBrush x:Key="GreenColor" Color="#2ECC71"/>
+
+        <!-- Buton Stilleri -->
+        <Style x:Key="ActionBtn" TargetType="Button">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="Padding" Value="20,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PayBtn" TargetType="Button" BasedOn="{StaticResource ActionBtn}">
+            <Setter Property="Background" Value="{StaticResource GreenColor}"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#27AE60"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="DebtBtn" TargetType="Button" BasedOn="{StaticResource ActionBtn}">
+            <Setter Property="Background" Value="{StaticResource RedColor}"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#C0392B"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ResetBtn" TargetType="Button" BasedOn="{StaticResource ActionBtn}">
+            <Setter Property="Background" Value="#F39C12"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#E67E22"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="TopActionBtn" TargetType="Button" BasedOn="{StaticResource ActionBtn}">
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+
+        <Style x:Key="TopDeleteBtn" TargetType="Button" BasedOn="{StaticResource TopActionBtn}">
+            <Setter Property="Background" Value="#E74C3C"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#C0392B"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="TopPrintBtn" TargetType="Button" BasedOn="{StaticResource TopActionBtn}">
+            <Setter Property="Background" Value="#95A5A6"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#7F8C8D"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="TopBackBtn" TargetType="Button" BasedOn="{StaticResource TopActionBtn}">
+            <Setter Property="Background" Value="{StaticResource SecondaryDark}"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#1F2D3A"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- DataGrid Style -->
+        <Style TargetType="DataGrid">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="RowHeight" Value="55"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#EDF2F7"/>
+        </Style>
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#718096"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="BorderThickness" Value="0,0,0,2"/>
+            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="DataGridRow">
+            <Setter Property="Background" Value="White"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#E1F0FA"/>
+                    <Setter Property="Foreground" Value="#2C3E50"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#F8FAFC"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="DataGridCell">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="TextBlock.TextAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DataGridCell">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="Transparent"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Page.Resources>
+
+    <Grid>
+        <Grid Margin="30">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- 1. Üst Başlık & Geri Dön -->
+            <Grid Grid.Row="0" Margin="0,0,0,20">
+                <StackPanel Orientation="Horizontal">
+                    <Border Width="5" Height="35" Background="{StaticResource PrimaryColor}" Margin="0,0,15,0"/>
+                    <TextBlock x:Name="txtMusteriAdi" Text="Müşteri Adı - Cari Ekstresi" FontSize="30" FontWeight="ExtraBold" Foreground="{StaticResource SecondaryDark}"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="🗑️ CARİYİ SİL" Width="170" Style="{StaticResource TopDeleteBtn}" Click="btnCariSil_Click" Margin="0,0,15,0"/>
+                    <Button Content="🖨 FİŞ / EKSTRE PDF ÖNİZLEME" Width="250" Style="{StaticResource TopPrintBtn}" Click="btnFisYazdir_Click" Margin="0,0,15,0"/>
+                    <Button Content="Geri Dön" Width="170" Style="{StaticResource TopBackBtn}" Click="btnGeri_Click"/>
+                </StackPanel>
+            </Grid>
+
+            <!-- 2. Bakiye Özeti ve Eylem Butonları -->
+            <Border Grid.Row="1" Background="White" CornerRadius="15" Padding="20" Margin="0,0,0,20">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="15" Opacity="0.05" ShadowDepth="3" Color="Black"/>
+                </Border.Effect>
+                <Grid>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="GÜNCEL BAKİYE: " FontSize="18" Foreground="#718096" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="txtGuncelBakiye" Text="0,00 ₺" FontSize="26" FontWeight="Black" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="txtDurum" Text="(...)" FontSize="14" FontWeight="SemiBold" Foreground="#A0AEC0" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Content="⚖️ SIFIRLA" Style="{StaticResource ResetBtn}" Margin="0,0,15,0" Click="btnSifirla_Click"/>
+                        <Button Content="- HESABI BORÇLANDIR" Style="{StaticResource DebtBtn}" Margin="0,0,15,0" Click="btnBorclandir_Click"/>
+                        <Button Content="+ TAHSİLAT (ÖDEME ALINDI)" Style="{StaticResource PayBtn}" Click="btnTahsilat_Click"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- 3. Hesap Hareketleri Listesi -->
+            <Border Grid.Row="2" Background="White" CornerRadius="15" Padding="15">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="30" Opacity="0.05" ShadowDepth="5" Color="Black"/>
+                </Border.Effect>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10" VerticalAlignment="Center">
+                        <TextBlock Text="Başlangıç:" VerticalAlignment="Center" FontWeight="Bold" Foreground="#718096" Margin="0,0,5,0"/>
+                        <DatePicker x:Name="dpBaslangic" Width="130" SelectedDateChanged="TarihFiltresi_Changed"/>
+                        <TextBlock Text="Bitiş:" VerticalAlignment="Center" FontWeight="Bold" Foreground="#718096" Margin="15,0,5,0"/>
+                        <DatePicker x:Name="dpBitis" Width="130" SelectedDateChanged="TarihFiltresi_Changed"/>
+                        <Button Content="Filtreyi Temizle" Click="btnFiltreTemizle_Click" Margin="15,0,0,0" Padding="10,0" Background="#EDF2F7" BorderThickness="0" Cursor="Hand">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="5"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                    </StackPanel>
+
+                    <DataGrid Grid.Row="1" x:Name="dgHareketler" AutoGenerateColumns="False" IsReadOnly="False" SelectionMode="Single">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Header="Seç">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding Secili, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                              HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="Tarih" Binding="{Binding IslemTarihi, StringFormat=dd.MM.yyyy HH:mm}" Width="150" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="İşlem Tipi" Binding="{Binding IslemTipi}" Width="150" IsReadOnly="True">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IslemTipi}" Value="Borçlandırma">
+                                            <Setter Property="Foreground" Value="#E74C3C"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IslemTipi}" Value="Tahsilat">
+                                            <Setter Property="Foreground" Value="#2ECC71"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="İşlem Tutarı" Binding="{Binding Tutar, StringFormat=N2}" Width="150" IsReadOnly="True">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Açıklama" Binding="{Binding Aciklama}" Width="*" IsReadOnly="True"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Border>
+
+        <!-- YENİ İŞLEM KAYIT POPUP (Görünmez durumda, butonlara basılınca açılacak) -->
+        <Grid x:Name="PanelYeniIslem" Grid.RowSpan="3" Margin="-30" Background="#99000000" Visibility="Collapsed" Panel.ZIndex="100">
+            <Border Background="White" Width="500" Height="400" CornerRadius="20" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="30">
+                <StackPanel>
+                    <TextBlock x:Name="txtPopupBaslik" Text="Yeni İşlem" FontSize="22" FontWeight="Bold" Foreground="{StaticResource SecondaryDark}" Margin="0,0,0,20"/>
+
+                    <TextBlock Text="Tutar (₺)" Foreground="#718096" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                    <TextBox x:Name="txtIslemTutar" Height="45" FontSize="18" FontWeight="Bold" Background="#F8FAFC" BorderBrush="#E2E8F0" BorderThickness="1" Margin="0,0,0,20" Padding="10,0" VerticalContentAlignment="Center"/>
+
+                    <TextBlock Text="Açıklama / Not" Foreground="#718096" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                    <TextBox x:Name="txtIslemAciklama" Height="80" TextWrapping="Wrap" AcceptsReturn="True" Background="#F8FAFC" BorderBrush="#E2E8F0" BorderThickness="1" Margin="0,0,0,25" Padding="10" VerticalContentAlignment="Top"/>
+
+                    <Grid>
+                        <Button Content="İptal" Width="120" Height="45" HorizontalAlignment="Left" Click="btnPopupIptal_Click"
+                                Background="Transparent" Foreground="#718096" BorderBrush="#E2E8F0" BorderThickness="1" FontWeight="Bold" Cursor="Hand">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="10"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                        <Button x:Name="btnPopupKaydet" Content="İşlemi Kaydet" Width="200" Height="45" HorizontalAlignment="Right" Click="btnPopupKaydet_Click"
+                                Background="{StaticResource PrimaryColor}" Foreground="White" FontWeight="Bold" Cursor="Hand">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="10"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+    </Grid>
+</Page>

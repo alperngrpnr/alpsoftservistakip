@@ -1,0 +1,173 @@
+/* 
+================================================================================
+                   KASA VE PARÇA TAKİBİ SİSTEMİ
+                       KURULUM VE KULLANIM KILAVUZU
+================================================================================
+
+1. VERİTABANI KURULUMU
+================================================================================
+
+Adım 1: SQL Server Management Studio Açın
+- SQL Server Management Studio'yu açın
+- Sunucunuza bağlanın
+
+Adım 2: Veritabanı Tabloları Oluşturun
+- SQL_Scripts/KasaVeParcaTakibi_CreateTables.sql dosyasını açın
+- Tüm sorguları seçin (Ctrl+A)
+- Çalıştır (F5) tuşuna basın
+- Başarılı mesajını göreceksiniz
+
+Adım 3: Doğrulama
+- Object Explorer > Databases > [YourDatabase] > Tables
+- KasaIslemleri tablosunu göreceksiniz
+- ParcaIslemleri tablosunu göreceksiniz
+
+================================================================================
+2. UYGULAMA YAPISI
+================================================================================
+
+Dosyalar:
+- PageKasaVeParcaTakibi.xaml      → UI Tasarımı (XAML)
+- PageKasaVeParcaTakibi.xaml.cs   → Business Logic (C#)
+
+XAML Bileşenleri:
+├── gridKasa            → Kasa İşlemleri DataGrid'i
+├── gridParca           → Parça İşlemleri DataGrid'i
+├── popupOverlay        → Yeni/Düzenleme Popup'ı
+├── rbKasa              → Kasa Sekmesi RadioButton
+├── rbParca             → Parça Sekmesi RadioButton
+└── btnEkle             → Yeni Kayıt Ekle Düğmesi
+
+C# Model Sınıfları:
+├── KasaIslemModel      → Kasa verisi için
+└── ParcaIslemModel     → Parça verisi için
+
+================================================================================
+3. TEMEL İŞLEVLER
+================================================================================
+
+VERI YÜKLEMESİ
+- YukleVeriler()
+- KasaVerileriniYukle()
+- ParcaVerileriniYukle()
+
+SEKME DEĞİŞTİRME
+- TabChanged() → KASA ↔ PARÇA arasında geçiş
+
+KAYIT YÖNETİMİ
+- btnEkle_Click() → Yeni kayıt formu aç
+- btnDuzenle_Click() → Mevcut kaydı düzenleme moduna al
+- btnSil_Click() → Kaydı sil
+- btnKaydet_Click() → Kayıt / Güncelleme işlemi
+
+VERİTABANI İŞLEMLERİ
+- KasaIsleminiKaydet() → Kasa kaydını ekle/güncelle
+- ParcaIsleminiKaydet() → Parça kaydını ekle/güncelle
+- KasaIsleminiSil() → Kasa kaydını sil
+- ParcaIsleminiSil() → Parça kaydını sil
+
+================================================================================
+4. POPUP FORMU ALANLAR
+================================================================================
+
+KASA POPUP'I:
+├── cmbIslemTipi        → İşlem Tipi (Nakit Girişi, Çıkışı, Transfer, Diğer)
+├── txtAciklama         → Açıklama metni
+├── txtMiktar           → Tutar (₺)
+└── txtNot              → Notlar
+
+PARÇA POPUP'I:
+├── txtParcaAdi         → Parça Adı
+├── cmbKategori         → Kategori (Elektrik, Mekanik, Hidrolik, Kimya, Diğer)
+├── txtParcaAciklama    → Açıklama
+├── txtParcaMiktar      → Miktar (Adet)
+├── txtParcaBirimFiyat  → Birim Fiyat (₺)
+└── txtParcaNot         → Notlar
+
+================================================================================
+5. VERİTABANI SORGUSU DETAYLARı
+================================================================================
+
+KASA VERİSİ SORGUS:
+SELECT ID, IslemTarihi, IslemTipi, Aciklama, Miktar, BirimFiyat, 
+       (Miktar * BirimFiyat) as Toplam, Not 
+FROM KasaIslemleri 
+WHERE SirketID = @sirketId 
+ORDER BY IslemTarihi DESC
+
+PARÇA VERİSİ SORGUSU:
+SELECT ID, IslemTarihi, ParcaAdi, Kategori, Aciklama, Miktar, BirimFiyat, 
+       (Miktar * BirimFiyat) as Toplam, Not 
+FROM ParcaIslemleri 
+WHERE SirketID = @sirketId 
+ORDER BY IslemTarihi DESC
+
+================================================================================
+6. GÜVENLİK VE DOĞRULAMA
+================================================================================
+
+✓ Şirket ID Kontrolü     → Her işlem SirketID ile filtrelenir
+✓ İnput Doğrulaması      → Tüm girdiler kontrol edilir
+✓ Hata Yönetimi          → Try-Catch ile tüm işlemler korunur
+✓ SQL Enjeksiyonu Koruması → Parametreli sorgular kullanılır
+✓ Null Kontrolleri       → DBNull kontrolleri yapılır
+
+================================================================================
+7. ÖRNEK VERİ GİRİŞİ
+================================================================================
+
+KASA KAYDI ÖRNEĞI:
+- İşlem Tipi: Nakit Girişi
+- Açıklama: Müşteri ödemesi - Fatura #001
+- Miktar: 5000.00
+- Not: Çek alındı
+
+PARÇA KAYDI ÖRNEĞI:
+- Parça Adı: Elektrik Motoru
+- Kategori: Elektrik
+- Açıklama: 5 HP Motor
+- Miktar: 2
+- Birim Fiyat: 1500.00
+- Not: Stokta var
+
+================================================================================
+8. SIKÇA SORULAN SORULAR
+================================================================================
+
+S: Veritabanı tablolarını yeniden oluşturmak istersem?
+C: Script'i tekrar çalıştırın. "zaten mevcut" mesajı alırsınız.
+
+S: Popup'ı nasıl kapatırım?
+C: "İptal" düğmesine tıklayın veya form dışına tıklayın.
+
+S: Kayıt sılındıkten sonra geri alınabilir mi?
+C: Hayır, silme işlemi kalıcıdır. Silmeden önce iki kez düşünün.
+
+S: Aynı anda birden fazla sekme görebilir miyim?
+C: Hayır, sadece bir sekme aktif olabilir.
+
+S: Veri nasıl sıralanır?
+C: En yeni işlemler en üstte (İşlem Tarihi DESC).
+
+================================================================================
+9. SORUN GİDERME
+================================================================================
+
+Veriler Yüklenmiyor:
+- Veritabanı bağlantı dizesini kontrol edin
+- SQL Server'ın çalışır durumda olduğundan emin olun
+- Tablolar oluşturulmuş mu kontrol edin
+
+Popup Alanları Boş Görünüyor:
+- Combobox'lardan bir değer seçmeyi unuttunuz mu?
+- Form temizlenmişse yeniden açın
+
+Kayıt Kaydedilemiyor:
+- Tüm zorunlu alanları doldurun mu?
+- Sayısal alanlar için doğru format kullanın
+
+================================================================================
+
+Soru ve önerileri için destek ekibine başvurun.
+İyi kullanımlar! 🚀
+*/

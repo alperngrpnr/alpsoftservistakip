@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="alpsoftservistakip.exe" size="562632">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="alpsoftservistakip.exe" size="651720">
       <assemblyIdentity name="alpsoftservistakip" version="1.6.3.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>hXneUu43l/GIJOwkDB2zU1ZGDPv5fT80sVizlK5YJYg=</dsig:DigestValue>
+        <dsig:DigestValue>zY4o+7paHB1WgVOUe1wzDEPRdIWlac0Dx+LDCRMaf7k=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -195,13 +195,13 @@
       <dsig:DigestValue>Gr/xp3kQEm3Ad3aXkb5BUn5M/KSnEmWeYzoWN3E2OBo=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="alpsoftservistakip.exe.config" size="945">
+  <file name="alpsoftservistakip.exe.config" size="1197">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>BjXj+C3XSQ1wVIjID6J+Lbe6IHaDxL/eZq80s03nbTQ=</dsig:DigestValue>
+      <dsig:DigestValue>qWKiyhltBvoZ2dAgmIhd+NB+3ID3epSx9rIn21gX6qM=</dsig:DigestValue>
     </hash>
   </file>
 </asmv1:assembly>

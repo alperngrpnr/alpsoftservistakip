@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using alpsoftservistakip.Services;
 
 namespace alpsoftservistakip.ViewModels
 {
@@ -69,6 +70,7 @@ namespace alpsoftservistakip.ViewModels
         public ICommand FiltreTemizleCommand { get; }
         public ICommand GeriDonCommand { get; }
         public ICommand KayitDetayCommand { get; }
+        public ICommand FisiYazdirCommand { get; }
 
         public PageDisServisViewModel()
         {
@@ -77,6 +79,7 @@ namespace alpsoftservistakip.ViewModels
             FiltreTemizleCommand = new RelayCommand(_ => FiltreTemizle());
             GeriDonCommand = new RelayCommand(_ => GeriDon());
             KayitDetayCommand = new RelayCommand<object>(KayitDetay);
+            FisiYazdirCommand = new RelayCommand<object>(FisiYazdir);
 
             VerileriGetir();
         }
@@ -184,12 +187,24 @@ namespace alpsoftservistakip.ViewModels
         {
             if (parameter is DataRowView row)
             {
-                int id = Convert.ToInt32(row["KayitID"]);
+                int id = GetServisKayitId(row);
 
                 Window3 mainWindow = Application.Current.Windows.OfType<Window3>().FirstOrDefault();
                 if (mainWindow != null)
                 {
-                    Page6 detay = new Page6(id);
+                    PageKayitOlustur detay = new PageKayitOlustur();
+                    var vm = detay.DataContext as ViewModels.PageKayitOlusturViewModel;
+                    if (vm != null)
+                    {
+                        if (id > 0)
+                        {
+                            vm.CarregarKayit(id);
+                        }
+                        else
+                        {
+                            vm.DisServisSatirindanYukle(row);
+                        }
+                    }
                     mainWindow.ShowOverlayPage(detay);
                 }
 
@@ -198,6 +213,64 @@ namespace alpsoftservistakip.ViewModels
                                           : AramaMetni;
 
                 VerileriGetir(aramaParametresi);
+            }
+        }
+
+        private int GetServisKayitId(DataRowView row)
+        {
+            string[] oncelikliKolonlar = { "ServisKayitID", "ServisKayitId", "CihazKayitID", "CihazKayitId", "KaynakKayitID", "KaynakKayitId" };
+
+            foreach (var kolon in oncelikliKolonlar)
+            {
+                if (row.DataView.Table.Columns.Contains(kolon) && row[kolon] != DBNull.Value)
+                {
+                    if (int.TryParse(row[kolon].ToString(), out int id) && id > 0)
+                    {
+                        return id;
+                    }
+                }
+            }
+
+            return 0;
+        }
+
+        private void FisiYazdir(object parameter)
+        {
+            try
+            {
+                if (parameter is DataRowView row)
+                {
+                    var fisiData = new Models.ServisKayitFisiData
+                    {
+                        KayitID = Convert.ToInt32(row["KayitID"]),
+                        KayitTarihi = Convert.ToDateTime(row["KayitTarihi"]),
+                        IsimSoyisim = row["IsimSoyisim"]?.ToString() ?? "",
+                        CepTelefonu = row["CepTelefonu"]?.ToString() ?? "",
+                        BayiAdi = row["BayiAdi"]?.ToString() ?? "",
+                        Marka = row["Marka"]?.ToString() ?? "",
+                        Model = row["Model"]?.ToString() ?? "",
+                        Ariza = row["Ariza"]?.ToString() ?? "",
+                        ImeiNo = row["IMEI"]?.ToString() ?? "",
+                        ServisDurumu = row["ServisDurumu"]?.ToString() ?? "",
+                        IlgiliTeknisyen = row["ServisTeknisyen"]?.ToString() ?? "",
+                        EkBilgiler = row["EkBilgiler"]?.ToString() ?? ""
+                    };
+
+                    var fisi = new alpsoftservistakip.Controls.ServisKayitFisi()
+                    {
+                        DataContext = fisiData
+                    };
+
+                    Services.WpfPrintService.ShowPrintPreview(fisi, "SERVIS_KAYIT_FISI", "SERVIS KAYIT FİŞİ ÖNİZLEMESİ");
+                }
+                else
+                {
+                    MessageBox.Show("Lütfen bir kayıt seçin!", "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Fiş yazdırma hatası: " + ex.Message, "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

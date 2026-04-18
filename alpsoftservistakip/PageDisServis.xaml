@@ -7,6 +7,7 @@
       mc:Ignorable="d">
 
     <Page.Resources>
+        <SolidColorBrush x:Key="PrimaryColor" Color="#3498DB"/>
         <!-- Window7.xaml içindeki tüm stil tanımları buraya taşındı -->
         <Style TargetType="{x:Type DatePicker}">
             <Setter Property="Background" Value="White"/>
@@ -16,45 +17,53 @@
             <Setter Property="FontSize" Value="13"/>
             <Setter Property="Padding" Value="10,5"/>
             <Setter Property="Height" Value="40"/>
+            <Setter Property="IsTodayHighlighted" Value="True"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type DatePicker}">
-                        <Border Background="{TemplateBinding Background}" 
-                                BorderBrush="{TemplateBinding BorderBrush}" 
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="8">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
+                        <Grid x:Name="PART_Root">
+                            <Border Background="{TemplateBinding Background}" 
+                                    BorderBrush="{TemplateBinding BorderBrush}" 
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="8">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
 
-                                <DatePickerTextBox x:Name="PART_TextBox" 
-                                                 Grid.Column="0"
-                                                 Foreground="{TemplateBinding Foreground}"
-                                                 Background="Transparent"
-                                                 BorderThickness="0"
-                                                 Padding="10,0"
-                                                 VerticalContentAlignment="Center"
-                                                 Focusable="False"
-                                                 IsReadOnly="True"/>
+                                    <DatePickerTextBox x:Name="PART_TextBox" 
+                                                     Grid.Column="0"
+                                                     Foreground="{TemplateBinding Foreground}"
+                                                     Background="Transparent"
+                                                     BorderThickness="0"
+                                                     Padding="10,0"
+                                                     VerticalContentAlignment="Center"/>
 
-                                <Button x:Name="PART_Button" 
-                                      Grid.Column="1"
-                                      Background="Transparent"
-                                      BorderThickness="0"
-                                      Width="40"
-                                      Cursor="Hand">
-                                    <Path Data="M19,4H5A2,2 0 0,0 3,6V20A2,2 0 0,0 5,22H19A2,2 0 0,0 21,20V6A2,2 0 0,0 19,4M19,20H5V10H19V20M5,8V6H19V8H5M7,12H12V17H7V12Z" 
-                                          Fill="#3498DB" 
-                                          Stretch="Uniform" 
-                                          Width="18" 
-                                          Height="18"/>
-                                </Button>
-                            </Grid>
-                        </Border>
+                                    <Button x:Name="PART_Button" 
+                                          Grid.Column="1"
+                                          Background="Transparent"
+                                          BorderThickness="0"
+                                          Width="40"
+                                          Cursor="Hand"
+                                          Focusable="False">
+                                        <Path Data="M19,4H5A2,2 0 0,0 3,6V20A2,2 0 0,0 5,22H19A2,2 0 0,0 21,20V6A2,2 0 0,0 19,4M19,20H5V10H19V20M5,8V6H19V8H5M7,12H12V17H7V12Z" 
+                                              Fill="#3498DB" 
+                                              Stretch="Uniform" 
+                                              Width="18" 
+                                              Height="18"/>
+                                    </Button>
+                                </Grid>
+                            </Border>
+                            <Popup x:Name="PART_Popup" 
+                                   AllowsTransparency="True" 
+                                   Placement="Bottom" 
+                                   PlacementTarget="{Binding ElementName=PART_Root}" 
+                                   StaysOpen="False"/>
+                        </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="PART_Root" Property="Background" Value="White"/>
                                 <Setter Property="BorderBrush" Value="#3498DB"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
@@ -63,103 +72,61 @@
             </Setter>
         </Style>
 
-        <Style TargetType="{x:Type DatePickerTextBox}">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="#2C3E50"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type DatePickerTextBox}">
-                        <Grid>
-                            <TextBox x:Name="PART_TextBox"
-                                   Text="{Binding Path=SelectedDate, RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}, StringFormat='dd.MM.yyyy'}"
-                                   Background="Transparent"
-                                   Foreground="{TemplateBinding Foreground}"
-                                   BorderThickness="0"
-                                   VerticalContentAlignment="Center"
-                                   Padding="0"
-                                   IsReadOnly="True"/>
-                            <TextBlock x:Name="PART_Watermark"
-                                     Text="Tarih Seçin..."
-                                     Foreground="#95A5A6"
-                                     VerticalAlignment="Center"
-                                     Padding="2,0,0,0"
-                                     Visibility="Collapsed"/>
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <DataTrigger Binding="{Binding Path=SelectedDate, RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" Value="{x:Null}">
-                                <Setter TargetName="PART_Watermark" Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style TargetType="{x:Type DataGridColumnHeader}">
-            <Setter Property="Background" Value="#252B36"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="Height" Value="50"/>
-            <Setter Property="Padding" Value="10"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="BorderBrush" Value="#4A5568"/>
-            <Setter Property="BorderThickness" Value="0,0,1,1"/>
-        </Style>
-
-        <Style TargetType="{x:Type DataGridCell}">
+        
+        <Style TargetType="DataGrid">
             <Setter Property="Background" Value="White"/>
-            <Setter Property="BorderBrush" Value="#DCDDE1"/>
-            <Setter Property="BorderThickness" Value="0,0,1,1"/>
-            <Setter Property="Padding" Value="8,5"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="RowHeight" Value="55"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#EDF2F7"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+        </Style>
+
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#718096"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="BorderThickness" Value="0,0,0,2"/>
+            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="DataGridRow">
+            <Setter Property="Background" Value="White"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#E1F0FA"/>
+                    <Setter Property="Foreground" Value="#2C3E50"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#F8FAFC"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="DataGridCell">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="TextBlock.TextAlignment" Value="Center"/>
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type DataGridCell}">
-                        <Border Background="{TemplateBinding Background}" 
-                                BorderBrush="{TemplateBinding BorderBrush}" 
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                Padding="{TemplateBinding Padding}">
-                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,0"/>
+                    <ControlTemplate TargetType="DataGridCell">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Background" Value="#E6F2FF"/>
-                    <Setter Property="Foreground" Value="#007ACC"/>
+                    <Setter Property="Background" Value="Transparent"/>
                 </Trigger>
             </Style.Triggers>
-        </Style>
-
-        <Style TargetType="{x:Type DataGridRow}">
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="MinHeight" Value="40"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#F8F9FA"/>
-                </Trigger>
-                <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Background" Value="#E6F2FF"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style TargetType="{x:Type DataGrid}" x:Key="ModernDataGridStyle">
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="CanUserAddRows" Value="False"/>
-            <Setter Property="CanUserDeleteRows" Value="False"/>
-            <Setter Property="HeadersVisibility" Value="Column"/>
-            <Setter Property="AutoGenerateColumns" Value="False"/>
-            <Setter Property="HorizontalScrollBarVisibility" Value="Auto"/>
-            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
-            <Setter Property="GridLinesVisibility" Value="None"/>
-            <Setter Property="SelectionMode" Value="Single"/>
-            <Setter Property="SelectionUnit" Value="FullRow"/>
-            <Setter Property="ColumnHeaderHeight" Value="50"/>
-            <Setter Property="FontSize" Value="12"/>
         </Style>
 
         <Style x:Key="ModernButtonStyle" TargetType="Button">
@@ -193,11 +160,19 @@
 
     <Grid Background="#F4F7F9">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="100"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Margin="20,0">
+        <Grid Grid.Row="0" Margin="20,20,0,0">
+            <StackPanel Orientation="Horizontal">
+                <Border Width="5" Height="35" Background="{StaticResource PrimaryColor}" Margin="0,0,15,0"/>
+                <TextBlock Text="Dış Servis Kayıtları" FontSize="30" FontWeight="ExtraBold" Foreground="#2C3E50"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="20,0">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                 <Border CornerRadius="20" Background="White" BorderBrush="#DCDDE1" BorderThickness="1" Width="300" Height="40">
                     <TextBox x:Name="aramadisservis1" Text="{Binding AramaMetni, UpdateSourceTrigger=PropertyChanged}" 
@@ -221,6 +196,26 @@
                         Width="150"
                         Style="{StaticResource ModernButtonStyle}"
                         Command="{Binding FiltreTemizleCommand}"/>
+
+                <Button x:Name="btnFisiYazdir" 
+                        Content="📄 FİŞ YAZDIR" 
+                        Margin="15,0,0,0" 
+                        Height="40" 
+                        Width="150"
+                        Background="#27AE60"
+                        Foreground="White"
+                        BorderThickness="0"
+                        FontWeight="SemiBold"
+                        FontSize="13"
+                        Cursor="Hand"
+                        Command="{Binding FisiYazdirCommand}"
+                        CommandParameter="{Binding SelectedItem, ElementName=dgdisservisVeriler}">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="8"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
             </StackPanel>
 
             <Button x:Name="geridöndisservis" Content="← GERİ DÖN" FontWeight="Bold" Foreground="White" 
@@ -234,9 +229,9 @@
             </Button>
         </Grid>
 
-        <Border Grid.Row="1" Background="White" Margin="20,0,20,20" CornerRadius="10" Padding="10">
+        <Border Grid.Row="2" Background="White" Margin="20,0,20,20" CornerRadius="10" Padding="10">
             <DataGrid x:Name="dgdisservisVeriler"
-                      Style="{StaticResource ModernDataGridStyle}"
+                      AutoGenerateColumns="False"
                       ItemsSource="{Binding Veriler}"
                       MouseDoubleClick="disMouseDoubleClick">
                 <DataGrid.Columns>
@@ -250,29 +245,9 @@
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
 
-                    <DataGridTextColumn Header="BAYİ ADI" 
-                                      Binding="{Binding YetkiliBayi}" 
-                                      Width="1.1*" MinWidth="150">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="TextAlignment" Value="Center"/>
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
-
                     <DataGridTextColumn Header="MÜŞTERİ ADI" 
                                       Binding="{Binding IsimSoyisim}" 
                                       Width="1.3*" MinWidth="180">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="TextAlignment" Value="Center"/>
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
-
-                    <DataGridTextColumn Header="TELEFON NUMARASI" 
-                                      Binding="{Binding TelefonNumarasi}" 
-                                      Width="1.1*" MinWidth="140">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="TextAlignment" Value="Center"/>

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Net.Http;
 using System.Diagnostics;
@@ -10,7 +10,7 @@ namespace alpsoftservistakip
 {
     public partial class Window11 : Window
     {
-        private const string CURRENT_VERSION = "1.6.3";
+        private const string CURRENT_VERSION = "1.0.0";
         private const string VERSION_URL = "https://github.com/alperngrpnr/alpsoftupdates/releases/latest/download/version.txt";
         private const string SETUP_URL = "https://github.com/alperngrpnr/alpsoftupdates/releases/latest/download/AlpsoftSetup.exe";
 

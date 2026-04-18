@@ -1,0 +1,79 @@
+<Page x:Class="alpsoftservistakip.PageMailKurulumYardim"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d" 
+      d:DesignHeight="800" d:DesignWidth="1200"
+      Background="#F0F4F8"
+      Title="Mail Kurulum Yardımı">
+
+    <Grid Margin="30">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="0,0,0,20">
+            <StackPanel Orientation="Horizontal">
+                <Border Width="5" Height="35" Background="#8E44AD" Margin="0,0,15,0"/>
+                <TextBlock Text="MAIL KURULUM YARDIMI" FontSize="30" FontWeight="ExtraBold" Foreground="#2C3E50"/>
+            </StackPanel>
+
+            <Button HorizontalAlignment="Right" Content="Ana Menüye Dön" Width="170" Height="42" Click="btnGeri_Click"
+                    Background="#2C3E50" Foreground="White" BorderThickness="0" FontWeight="Bold" Cursor="Hand">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="21"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </Grid>
+
+        <Border Grid.Row="1" Background="White" CornerRadius="20" Padding="25">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <TextBlock Text="Bu ekrandan kullanıcılar '📧 TAMİR BİTTİ MAİL' özelliği için kendi SMTP ayarlarını yapabilir." 
+                               FontSize="16" Foreground="#4A5568" TextWrapping="Wrap" Margin="0,0,0,20"/>
+
+                    <TextBlock Text="1) Uygulamada nereye girecekler?" FontSize="19" FontWeight="Bold" Foreground="#2C3E50"/>
+                    <TextBlock Text="• Kayıt Oluştur / Kayıt Detay sayfasını açın." Margin="0,8,0,0" FontSize="15"/>
+                    <TextBlock Text="• Sağ alttaki '📧 TAMİR BİTTİ MAİL' butonuna tıklayın." Margin="0,4,0,0" FontSize="15"/>
+                    <TextBlock Text="• Açılan penceredeki SMTP alanlarını doldurun ve 'AYARLARI KAYDET' tıklayın." Margin="0,4,0,18" FontSize="15"/>
+
+                    <TextBlock Text="2) GMAIL için örnek ayarlar" FontSize="19" FontWeight="Bold" Foreground="#2C3E50"/>
+                    <TextBlock Text="• SMTP Host: smtp.gmail.com" Margin="0,8,0,0" FontSize="15"/>
+                    <TextBlock Text="• SMTP Port: 587" Margin="0,4,0,0" FontSize="15"/>
+                    <TextBlock Text="• SSL: Açık (işaretli)" Margin="0,4,0,0" FontSize="15"/>
+                    <TextBlock Text="• Gönderici Mail: kendi gmail adresi" Margin="0,4,0,0" FontSize="15"/>
+                    <TextBlock Text="• Şifre: normal şifre değil, App Password (Uygulama Şifresi)" Margin="0,4,0,14" FontSize="15"/>
+
+                    <TextBlock FontSize="15" TextWrapping="Wrap">
+                        <Run Text="Google App Password ekranı: "/>
+                        <Hyperlink NavigateUri="https://myaccount.google.com/apppasswords" RequestNavigate="Hyperlink_RequestNavigate">https://myaccount.google.com/apppasswords</Hyperlink>
+                    </TextBlock>
+
+                    <Separator Margin="0,18,0,18"/>
+
+                    <TextBlock Text="3) Outlook / Hotmail için örnek ayarlar" FontSize="19" FontWeight="Bold" Foreground="#2C3E50"/>
+                    <TextBlock Text="• SMTP Host: smtp.office365.com" Margin="0,8,0,0" FontSize="15"/>
+                    <TextBlock Text="• SMTP Port: 587" Margin="0,4,0,0" FontSize="15"/>
+                    <TextBlock Text="• SSL: Açık" Margin="0,4,0,0" FontSize="15"/>
+                    <TextBlock Text="• Gönderici Mail / Şifre: hesap bilgileri" Margin="0,4,0,14" FontSize="15"/>
+
+                    <TextBlock FontSize="15" TextWrapping="Wrap">
+                        <Run Text="Microsoft SMTP yardım sayfası: "/>
+                        <Hyperlink NavigateUri="https://support.microsoft.com" RequestNavigate="Hyperlink_RequestNavigate">https://support.microsoft.com</Hyperlink>
+                    </TextBlock>
+
+                    <Separator Margin="0,18,0,18"/>
+
+                    <TextBlock Text="4) Mail içeriğini kullanıcı yazacak" FontSize="19" FontWeight="Bold" Foreground="#2C3E50"/>
+                    <TextBlock Text="• Konu ve mesaj alanı serbesttir, kullanıcı dilediği metni yazar." Margin="0,8,0,0" FontSize="15"/>
+                    <TextBlock Text="• Sistem sadece tasarımı ve gönderim altyapısını sağlar." Margin="0,4,0,0" FontSize="15"/>
+                    <TextBlock Text="• Öneri: Önce kendi mailine test gönderip sonra müşteriye gönderin." Margin="0,4,0,0" FontSize="15"/>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+    </Grid>
+</Page>

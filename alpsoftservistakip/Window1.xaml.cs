@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Data.SqlClient;
 using System.Net;
@@ -157,9 +157,17 @@ namespace alpsoftservistakip
                 {
                     conn.Open();
 
+                    // IsLoggedIn kolonunu kontrol et ve yoksa ekle (Çok oturumlu girişi engellemek için)
+                    string addColSql = "IF NOT EXISTS(SELECT * FROM sys.columns WHERE Name = N'IsLoggedIn' AND Object_ID = Object_ID(N'Users')) " +
+                                       "BEGIN ALTER TABLE [Users] ADD IsLoggedIn BIT NOT NULL DEFAULT 0; END";
+                    using (SqlCommand cmdAdd = new SqlCommand(addColSql, conn))
+                    {
+                        cmdAdd.ExecuteNonQuery();
+                    }
+
                     // Şirket ve Kullanıcı bilgilerini birleştirerek alıyoruz
                     string sql = @"
-                        SELECT u.Id, u.CompanyId, u.FullName, u.Role, c.CompanyName 
+                        SELECT u.Id, u.CompanyId, u.FullName, u.Role, c.CompanyName, ISNULL(u.IsLoggedIn, 0) as IsLoggedIn 
                         FROM [Users] u 
                         INNER JOIN Companies c ON u.CompanyId = c.Id 
                         WHERE u.Email = @email AND u.PasswordHash = @pass AND u.IsActive = 1";
@@ -172,6 +180,19 @@ namespace alpsoftservistakip
                     {
                         if (reader.Read())
                         {
+                            bool isLoggedIn = Convert.ToBoolean(reader["IsLoggedIn"]);
+
+                            if (isLoggedIn)
+                            {
+                                MessageBoxResult result = MessageBox.Show("Bu hesap şu anda başka bir cihazda veya oturumda açık!\n\nGüvenlik gereği diğer oturumu kapatarak buradaki girişi zorlamak ister misiniz?", 
+                                    "Oturum Zaten Açık", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+                                if (result == MessageBoxResult.No)
+                                {
+                                    return; // Girişi engelle
+                                }
+                            }
+
                             // 1. Hatırlama Seçeneği
                             if (chkHatirla.IsChecked == true)
                             {
@@ -198,16 +219,25 @@ namespace alpsoftservistakip
                             MessageBox.Show($"Hoş geldiniz, {Class1.AktifKullanici.KullaniciAdi}!\nŞirket: {Class1.AktifKullanici.SirketAdi}",
                                 "Giriş Başarılı", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                            // 3. Geçiş Yap
-                            Window3 mainWin = new Window3();
-                            mainWin.Show();
-                            this.Hide(); // Window3 kapandığında Shutdown olması için Hide mantıklı
                         }
                         else
                         {
                             MessageBox.Show("E-posta veya şifre hatalı!", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+                            return;
                         }
+                    } // reader.Close() for next update query
+
+                    // Oturumu Açıldı Olarak İşaretle
+                    using (SqlCommand updCmd = new SqlCommand("UPDATE [Users] SET IsLoggedIn = 1 WHERE Id = @id", conn))
+                    {
+                        updCmd.Parameters.AddWithValue("@id", Class1.AktifKullanici.ID);
+                        updCmd.ExecuteNonQuery();
                     }
+
+                    // 3. Geçiş Yap
+                    Window3 mainWin = new Window3();
+                    mainWin.Show();
+                    this.Hide(); // Window3 kapandığında Shutdown olması için Hide mantıklı
                 }
                 catch (Exception ex)
                 {

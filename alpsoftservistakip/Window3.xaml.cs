@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
@@ -12,6 +12,40 @@ namespace alpsoftservistakip
 {
     public partial class Window3 : Window
     {
+        private void btnMinimize_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
+        private void btnMaximize_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.WindowState == WindowState.Maximized)
+                this.WindowState = WindowState.Normal;
+            else
+                this.WindowState = WindowState.Maximized;
+
+            UpdateMaximizeIcon();
+        }
+
+        private void btnClose_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close(); // Tetikler Window_Closing eventini
+        }
+
+        private void Window_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == System.Windows.Input.MouseButton.Left)
+            {
+                if (e.ClickCount == 2)
+                {
+                    btnMaximize_Click(sender, new RoutedEventArgs());
+                    return;
+                }
+
+                this.DragMove();
+            }
+        }
+
         // GÖRSELDEKİ VERİTABANI ADINA GÖRE GÜNCELLENDİ
         string connectionString = "Server=91.247.168.204,1433;" +
             "Database=alpsoftservistakip;" +
@@ -23,6 +57,7 @@ namespace alpsoftservistakip
         public Window3()
         {
             InitializeComponent();
+            UpdateMaximizeIcon();
 
             // YETKİ KONTROLÜ: Giriş yapan kişi Admin değilse butonu gizle
             if (Class1.AktifKullanici.IsAdmin == false)
@@ -34,6 +69,19 @@ namespace alpsoftservistakip
             }
 
             try { TabloyuGuncelle(); } catch { }
+        }
+
+        private void Window3_StateChanged(object sender, EventArgs e)
+        {
+            UpdateMaximizeIcon();
+        }
+
+        private void UpdateMaximizeIcon()
+        {
+            if (txtMaximizeIcon == null)
+                return;
+
+            txtMaximizeIcon.Text = this.WindowState == WindowState.Maximized ? "\uE923" : "\uE922";
         }
 
         private void TabloyuGuncelle()
@@ -171,12 +219,21 @@ namespace alpsoftservistakip
         { 
             ShowOverlayPage(new PageKayitOlustur()); 
         }
-        
+
         private void disserviskayitlari_Click(object sender, RoutedEventArgs e)
         {
-            // Dış servis kayıt oluşturma sayfasını overlay içinde aç (yeni kayıt, ID=0)
-            Page6 page = new Page6(0);
+            PageKayitOlustur page = new PageKayitOlustur();
             ShowOverlayPage(page);
+        }
+
+        private void caritakip_Click(object sender, RoutedEventArgs e)
+        {
+            ShowOverlayPage(new PageCariListesi());
+        }
+
+        private void btnToptanciYonetimi_Click(object sender, RoutedEventArgs e)
+        {
+            ShowOverlayPage(new PageToptanciListesi());
         }
 
         private void disserviskayitlari_Copy_Click(object sender, RoutedEventArgs e)
@@ -280,7 +337,7 @@ namespace alpsoftservistakip
                 OverlayFrame.Opacity = 1;
             }
         }
-        private void AltPencere_Closing(object sender, CancelEventArgs e) { Application.Current.Shutdown(); }
+        private void AltPencere_Closing(object sender, CancelEventArgs e) { this.Close(); }
 
         private void YetkiKontrolü()
         {
@@ -293,6 +350,23 @@ namespace alpsoftservistakip
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
+            try
+            {
+                if (Class1.AktifKullanici.ID > 0)
+                {
+                    using (SqlConnection con = new SqlConnection(connectionString))
+                    {
+                        con.Open();
+                        using (SqlCommand cmd = new SqlCommand("UPDATE [Users] SET IsLoggedIn = 0 WHERE Id = @id", con))
+                        {
+                            cmd.Parameters.AddWithValue("@id", Class1.AktifKullanici.ID);
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                }
+            }
+            catch { }
+
             Application.Current.Shutdown();
         }
     }

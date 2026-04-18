@@ -8,6 +8,9 @@
       Background="#F4F7F9">
 
     <Page.Resources>
+        <!-- PrimaryColor Tanımı -->
+        <SolidColorBrush x:Key="PrimaryColor" Color="#3498DB"/>
+
         <!-- DatePicker Style -->
         <Style TargetType="{x:Type DatePicker}">
             <Setter Property="Background" Value="White"/>
@@ -133,56 +136,52 @@
             </Setter>
         </Style>
 
-        <Style TargetType="{x:Type DataGrid}" x:Key="ModernDataGridStyle">
+        
+        <Style TargetType="DataGrid">
             <Setter Property="Background" Value="White"/>
-            <Setter Property="BorderBrush" Value="#E0E0E0"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="GridLinesVisibility" Value="Horizontal"/>
-            <Setter Property="HorizontalGridLinesBrush" Value="#F0F0F0"/>
-            <Setter Property="CanUserAddRows" Value="False"/>
-            <Setter Property="HeadersVisibility" Value="Column"/>
-            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="RowHeight" Value="55"/>
             <Setter Property="FontFamily" Value="Segoe UI"/>
-            <Setter Property="SelectionMode" Value="Single"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#EDF2F7"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
         </Style>
 
-        <Style TargetType="{x:Type DataGridColumnHeader}">
-            <Setter Property="Background" Value="#252B36"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Padding" Value="12,10"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="BorderThickness" Value="0,0,1,0"/>
-            <Setter Property="BorderBrush" Value="#3D4655"/>
-        </Style>
-
-        <Style TargetType="{x:Type DataGridRow}">
+        <Style TargetType="DataGridColumnHeader">
             <Setter Property="Background" Value="White"/>
-            <Setter Property="Height" Value="45"/>
-            <Setter Property="BorderThickness" Value="0,0,0,1"/>
-            <Setter Property="BorderBrush" Value="#F0F0F0"/>
+            <Setter Property="Foreground" Value="#718096"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="BorderThickness" Value="0,0,0,2"/>
+            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="DataGridRow">
+            <Setter Property="Background" Value="White"/>
             <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#F9FBFF"/>
-                </Trigger>
                 <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Background" Value="#E6F2FF"/>
-                    <Setter Property="Foreground" Value="#007ACC"/>
-                    <Setter Property="FontWeight" Value="SemiBold"/>
+                    <Setter Property="Background" Value="#E1F0FA"/>
+                    <Setter Property="Foreground" Value="#2C3E50"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#F8FAFC"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
 
-        <Style TargetType="{x:Type DataGridCell}">
+        <Style TargetType="DataGridCell">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="TextBlock.TextAlignment" Value="Center"/>
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type DataGridCell}">
-                        <Border Background="{TemplateBinding Background}" 
-                                BorderBrush="{TemplateBinding BorderBrush}" 
-                                BorderThickness="{TemplateBinding BorderThickness}" 
-                                SnapsToDevicePixels="True">
-                            <ContentPresenter VerticalAlignment="Center" 
-                                              HorizontalAlignment="Center"/>
+                    <ControlTemplate TargetType="DataGridCell">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -193,15 +192,24 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+
     </Page.Resources>
 
     <Grid x:Name="RootGrid" Background="#F4F7F9">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="100"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Margin="20,0">
+        <Grid Grid.Row="0" Margin="20,20,20,0">
+            <StackPanel Orientation="Horizontal">
+                <Border Width="5" Height="35" Background="{StaticResource PrimaryColor}" Margin="0,0,15,0"/>
+                <TextBlock Text="Servis Kayıtları" FontSize="30" FontWeight="ExtraBold" Foreground="#2C3E50"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="20,0">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                 <!-- Arama Kutusu -->
                 <Border x:Name="aramaborder"
@@ -242,6 +250,27 @@
                         Width="150"
                         Style="{StaticResource ModernButtonStyle}"
                         Command="{Binding FiltreTemizleCommand}"/>
+
+                <!-- Fiş Yazdır Butonu -->
+                <Button x:Name="btnFisiYazdir" 
+                        Content="📄 FİŞ YAZDIR" 
+                        Margin="15,0,0,0" 
+                        Height="40" 
+                        Width="150"
+                        Background="#27AE60"
+                        Foreground="White"
+                        BorderThickness="0"
+                        FontWeight="SemiBold"
+                        FontSize="13"
+                        Cursor="Hand"
+                        Command="{Binding FisiYazdirCommand}"
+                        CommandParameter="{Binding SelectedItem, ElementName=dgVeriler}">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="8"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
             </StackPanel>
 
             <!-- Geri Dön Butonu -->
@@ -264,13 +293,13 @@
             </Button>
         </Grid>
 
-        <Border Grid.Row="1" Background="White" Margin="20,0,20,20" CornerRadius="10">
+        <Border Grid.Row="2" Background="White" Margin="20,0,20,20" CornerRadius="10">
             <Border.Effect>
                 <DropShadowEffect Color="Black" BlurRadius="15" ShadowDepth="2" Opacity="0.05"/>
             </Border.Effect>
 
             <DataGrid x:Name="dgVeriler"
-                      Style="{StaticResource ModernDataGridStyle}" 
+                       
                       ItemsSource="{Binding Kayitlar}"
                       AutoGenerateColumns="False"  
                       IsReadOnly="True" 
@@ -283,7 +312,7 @@
                     <DataGridTextColumn Header="ID" Binding="{Binding ID}" Width="60"/>
 
                     <DataGridTextColumn Header="GİRİŞ TARİHİ" 
-                                        Binding="{Binding ServisTarihi, StringFormat='\{0:dd.MM.yyyy HH:mm\}'}" 
+                                        Binding="{Binding KayitTarihi, StringFormat='\{0:dd.MM.yyyy HH:mm\}'}" 
                                         Width="150"/>
 
                     <DataGridTextColumn Header="BAYİ ADI" Binding="{Binding BayiAdi}" Width="150"/>

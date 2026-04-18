@@ -1,12 +1,15 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Controls;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using alpsoftservistakip;
+using alpsoftservistakip.Services;
 
 namespace alpsoftservistakip.ViewModels
 {
@@ -17,6 +20,8 @@ namespace alpsoftservistakip.ViewModels
         private bool _degisiklikVar = false;
         private int _kayitId;
         private bool _yuklemeDevamEdiyor = false;
+        private bool _disServisSatirKaynagi = false;
+        private int _disServisAdayKayitId = 0;
 
         public bool DegisiklikVar
         {
@@ -52,6 +57,8 @@ namespace alpsoftservistakip.ViewModels
         private bool _garantisiz;
         private bool _servisGarantili;
         private bool _yedeklemeYapilsin;
+        private System.Collections.ObjectModel.ObservableCollection<string> _bayiListesi;
+        private System.Collections.ObjectModel.ObservableCollection<string> _tekniksijenListesi;
 
         public string BayiAdi { get => _bayiAdi; set => SetProperty(ref _bayiAdi, value); }
         public string AdSoyad { get => _adSoyad; set { SetProperty(ref _adSoyad, value); if (!YuklemeDevamEdiyor) DegisiklikVar = true; } }
@@ -75,11 +82,27 @@ namespace alpsoftservistakip.ViewModels
         public bool ServisGarantili { get => _servisGarantili; set { SetProperty(ref _servisGarantili, value); if (!YuklemeDevamEdiyor) DegisiklikVar = true; } }
         public bool YedeklemeYapilsin { get => _yedeklemeYapilsin; set { SetProperty(ref _yedeklemeYapilsin, value); if (!YuklemeDevamEdiyor) DegisiklikVar = true; } }
 
+        public System.Collections.ObjectModel.ObservableCollection<string> BayiListesi
+        {
+            get => _bayiListesi;
+            set => SetProperty(ref _bayiListesi, value);
+        }
+
+        public System.Collections.ObjectModel.ObservableCollection<string> TekniksijenListesi
+        {
+            get => _tekniksijenListesi;
+            set => SetProperty(ref _tekniksijenListesi, value);
+        }
+
         public ICommand KaydetCommand { get; }
         public ICommand GeriDonCommand { get; }
         public ICommand ImeiSorgulaCommand { get; }
         public ICommand ServisDurumuChangedCommand { get; }
         public ICommand TelefonFormatlaCommand { get; }
+        public ICommand FisiYazdirCommand { get; }
+        public ICommand KopyalaCommand { get; }
+        public ICommand DisServisGonderCommand { get; }
+        public ICommand DisServiseGonderCommand => DisServisGonderCommand;
 
         public PageKayitOlusturViewModel(int kayitId = 0)
         {
@@ -89,13 +112,63 @@ namespace alpsoftservistakip.ViewModels
             ImeiSorgulaCommand = new RelayCommand(_ => ImeiSorgula());
             ServisDurumuChangedCommand = new RelayCommand<string>(ServisDurumuChanged);
             TelefonFormatlaCommand = new RelayCommand<string>(TelefonFormatla);
-            
+            FisiYazdirCommand = new RelayCommand(_ => FisiYazdir());
+            KopyalaCommand = new RelayCommand(_ => Kopyala());
+            DisServisGonderCommand = new RelayCommand(_ => DisServisGonder());
+
+            // Listeleri yükle
+            BayiListesi = new System.Collections.ObjectModel.ObservableCollection<string>();
+            TekniksijenListesi = new System.Collections.ObjectModel.ObservableCollection<string>();
+
+            YukleBayiListesi();
+            YukluTekniksijenListesi();
+
             if (kayitId > 0)
             {
                 YuklemeDevamEdiyor = true;
                 VerileriYukle(kayitId);
                 YuklemeDevamEdiyor = false;
             }
+        }
+
+        public void CarregarKayit(int id)
+        {
+            _kayitId = id;
+            _disServisSatirKaynagi = false;
+            _disServisAdayKayitId = 0;
+            YuklemeDevamEdiyor = true;
+            VerileriYukle(id);
+            YuklemeDevamEdiyor = false;
+        }
+
+        public void DisServisSatirindanYukle(DataRowView row)
+        {
+            if (row == null)
+                return;
+
+            YuklemeDevamEdiyor = true;
+
+            AdSoyad = GetRowString(row, "IsimSoyisim", "MusteriAdSoyad", "MusteriAdi");
+            BayiAdi = GetRowString(row, "BayiAdi", "YetkiliBayi", "DisServisYeri");
+            CepTelefonu = GetRowString(row, "CepTelefonu", "Telefon", "TelefonNo", "Gsm");
+            EPosta = GetRowString(row, "EPosta", "Email", "Mail");
+            CihazTuru = GetRowString(row, "CihazTuru", "UrunTuru", "Tur");
+            Marka = GetRowString(row, "Marka");
+            Model = GetRowString(row, "Model");
+            ImeiNo = GetRowString(row, "IMEI", "ImeiNo", "SeriNo");
+            EkBilgiler = GetRowString(row, "EkBilgiler", "Notlar", "Aciklama");
+            SikayetAriza = GetRowString(row, "Ariza", "ArizaDetayi", "Sikayet");
+            ServisDurumu = GetRowString(row, "ServisDurumu", "Durum");
+            IlgiliTeknisyen = GetRowString(row, "ServisTeknisyen", "Teknisyen", "SorumluTeknisyen");
+
+            _disServisSatirKaynagi = true;
+            _disServisAdayKayitId = GetRowInt(row, "ServisKayitID", "ServisKayitId", "CihazKayitID", "CihazKayitId", "KaynakKayitID", "KaynakKayitId", "KayitID", "KayitId", "ID");
+
+            int bagliKayitId = GetRowInt(row, "ServisKayitID", "ServisKayitId", "CihazKayitID", "CihazKayitId", "KaynakKayitID", "KaynakKayitId");
+            _kayitId = bagliKayitId > 0 ? bagliKayitId : 0;
+
+            DegisiklikVar = false;
+            YuklemeDevamEdiyor = false;
         }
 
         private void VerileriYukle(int id)
@@ -145,6 +218,68 @@ namespace alpsoftservistakip.ViewModels
             }
         }
 
+        private void YukleBayiListesi()
+        {
+            try
+            {
+                BayiListesi.Clear();
+                using (SqlConnection con = new SqlConnection(ConnectionString))
+                {
+                    con.Open();
+                    string sorgu = "SELECT DISTINCT AdSoyadUnvan FROM Cariler WHERE SirketID = @SirketID ORDER BY AdSoyadUnvan";
+                    SqlCommand cmd = new SqlCommand(sorgu, con);
+                    cmd.Parameters.AddWithValue("@SirketID", Class1.AktifKullanici.SirketID);
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string bayiAdi = reader["AdSoyadUnvan"]?.ToString() ?? "";
+                            if (!string.IsNullOrWhiteSpace(bayiAdi))
+                            {
+                                BayiListesi.Add(bayiAdi);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Bayi listesi yükleme hatası: " + ex.Message);
+            }
+        }
+
+        private void YukluTekniksijenListesi()
+        {
+            try
+            {
+                TekniksijenListesi.Clear();
+                using (SqlConnection con = new SqlConnection(ConnectionString))
+                {
+                    con.Open();
+                    string sorgu = "SELECT DISTINCT FullName FROM Users WHERE CompanyId = @SirketID ORDER BY FullName";
+                    SqlCommand cmd = new SqlCommand(sorgu, con);
+                    cmd.Parameters.AddWithValue("@SirketID", Class1.AktifKullanici.SirketID);
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string teknisyen = reader["FullName"]?.ToString() ?? "";
+                            if (!string.IsNullOrWhiteSpace(teknisyen))
+                            {
+                                TekniksijenListesi.Add(teknisyen);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Teknisyen listesi yükleme hatası: " + ex.Message);
+            }
+        }
+
         private async void Kaydet()
         {
             
@@ -154,6 +289,15 @@ namespace alpsoftservistakip.ViewModels
                 try
                 {
                     con.Open();
+
+                    if (_kayitId <= 0 && _disServisSatirKaynagi)
+                    {
+                        int bulunanKayitId = DisServisKaydindanKayitIdCoz(con);
+                        if (bulunanKayitId > 0)
+                        {
+                            _kayitId = bulunanKayitId;
+                        }
+                    }
 
                     string query;
                     if (_kayitId > 0)
@@ -170,15 +314,16 @@ namespace alpsoftservistakip.ViewModels
                     else
                     {
                         query = @"INSERT INTO kayitlicihazlar 
-                            (KullaniciID, BayiAdi, IsimSoyisim, CepTelefonu, Adres, EPosta, 
+                            (KullaniciID, CompanyId, BayiAdi, IsimSoyisim, CepTelefonu, Adres, EPosta, 
                             ServisTeknisyen, ServisDurumu, CihazTuru, Marka, Model, IMEI, 
                             EkBilgiler, Ariza, FiyatBilgisi, Yeni, Eski, TamirGormus, 
                             Garantili, Garantisiz, ServisGarantili, YedeklemeYapilsin) 
                             VALUES 
-                            (@KullaniciID, @BayiAdi, @IsimSoyisim, @CepTelefonu, @Adres, @EPosta, 
+                            (@KullaniciID, @CompanyId, @BayiAdi, @IsimSoyisim, @CepTelefonu, @Adres, @EPosta, 
                             @ServisTeknisyen, @ServisDurumu, @CihazTuru, @Marka, @Model, @IMEI, 
                             @EkBilgiler, @Ariza, @FiyatBilgisi, @Yeni, @Eski, @TamirGormus, 
-                            @Garantili, @Garantisiz, @ServisGarantili, @YedeklemeYapilsin)";
+                            @Garantili, @Garantisiz, @ServisGarantili, @YedeklemeYapilsin);
+                            SELECT CAST(SCOPE_IDENTITY() AS INT);";
                     }
 
                     SqlCommand cmd = new SqlCommand(query, con);
@@ -204,7 +349,7 @@ namespace alpsoftservistakip.ViewModels
                     cmd.Parameters.AddWithValue("@Garantisiz", Garantisiz);
                     cmd.Parameters.AddWithValue("@ServisGarantili", ServisGarantili);
                     cmd.Parameters.AddWithValue("@YedeklemeYapilsin", YedeklemeYapilsin);
-                    
+
                     if (_kayitId > 0)
                     {
                         cmd.Parameters.AddWithValue("@ID", _kayitId);
@@ -212,9 +357,28 @@ namespace alpsoftservistakip.ViewModels
                     else
                     {
                         cmd.Parameters.AddWithValue("@KullaniciID", LoginWindow.aktifKullaniciID);
+                        cmd.Parameters.AddWithValue("@CompanyId", Class1.AktifKullanici.SirketID);
                     }
 
-                    int etkilenenSatir = cmd.ExecuteNonQuery();
+                    int etkilenenSatir;
+
+                    if (_kayitId > 0)
+                    {
+                        etkilenenSatir = cmd.ExecuteNonQuery();
+                    }
+                    else
+                    {
+                        object yeniIdObj = cmd.ExecuteScalar();
+                        if (yeniIdObj != null && yeniIdObj != DBNull.Value)
+                        {
+                            _kayitId = Convert.ToInt32(yeniIdObj);
+                            etkilenenSatir = 1;
+                        }
+                        else
+                        {
+                            etkilenenSatir = 0;
+                        }
+                    }
 
                     if (etkilenenSatir == 0)
                     {
@@ -232,6 +396,8 @@ namespace alpsoftservistakip.ViewModels
                     }
 
                     DegisiklikVar = false;
+                    _disServisSatirKaynagi = false;
+                    _disServisAdayKayitId = 0;
 
                     foreach (Window window in Application.Current.Windows)
                     {
@@ -322,11 +488,353 @@ namespace alpsoftservistakip.ViewModels
             CepTelefonu = formatted;
         }
 
+        private void FisiYazdir()
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(AdSoyad) || string.IsNullOrWhiteSpace(Marka) || string.IsNullOrWhiteSpace(Model))
+                {
+                    MessageBox.Show("Müşteri adı, marka ve model bilgileri zorunludur!", "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                var fisiData = new alpsoftservistakip.Models.ServisKayitFisiData
+                {
+                    KayitID = _kayitId,
+                    KayitTarihi = System.DateTime.Now,
+                    IsimSoyisim = AdSoyad,
+                    CepTelefonu = CepTelefonu,
+                    BayiAdi = BayiAdi,
+                    Marka = Marka,
+                    Model = Model,
+                    Ariza = SikayetAriza,
+                    ImeiNo = ImeiNo,
+                    ServisDurumu = ServisDurumu,
+                    IlgiliTeknisyen = IlgiliTeknisyen,
+                    EkBilgiler = EkBilgiler
+                };
+
+                var fisi = new alpsoftservistakip.Controls.ServisKayitFisi()
+                {
+                    DataContext = fisiData
+                };
+
+                Services.WpfPrintService.ShowPrintPreview(fisi, "SERVIS_KAYIT_FISI", "SERVIS KAYIT FİŞİ ÖNİZLEMESİ");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Fiş yazdırma hatası: " + ex.Message, "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void Kopyala()
+        {
+            try
+            {
+                string metin = $"AD: {AdSoyad}\n" +
+                               $"TELEFON: {CepTelefonu}\n" +
+                               $"BAYİ: {BayiAdi}\n" +
+                               $"CİHAZ: {Marka} {Model}\n" +
+                               $"ARIZA: {SikayetAriza}\n" +
+                               $"IMEI: {ImeiNo}";
+
+                System.Windows.Clipboard.SetText(metin);
+                MessageBox.Show("Bilgiler panonuza kopyalandı!", "Başarılı", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Kopyalama hatası: " + ex.Message, "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void DisServisGonder()
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(AdSoyad) || string.IsNullOrWhiteSpace(Marka) || 
+                    string.IsNullOrWhiteSpace(Model) || string.IsNullOrWhiteSpace(SikayetAriza))
+                {
+                    MessageBox.Show("Lütfen zorunlu alanları doldurunuz:\n- Ad Soyadı\n- Marka\n- Model\n- Arıza Detayı", 
+                        "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                if (_kayitId <= 0)
+                {
+                    MessageBox.Show("Lütfen önce cihaz kaydını 'KAYDET' butonu ile kaydediniz.", "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                GoruntuDısServisGonderDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Dış servis gönderme hatası: " + ex.Message, "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void GoruntuDısServisGonderDialog()
+        {
+            var pencere = new Window
+            {
+                Title = "Dış Servis'e Gönder",
+                Width = 400,
+                Height = 350,
+                WindowStartupLocation = WindowStartupLocation.CenterScreen,
+                ResizeMode = ResizeMode.NoResize,
+                Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(18, 18, 18))
+            };
+
+            var stackPanel = new StackPanel { Margin = new Thickness(20) };
+
+            var label = new TextBlock
+            {
+                Text = "Dış Servis Bilgileri",
+                FontSize = 18,
+                FontWeight = FontWeights.Bold,
+                Foreground = System.Windows.Media.Brushes.White,
+                Margin = new Thickness(0, 0, 0, 20)
+            };
+            stackPanel.Children.Add(label);
+
+            stackPanel.Children.Add(new TextBlock { Text = "Dış Servis Adı / Yeri:", Foreground = System.Windows.Media.Brushes.LightGray, Margin = new Thickness(0,0,0,5) });
+            var txtYer = new TextBox { Height = 35, Margin = new Thickness(0,0,0,15), Background=new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(45,45,45)), Foreground=System.Windows.Media.Brushes.White };
+            stackPanel.Children.Add(txtYer);
+
+            stackPanel.Children.Add(new TextBlock { Text = "İlgili Kişi:", Foreground = System.Windows.Media.Brushes.LightGray, Margin = new Thickness(0,0,0,5) });
+            var txtKisi = new TextBox { Height = 35, Margin = new Thickness(0,0,0,25), Background=new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(45,45,45)), Foreground=System.Windows.Media.Brushes.White  };
+            stackPanel.Children.Add(txtKisi);
+
+            var buttonPanel = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Right };
+
+            var btnIptal = new Button { Content = "İptal", Width = 90, Height = 35, Background = System.Windows.Media.Brushes.Gray, Foreground = System.Windows.Media.Brushes.White, Margin = new Thickness(0,0,10,0) };
+            btnIptal.Click += (s, e) => pencere.Close();
+
+            var btnGonder = new Button { Content = "Gönder", Width = 90, Height = 35, Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(52, 152, 219)), Foreground = System.Windows.Media.Brushes.White };
+            btnGonder.Click += (s, e) => 
+            {
+                if (string.IsNullOrWhiteSpace(txtYer.Text))
+                {
+                    MessageBox.Show("Lütfen Dış Servis Adı alanını doldurun.", "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                TaşıDısServisKayıtlarına(txtYer.Text, txtKisi.Text);
+                pencere.Close();
+            };
+
+            buttonPanel.Children.Add(btnIptal);
+            buttonPanel.Children.Add(btnGonder);
+            stackPanel.Children.Add(buttonPanel);
+
+            pencere.Content = stackPanel;
+            pencere.ShowDialog();
+        }
+
+        private void TaşıDısServisKayıtlarına(string disServisYeri, string ilgiliKisi)
+        {
+            try
+            {
+                if (_kayitId <= 0)
+                    return;
+
+                using (SqlConnection con = new SqlConnection(ConnectionString))
+                {
+                    con.Open();
+
+                    var kolonlar = GetDisServisKolonBilgileri(con);
+                    var eklenecekKolonlar = new List<string>();
+                    var eklenecekParametreler = new List<string>();
+                    var ekCmd = new SqlCommand();
+                    ekCmd.Connection = con;
+
+                    void AlanEkle(string kolon, string parametre, object deger)
+                    {
+                        if (string.IsNullOrWhiteSpace(kolon)) return;
+                        eklenecekKolonlar.Add($"[{kolon}]");
+                        eklenecekParametreler.Add(parametre);
+                        ekCmd.Parameters.AddWithValue(parametre, deger ?? (object)DBNull.Value);
+                    }
+
+                    AlanEkle(KolonBul(kolonlar, "KullaniciID", "KullaniciId", "UserId"), "@KullaniciID", LoginWindow.aktifKullaniciID);
+                    AlanEkle(KolonBul(kolonlar, "KayitTarihi", "Tarih", "CreatedDate"), "@KayitTarihi", DateTime.Now);
+                    AlanEkle(KolonBul(kolonlar, "KayitID", "KayitId", "ServisKayitID", "ServisKayitId"), "@KayitID", _kayitId);
+                    AlanEkle(KolonBul(kolonlar, "IsimSoyisim", "MusteriAdi", "MusteriAdSoyad"), "@IsimSoyisim", AdSoyad ?? "");
+                    AlanEkle(KolonBul(kolonlar, "CepTelefonu", "Telefon", "TelefonNo", "Gsm"), "@CepTelefonu", CepTelefonu ?? "");
+                    AlanEkle(KolonBul(kolonlar, "YetkiliBayi", "BayiAdi", "DisServisYeri"), "@YetkiliBayi", disServisYeri ?? "");
+                    AlanEkle(KolonBul(kolonlar, "IrtibatKisi", "IlgiliKisi", "YetkiliKisi"), "@IrtibatKisi", ilgiliKisi ?? "");
+                    AlanEkle(KolonBul(kolonlar, "Marka"), "@Marka", Marka ?? "");
+                    AlanEkle(KolonBul(kolonlar, "Model"), "@Model", Model ?? "");
+                    AlanEkle(KolonBul(kolonlar, "IMEI", "ImeiNo", "SeriNo"), "@IMEI", ImeiNo ?? "");
+                    AlanEkle(KolonBul(kolonlar, "Ariza", "ArizaDetayi", "Sikayet"), "@Ariza", SikayetAriza ?? "");
+                    AlanEkle(KolonBul(kolonlar, "EkBilgiler", "Notlar", "Aciklama"), "@EkBilgiler", EkBilgiler ?? "");
+                    AlanEkle(KolonBul(kolonlar, "ServisDurumu", "Durum"), "@ServisDurumu", ServisDurumu ?? "Dış Servis'te");
+                    AlanEkle(KolonBul(kolonlar, "ServisTeknisyen", "Teknisyen", "SorumluTeknisyen"), "@ServisTeknisyen", IlgiliTeknisyen ?? "");
+
+                    if (eklenecekKolonlar.Count == 0)
+                    {
+                        MessageBox.Show("Dış servis tablosunda eşleşen kolon bulunamadı.", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+
+                    ekCmd.CommandText = $"INSERT INTO disserviskayitlarnew ({string.Join(", ", eklenecekKolonlar)}) VALUES ({string.Join(", ", eklenecekParametreler)})";
+                    ekCmd.ExecuteNonQuery();
+
+                    MessageBox.Show("Kayıt başarıyla Dış Servis Kayıtlarına aktarıldı.", "Başarılı", 
+                        MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Dış servis aktarma hatası: " + ex.Message, "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private Dictionary<string, bool> GetDisServisKolonBilgileri(SqlConnection con)
+        {
+            var kolonlar = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
+
+            string sorgu = @"SELECT c.COLUMN_NAME,
+                                    COLUMNPROPERTY(OBJECT_ID(c.TABLE_SCHEMA + '.' + c.TABLE_NAME), c.COLUMN_NAME, 'IsIdentity') AS IsIdentity
+                             FROM INFORMATION_SCHEMA.COLUMNS c
+                             WHERE c.TABLE_NAME = 'disserviskayitlarnew'";
+            using (SqlCommand cmd = new SqlCommand(sorgu, con))
+            using (SqlDataReader reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    string kolonAdi = reader["COLUMN_NAME"]?.ToString();
+                    if (!string.IsNullOrWhiteSpace(kolonAdi))
+                    {
+                        bool isIdentity = reader["IsIdentity"] != DBNull.Value && Convert.ToInt32(reader["IsIdentity"]) == 1;
+                        kolonlar[kolonAdi] = isIdentity;
+                    }
+                }
+            }
+
+            return kolonlar;
+        }
+
+        private string KolonBul(Dictionary<string, bool> mevcutKolonlar, params string[] adaylar)
+        {
+            foreach (var aday in adaylar)
+            {
+                if (mevcutKolonlar.TryGetValue(aday, out bool isIdentity) && !isIdentity)
+                {
+                    return aday;
+                }
+            }
+
+            return null;
+        }
+
+        private int DisServisKaydindanKayitIdCoz(SqlConnection con)
+        {
+            string adSoyad = Temizle(AdSoyad);
+            string marka = Temizle(Marka);
+            string model = Temizle(Model);
+            string imei = Temizle(ImeiNo);
+            string cep = Temizle(CepTelefonu);
+
+            if (_disServisAdayKayitId > 0)
+            {
+                string idSorgu = @"SELECT TOP 1 ID FROM kayitlicihazlar
+                                   WHERE CompanyId = @CompanyId
+                                   AND ID = @ID
+                                   AND (@IsimSoyisim = '' OR IsimSoyisim = @IsimSoyisim)
+                                   AND (@Marka = '' OR Marka = @Marka)
+                                   AND (@Model = '' OR Model = @Model)
+                                   AND (@IMEI = '' OR IMEI = @IMEI)";
+
+                using (SqlCommand cmd = new SqlCommand(idSorgu, con))
+                {
+                    cmd.Parameters.AddWithValue("@CompanyId", Class1.AktifKullanici.SirketID);
+                    cmd.Parameters.AddWithValue("@ID", _disServisAdayKayitId);
+                    cmd.Parameters.AddWithValue("@IsimSoyisim", adSoyad);
+                    cmd.Parameters.AddWithValue("@Marka", marka);
+                    cmd.Parameters.AddWithValue("@Model", model);
+                    cmd.Parameters.AddWithValue("@IMEI", imei);
+
+                    object sonuc = cmd.ExecuteScalar();
+                    if (sonuc != null && sonuc != DBNull.Value)
+                    {
+                        return Convert.ToInt32(sonuc);
+                    }
+                }
+            }
+
+            if (string.IsNullOrWhiteSpace(adSoyad) || string.IsNullOrWhiteSpace(marka) || string.IsNullOrWhiteSpace(model))
+            {
+                return 0;
+            }
+
+            string eslesmeSorgu = @"SELECT TOP 1 ID FROM kayitlicihazlar
+                                    WHERE CompanyId = @CompanyId
+                                    AND IsimSoyisim = @IsimSoyisim
+                                    AND Marka = @Marka
+                                    AND Model = @Model
+                                    AND (@IMEI = '' OR IMEI = @IMEI)
+                                    AND (@CepTelefonu = '' OR CepTelefonu = @CepTelefonu)
+                                    ORDER BY ID DESC";
+
+            using (SqlCommand cmd = new SqlCommand(eslesmeSorgu, con))
+            {
+                cmd.Parameters.AddWithValue("@CompanyId", Class1.AktifKullanici.SirketID);
+                cmd.Parameters.AddWithValue("@IsimSoyisim", adSoyad);
+                cmd.Parameters.AddWithValue("@Marka", marka);
+                cmd.Parameters.AddWithValue("@Model", model);
+                cmd.Parameters.AddWithValue("@IMEI", imei);
+                cmd.Parameters.AddWithValue("@CepTelefonu", cep);
+
+                object sonuc = cmd.ExecuteScalar();
+                if (sonuc != null && sonuc != DBNull.Value)
+                {
+                    return Convert.ToInt32(sonuc);
+                }
+            }
+
+            return 0;
+        }
+
+        private string Temizle(string text)
+        {
+            return string.IsNullOrWhiteSpace(text) ? "" : text.Trim();
+        }
+
         private object GetSqlValue(string value, string placeholder)
         {
             return (value == placeholder || string.IsNullOrWhiteSpace(value))
                 ? (object)DBNull.Value
                 : (object)value;
+        }
+
+        private string GetRowString(DataRowView row, params string[] kolonlar)
+        {
+            foreach (var kolon in kolonlar)
+            {
+                if (row.DataView.Table.Columns.Contains(kolon) && row[kolon] != DBNull.Value)
+                {
+                    return row[kolon]?.ToString() ?? "";
+                }
+            }
+
+            return "";
+        }
+
+        private int GetRowInt(DataRowView row, params string[] kolonlar)
+        {
+            foreach (var kolon in kolonlar)
+            {
+                if (row.DataView.Table.Columns.Contains(kolon) && row[kolon] != DBNull.Value)
+                {
+                    if (int.TryParse(row[kolon].ToString(), out int id) && id > 0)
+                    {
+                        return id;
+                    }
+                }
+            }
+
+            return 0;
         }
     }
 }

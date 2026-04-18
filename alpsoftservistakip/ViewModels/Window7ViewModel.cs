@@ -183,7 +183,12 @@ namespace alpsoftservistakip.ViewModels
                 Window3 mainWindow = Application.Current.Windows.OfType<Window3>().FirstOrDefault();
                 if (mainWindow != null)
                 {
-                    Page6 detay = new Page6(id);
+                    PageKayitOlustur detay = new PageKayitOlustur();
+                    var vm = detay.DataContext as ViewModels.PageKayitOlusturViewModel;
+                    if (vm != null)
+                    {
+                        vm.CarregarKayit(id);
+                    }
                     mainWindow.ShowOverlayPage(detay);
                 }
                 else

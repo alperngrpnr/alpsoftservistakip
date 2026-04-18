@@ -76,6 +76,7 @@ namespace alpsoftservistakip.ViewModels
         public ICommand FiltreTemizleCommand { get; }
         public ICommand GeriDonCommand { get; }
         public ICommand KayitDetayCommand { get; }
+        public ICommand FisiYazdirCommand { get; }
 
         public Window5ViewModel()
         {
@@ -84,6 +85,7 @@ namespace alpsoftservistakip.ViewModels
             FiltreTemizleCommand = new RelayCommand(_ => FiltreTemizle());
             GeriDonCommand = new RelayCommand(_ => GeriDon());
             KayitDetayCommand = new RelayCommand<object>(KayitDetay);
+            FisiYazdirCommand = new RelayCommand<object>(FisiYazdir);
 
             KayitlariListele();
         }
@@ -211,12 +213,19 @@ namespace alpsoftservistakip.ViewModels
             if (parameter is DataRowView row)
             {
                 int id = Convert.ToInt32(row["ID"]);
-                
+
                 // Window3'ü bul ve PageKayitOlustur'u overlay içinde aç
                 Window3 mainWindow = Application.Current.Windows.OfType<Window3>().FirstOrDefault();
                 if (mainWindow != null)
                 {
-                    PageKayitOlustur detay = new PageKayitOlustur(id);
+                    PageKayitOlustur detay = new PageKayitOlustur();
+                    // ViewModel'e ID'yi geç
+                    var viewModel = detay.DataContext as ViewModels.PageKayitOlusturViewModel;
+                    if (viewModel != null)
+                    {
+                        // ID'yi ViewModel'e ayarla - onu reload yap
+                        viewModel.CarregarKayit(id);
+                    }
                     mainWindow.ShowOverlayPage(detay);
                 }
                 else
@@ -225,7 +234,7 @@ namespace alpsoftservistakip.ViewModels
                     Window9 detay = new Window9(id);
                     detay.ShowDialog();
                 }
-                
+
                 VerileriYukle();
             }
         }
@@ -234,6 +243,46 @@ namespace alpsoftservistakip.ViewModels
         {
             string mevcutArama = (AramaMetni != "Servis kaydı ara...") ? AramaMetni : "";
             KayitlariListele(mevcutArama);
+        }
+
+        private void FisiYazdir(object parameter)
+        {
+            try
+            {
+                if (parameter is DataRowView row)
+                {
+                    var fisiData = new Models.ServisKayitFisiData
+                    {
+                        KayitID = Convert.ToInt32(row["ID"]), // Servis kaydının ID sütunu
+                        KayitTarihi = Convert.ToDateTime(row["KayitTarihi"]), // Db'deki sütun
+                        IsimSoyisim = row["IsimSoyisim"]?.ToString() ?? "",
+                        CepTelefonu = row["CepTelefonu"]?.ToString() ?? "",
+                        BayiAdi = row["BayiAdi"]?.ToString() ?? "",
+                        Marka = row["Marka"]?.ToString() ?? "",
+                        Model = row["Model"]?.ToString() ?? "",
+                        Ariza = row["Ariza"]?.ToString() ?? "",
+                        ImeiNo = row["IMEI"]?.ToString() ?? "",
+                        ServisDurumu = row["ServisDurumu"]?.ToString() ?? "",
+                        IlgiliTeknisyen = row["ServisTeknisyen"]?.ToString() ?? "",
+                        EkBilgiler = row["EkBilgiler"]?.ToString() ?? ""
+                    };
+
+                    var fisi = new alpsoftservistakip.Controls.ServisKayitFisi()
+                    {
+                        DataContext = fisiData
+                    };
+
+                    Services.WpfPrintService.ShowPrintPreview(fisi, "SERVIS_KAYIT_FISI", "SERVIS KAYIT FİŞİ ÖNİZLEMESİ");
+                }
+                else
+                {
+                    MessageBox.Show("Lütfen bir kayıt seçin!", "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Fiş yazdırma hatası: " + ex.Message, "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

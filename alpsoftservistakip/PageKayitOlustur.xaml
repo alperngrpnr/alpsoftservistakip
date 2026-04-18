@@ -1,513 +1,434 @@
 <Page x:Class="alpsoftservistakip.PageKayitOlustur"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:local="clr-namespace:alpsoftservistakip.Controls"
-      mc:Ignorable="d"
-      Background="#FF252B36">
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:alpsoftservistakip"
+      mc:Ignorable="d" 
+      d:DesignHeight="900" d:DesignWidth="1200"
+      Background="#121212">
 
-    <Viewbox Stretch="Uniform">
-        <Grid Background="#FF252B36">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+    <Page.Resources>
+        <!-- Dark Theme Colors -->
+        <SolidColorBrush x:Key="PrimaryColor" Color="#3498DB"/>
+        <SolidColorBrush x:Key="SecondaryDark" Color="#2C3E50"/>
+        <SolidColorBrush x:Key="CardBackground" Color="#1E1E1E"/>
+        <SolidColorBrush x:Key="SuccessColor" Color="#27AE60"/>
+        <SolidColorBrush x:Key="WarningColor" Color="#F39C12"/>
+        <SolidColorBrush x:Key="BorderColor" Color="#333333"/>
+        <SolidColorBrush x:Key="TextForeground" Color="#E0E0E0"/>
+        <SolidColorBrush x:Key="TextMuted" Color="#9CA3AF"/>
+        <SolidColorBrush x:Key="InputBackground" Color="#2D2D2D"/>
+        <SolidColorBrush x:Key="TopHeaderBackground" Color="#1A1A1A"/>
+        <LinearGradientBrush x:Key="TitleAccentGradient" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#3B82F6" Offset="0"/>
+            <GradientStop Color="#06B6D4" Offset="1"/>
+        </LinearGradientBrush>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <!-- Aşağıdaki içerik, Window9.xaml içeriğinin birebir kopyasıdır -->
-
-            <GroupBox x:Name="servisbilgileri" Header="SERVİS BİLGİLERİ"
-            FontFamily="Segoe UI Black" FontWeight="Bold"
-            FontStyle="Italic" FontSize="16" BorderBrush="White" Margin="519,9,524,535" Foreground="White"/>
-
-            <GroupBox x:Name="cihazbilgileri" Header="CİHAZ BİLGİLERİ"
-            FontFamily="Segoe UI Black" FontWeight="Bold"
-            FontStyle="Italic" FontSize="16" BorderBrush="White" Margin="9,340,11,4" Foreground="White"/>
-
-            <GroupBox x:Name="garantibilgisi" Header="GARANTİ BİLGİSİ"
-            FontFamily="Segoe UI Black" FontWeight="Bold"
-            FontStyle="Italic" FontSize="16" BorderBrush="White" Margin="23,524,768,256" Height="95" Foreground="White"/>
-
-            <GroupBox x:Name="geneldurumu" Header="GENEL DURUMU"
-            FontFamily="Segoe UI Black" FontWeight="Bold"
-            FontStyle="Italic" FontSize="16" BorderBrush="White" Margin="627,524,25,255" Height="95" Foreground="White"/>
-
-            <GroupBox x:Name="sikayetiariza" Header="ŞİKAYETİ/ARIZA"
-            FontFamily="Segoe UI Black" FontWeight="Bold"
-            FontStyle="Italic" FontSize="16" BorderBrush="White" Margin="22,629,25,12" Foreground="White"/>
-
-            <Button x:Name="sarviskaydınıkaydet" Content="KAYDET"
-            FontSize="24"
-            Foreground="White"
-            Background="Red"
-            BorderThickness="0"
-            Cursor="Hand" 
-            FontFamily="Arial Black" RenderTransformOrigin="0.5,0" Panel.ZIndex="5" Command="{Binding KaydetCommand}" Margin="1031,124,158,693">
-                <Button.Style>
-                    <Style TargetType="{x:Type Button}">
-                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
-                        <Setter Property="RenderTransform">
-                            <Setter.Value>
-                                <ScaleTransform ScaleX="1" ScaleY="1"/>
-                            </Setter.Value>
-                        </Setter>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type Button}">
-                                    <Border Background="{TemplateBinding Background}"
-                                    CornerRadius="15"
-                                    SnapsToDevicePixels="True">
-                                        <Border.Effect>
-                                            <DropShadowEffect Color="Black"
-                                            BlurRadius="30"
-                                            ShadowDepth="5"
-                                            Opacity="0.4"/>
-                                        </Border.Effect>
-                                        <ContentPresenter HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-
-                        <!-- Fare üstüne gelince sadece zoom efekti -->
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Trigger.EnterActions>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
-                                            To="1.08" Duration="0:0:0.2" />
-                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
-                                            To="1.08" Duration="0:0:0.2" />
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </Trigger.EnterActions>
-                                <Trigger.ExitActions>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
-                                            To="1" Duration="0:0:0.2" />
-                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
-                                            To="1" Duration="0:0:0.2" />
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </Trigger.ExitActions>
+        <!-- TextBox Style Dark -->
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="{StaticResource InputBackground}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderColor}"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="{StaticResource TextForeground}"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="true">
+                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource PrimaryColor}"/>
+                                <Setter TargetName="border" Property="BorderThickness" Value="1"/>
+                                <Setter TargetName="border" Property="Background" Value="#383838"/>
                             </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-            </Button>
-            <Button x:Name="sarviskaydınıkaydet_Kopyala" Content="GERİ DÖN"
-            FontSize="24"
-            Foreground="White"
-            Background="#FFF5C721"
-            BorderThickness="0"
-            Cursor="Hand" 
-            FontFamily="Arial Black" RenderTransformOrigin="0.5,0" Panel.ZIndex="5" Command="{Binding GeriDonCommand}" Margin="1031,195,158,622">
-                <Button.Style>
-                    <Style TargetType="{x:Type Button}">
-                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
-                        <Setter Property="RenderTransform">
-                            <Setter.Value>
-                                <ScaleTransform ScaleX="1" ScaleY="1"/>
-                            </Setter.Value>
-                        </Setter>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type Button}">
-                                    <Border Background="{TemplateBinding Background}"
-                                    CornerRadius="15"
-                                    SnapsToDevicePixels="True">
-                                        <Border.Effect>
-                                            <DropShadowEffect Color="Black"
-                                            BlurRadius="15"
-                                            ShadowDepth="3"
-                                            Opacity="0.4"/>
-                                        </Border.Effect>
-                                        <ContentPresenter HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-                        <!-- Fare üstüne gelince sadece zoom efekti -->
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Trigger.EnterActions>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
-                                            To="1.08" Duration="0:0:0.2" />
-                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
-                                            To="1.08" Duration="0:0:0.2" />
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </Trigger.EnterActions>
-                                <Trigger.ExitActions>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
-                                            To="1" Duration="0:0:0.2" />
-                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
-                                            To="1" Duration="0:0:0.2" />
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </Trigger.ExitActions>
+        <!-- ComboBox Style Dark -->
+        <Style TargetType="ComboBox">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="Background" Value="{StaticResource InputBackground}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextForeground}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderColor}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="35"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="{TemplateBinding Text}" Padding="{TemplateBinding Padding}" 
+                                          VerticalAlignment="Center" Foreground="{StaticResource TextForeground}"/>
+                                <!-- Custom simple toggle button -->
+                                <ToggleButton Grid.Column="1" Focusable="false" IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}">
+                                    <ToggleButton.Template>
+                                        <ControlTemplate TargetType="ToggleButton">
+                                            <Border Background="Transparent" BorderThickness="0">
+                                                <Path Data="M7,10L12,15L17,10H7Z" Fill="{StaticResource TextMuted}" Stretch="Uniform" Width="10" Margin="0,0,5,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </ToggleButton.Template>
+                                </ToggleButton>
+                                <Popup Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True" 
+                                       Focusable="False" PopupAnimation="Slide">
+                                    <Grid Name="DropDown" SnapsToDevicePixels="True" MinWidth="{TemplateBinding ActualWidth}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                        <Border CornerRadius="4" Background="#2D2D2D" BorderThickness="1" BorderBrush="{StaticResource BorderColor}"/>
+                                        <ScrollViewer Margin="0,4" SnapsToDevicePixels="True">
+                                            <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
+                                        </ScrollViewer>
+                                    </Grid>
+                                </Popup>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="true">
+                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource PrimaryColor}"/>
                             </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-            </Button>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-            <Border x:Name="fiyatbilgisi_skayit"
-            CornerRadius="10" Background="White"
-            BorderBrush="#2E2E2E" BorderThickness="1"
-            Padding="8" Margin="1069,707,61,79" Height="47">
-                <Border.Effect>
-                    <DropShadowEffect Color="#000000" BlurRadius="12" ShadowDepth="2" Opacity="0.35"/>
-                </Border.Effect>
-                <TextBox x:Name="fiyatbilgisi_skayit1"
-                Text="Fiyat Bilgisi"
-                GotFocus="fiyatbilgisi_skayit1_GotFocus"
-                LostFocus="fiyatbilgisi_skayit1_LostFocus"
-                Background="White" BorderThickness="0"
-                Foreground="#FF848484" FontSize="14"
-                VerticalContentAlignment="Center" Padding="5"/>
-            </Border>
-            <GroupBox x:Name="müşteribilgileri_Kopyala" Header="MÜŞTERİ BİLGİLERİ"
-            FontFamily="Segoe UI Black" FontWeight="Bold"
-            FontStyle="Italic" FontSize="16" BorderBrush="White" Margin="10,10,875,536" Foreground="White"/>
-            <Border x:Name="bayiadi_skayit1"
-            CornerRadius="10" 
-            Background="White"
-            BorderBrush="#2E2E2E" 
-            BorderThickness="1"
-            Padding="8" Margin="23,40,889,781" Height="47">
-                <Border.Effect>
-                    <DropShadowEffect Color="#000000" BlurRadius="12" ShadowDepth="2" Opacity="0.35"/>
-                </Border.Effect>
-
-                <TextBox x:Name="bayiadi_skayit"
-                Text="Bayi Adı"
-                GotFocus="bayiadi_skayit_GotFocus"
-                LostFocus="bayiadi_skayit_LostFocus"
-                Background="White" BorderThickness="0"
-                Foreground="#FF848484" FontSize="14"
-                VerticalContentAlignment="Center" Padding="5" />
-            </Border>
-            <Border x:Name="adsoyad_skayit1"
-            CornerRadius="10" 
-            Background="White"
-            BorderBrush="#2E2E2E" 
-            BorderThickness="1"
-            Padding="8" Margin="23,92,889,726" Height="47">
-                <Border.Effect>
-                    <DropShadowEffect Color="#000000" BlurRadius="12" ShadowDepth="2" Opacity="0.35"/>
-                </Border.Effect>
-
-                <TextBox x:Name="adsoyad_skayit"
-                Text="Ad Soyad*"
-                GotFocus="adsoyad_skayit_GotFocus"
-                LostFocus="adsoyad_skayit_LostFocus"
-                Background="White" BorderThickness="0"
-                Foreground="#FF848484" FontSize="14"
-                VerticalContentAlignment="Center" Padding="5"/>
-            </Border>
-            <Border x:Name="ceptelefonu_skayit1"
-            CornerRadius="10" Background="White"
-            BorderBrush="#2E2E2E" BorderThickness="1"
-            Padding="8" Margin="22,147,890,674" Height="47">
-                <Border.Effect>
-                    <DropShadowEffect Color="#000000" BlurRadius="12" ShadowDepth="2" Opacity="0.35"/>
-                </Border.Effect>
-                <TextBox x:Name="ceptelefonu_skayit"
-                Text="Cep Telefonu*"
-                PreviewTextInput="ceptelefonu_skayit_PreviewTextInput"
-                GotFocus="ceptelefonu_skayit_GotFocus"
-                LostFocus="ceptelefonu_skayit_LostFocus"
-                Background="White" BorderThickness="0"
-                Foreground="#FF848484" FontSize="14"
-                VerticalContentAlignment="Center" Padding="5" TextChanged="ceptelefonu_skayit_TextChanged"/>
-            </Border>
-            <Border x:Name="adres_skayit1"
-            CornerRadius="10" Background="White"
-            BorderBrush="#2E2E2E" BorderThickness="1"
-            Padding="8" Margin="23,200,889,621" Height="47">
-                <Border.Effect>
-                    <DropShadowEffect Color="#000000" BlurRadius="12" ShadowDepth="2" Opacity="0.35"/>
-                </Border.Effect>
-                <TextBox x:Name="adres_skayit"
-                Text="Adres"
-                GotFocus="adres_skayit_GotFocus"
-                LostFocus="adres_skayit_LostFocus"
-                Background="White" BorderThickness="0"
-                Foreground="#FF848484" FontSize="14"
-                VerticalContentAlignment="Center" Padding="5"/>
-            </Border>
-            <Border x:Name="eposta_skayit1"
-            CornerRadius="10" Background="White"
-            BorderBrush="#2E2E2E" BorderThickness="1"
-            Padding="8" Margin="22,259,890,569" Height="47">
-                <Border.Effect>
-                    <DropShadowEffect Color="#000000" BlurRadius="12" ShadowDepth="2" Opacity="0.35"/>
-                </Border.Effect>
-                <TextBox x:Name="eposta_skayit"
-                Text="E-Posta"
-                GotFocus="eposta_skayit_GotFocus"
-                LostFocus="eposta_skayit_LostFocus"
-                Background="White" BorderThickness="0"
-                Foreground="#FF848484" FontSize="14"
-                VerticalContentAlignment="Center" Padding="5"/>
-            </Border>
-            <Border x:Name="cihaztürü_skayit1"
-            CornerRadius="10" Background="White"
-            BorderBrush="#2E2E2E" BorderThickness="1"
-            Padding="8" Margin="22,366,890,459" Height="47">
-                <Border.Effect>
-                    <DropShadowEffect Color="#000000" BlurRadius="12" ShadowDepth="2" Opacity="0.35"/>
-                </Border.Effect>
-                <TextBox x:Name="cihaztürü_skayit"
-                Text="Cihaz Türü*"
-                GotFocus="cihaztürü_skayit_GotFocus"
-                LostFocus="cihaztürü_skayit_LostFocus"
-                Background="White" BorderThickness="0"
-                Foreground="#FF848484" FontSize="14"
-                VerticalContentAlignment="Center" Padding="5"/>
-            </Border>
-            <Border x:Name="marka_skayit1"
-            CornerRadius="10" Background="White"
-            BorderBrush="#2E2E2E" BorderThickness="1"
-            Padding="8" Margin="23,418,889,408" Height="47">
-                <Border.Effect>
-                    <DropShadowEffect Color="#000000" BlurRadius="12" ShadowDepth="2" Opacity="0.35"/>
-                </Border.Effect>
-                <TextBox x:Name="marka_skayit"
-                Text="Marka*"
-                GotFocus="marka_skayit_GotFocus"
-                LostFocus="marka_skayit_LostFocus"
-                Background="White" BorderThickness="0"
-                Foreground="#FF848484" FontSize="14"
-                VerticalContentAlignment="Center" Padding="5"/>
-            </Border>
-            <Border x:Name="model_skayit1"
-            CornerRadius="10" Background="White"
-            BorderBrush="#2E2E2E" BorderThickness="1"
-            Padding="8" Margin="22,468,890,358" Height="47">
-                <Border.Effect>
-                    <DropShadowEffect Color="#000000" BlurRadius="12" ShadowDepth="2" Opacity="0.35"/>
-                </Border.Effect>
-                <TextBox x:Name="model_skayit"
-                Text="Model*"
-                GotFocus="model_skayit_GotFocus"
-                LostFocus="model_skayit_LostFocus"
-                Background="White" BorderThickness="0"
-                Foreground="#FF848484" FontSize="14"
-                VerticalContentAlignment="Center" Padding="5"/>
-            </Border>
-            <Border x:Name="imeino_skayit1"
-            CornerRadius="10" Background="White"
-            BorderBrush="#2E2E2E" BorderThickness="1"
-            Padding="8" Margin="506,366,406,460" Height="47">
-                <Border.Effect>
-                    <DropShadowEffect Color="#000000" BlurRadius="12" ShadowDepth="2" Opacity="0.35"/>
-                </Border.Effect>
-                <TextBox x:Name="imeino_skayit"
-                Text="IMEI No"
-                PreviewTextInput="Imeino_PreviewTextInput"
-                PreviewKeyDown="Imeino_PreviewKeyDown"
-                GotFocus="imeino_skayit_GotFocus"
-                LostFocus="imeino_skayit_LostFocus"
-                Background="White" BorderThickness="0"
-                Foreground="#FF848484" FontSize="14"
-                VerticalContentAlignment="Center" Padding="5"
-                         MaxLength="156"/>
-            </Border>
-            <Border x:Name="ekbilgiler_skayit1"
-            CornerRadius="10" Background="White"
-            BorderBrush="#2E2E2E" BorderThickness="1"
-            Padding="8" Margin="506,419,406,359">
-                <Border.Effect>
-                    <DropShadowEffect Color="#000000" BlurRadius="12" ShadowDepth="2" Opacity="0.35"/>
-                </Border.Effect>
-                <TextBox x:Name="ekbilgiler_skayit"
-                Text="Ek Bilgiler"
-                GotFocus="ekbilgiler_skayit_GotFocus"
-                LostFocus="ekbilgiler_skayit_LostFocus"
-                Background="White" BorderThickness="0"
-                Foreground="#FF848484" FontSize="14"
-                VerticalContentAlignment="Center" Padding="5"/>
-            </Border>
-            <ComboBox
-            x:Name="servisdurumu" 
-            FontSize="16" 
-                
-            FontWeight="Bold" Tag="" Margin="584,124,598,720" SelectionChanged="servisdurumu_SelectionChanged" >
-                <ComboBoxItem Content="SERVİSTE"/>
-                <ComboBoxItem Content="BEKLİYOR"/>
-                <ComboBoxItem Content="PARÇA BEKLİYOR"/>
-                <ComboBoxItem Content="DIŞ SERVİSTE"/>
-                <ComboBoxItem Content="TESLİM EDİLECEK"/>
-                <ComboBoxItem Content="TESLİM EDİLDİ"/>
-            </ComboBox>
-            <Border x:Name="ilgiliteknisyen"
-            CornerRadius="10" Background="White"
-            BorderBrush="#2E2E2E" BorderThickness="1"
-            Padding="8" Margin="559,213,571,615" Height="47">
-                <Border.Effect>
-                    <DropShadowEffect Color="#000000" BlurRadius="12" ShadowDepth="2" Opacity="0.35"/>
-                </Border.Effect>
-                <TextBox x:Name="ilgiliteknisyen1"
-                Text="İlgili Teknisyen"
-                GotFocus="ilgiliteknisyen1_GotFocus"
-                LostFocus="ilgiliteknisyen1_LostFocus"
-                
-                Background="White" BorderThickness="0"
-                Foreground="#FF848484" FontSize="14"
-                VerticalContentAlignment="Center" Padding="5"/>
-            </Border>
-            <Label Content="SERVİS DURUMU&#xA;" FontSize="16" FontFamily="Bahnschrift" FontWeight="Bold" Margin="623,90,612,0" Height="27" VerticalAlignment="Top" Foreground="White"/>
-            <CheckBox x:Name="garantili" Content="GARANTİLİ"
-            FontSize="16"
-            FontWeight="SemiBold"
-            Cursor="Hand" Margin="479,569,809,282" Foreground="White"/>
-            <CheckBox x:Name="garantisiz" Content="GARANTİSİZ"
-            FontSize="16"
-            FontWeight="SemiBold"
-            Cursor="Hand" Margin="283,569,995,280" Foreground="White"/>
-            <CheckBox x:Name="servisgarantili"
-            Content="SERVİS GARANTİLİ"
-            FontSize="16"
-            FontWeight="SemiBold"
-            Cursor="Hand" Margin="62,569,1171,284" Foreground="White"/>
-            <CheckBox x:Name="yeni" Content="YENİ"
-            FontSize="16"
-            FontWeight="SemiBold"
-            Cursor="Hand" Margin="731,569,603,282" Foreground="White"/>
-            <CheckBox x:Name="eski" Content="ESKİ"
-            FontSize="16"
-            FontWeight="SemiBold"
-            Cursor="Hand" Margin="822,569,516,282" Foreground="White"/>
-            <CheckBox x:Name="tamirgörmüs" Content="TAMİR GÖRMÜŞ"
-            FontSize="16"
-            FontWeight="SemiBold"
-            Cursor="Hand" Margin="918,569,331,282" RenderTransformOrigin="0.5,0.5" Foreground="White">
-                <CheckBox.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform/>
-                        <SkewTransform AngleX="0"/>
-                        <RotateTransform/>
-                        <TranslateTransform X="0"/>
-                    </TransformGroup>
-                </CheckBox.RenderTransform>
-            </CheckBox>
-            <CheckBox x:Name="yedeklemeyapilsin" Content="YEDEKLEME YAPILSIN"
-            FontSize="16"
-            FontWeight="SemiBold"
-            Cursor="Hand" Margin="1092,569,120,279" Foreground="White"/>
-            <Border x:Name="sikayetiariza_skayit1"
-            CornerRadius="10" Background="White"
-            BorderBrush="#2E2E2E" BorderThickness="1"
-            Padding="8" Margin="37,655,354,28">
-                <Border.Effect>
-                    <DropShadowEffect Color="#000000" BlurRadius="12" ShadowDepth="2" Opacity="0.35"/>
-                </Border.Effect>
-                <TextBox x:Name="sikayetiariza_skayit"
-                Text="Şikayet/Arıza*"
-                GotFocus="sikayetiariza_skayit_GotFocus"
-                LostFocus="sikayetiariza_skayit_LostFocus"
-                Background="White" BorderThickness="0"
-                Foreground="#FF848484" FontSize="14"
-                VerticalContentAlignment="Center" Padding="5" Margin="0,0,1,0"/>
-            </Border>
-            <GroupBox x:Name="servisbilgileri_Kopyala" Header="KONTROLLER"
-                FontFamily="Segoe UI Black" FontWeight="Bold"
-                FontStyle="Italic" FontSize="16" BorderBrush="White" Margin="871,9,12,535" Foreground="White"/>
-            <Border x:Name="servisdurumborder"
-                CornerRadius="10" Background="White"
-                BorderBrush="#2E2E2E" BorderThickness="1"
-                Padding="8" Margin="558,162,572,666" Height="47">
-                <Border.Effect>
-                    <DropShadowEffect Color="#000000" BlurRadius="12" ShadowDepth="2" Opacity="0.35"/>
-                </Border.Effect>
-                <TextBox x:Name="servisdurumtext"
-                    IsReadOnly="True"
-                   
-                
-                    Background="White" BorderThickness="0"
-                    Foreground="Black" FontSize="14"
-                    VerticalContentAlignment="Center" Padding="5" BorderBrush="Black"/>
-            </Border>
-            <Button x:Name="btksorgula" Content="SORGULA"
-                FontSize="24"
-                Foreground="White"
-                Background="Gray"
-                BorderThickness="0"
-                Cursor="Hand" 
-                FontFamily="Arial Black" RenderTransformOrigin="0.5,0" Panel.ZIndex="5" Click="btksorgula_Click" Margin="988,366,251,462" Height="47">
-                <Button.Style>
-                    <Style TargetType="{x:Type Button}">
-                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
-                        <Setter Property="RenderTransform">
-                            <Setter.Value>
-                                <ScaleTransform ScaleX="1" ScaleY="1"/>
-                            </Setter.Value>
-                        </Setter>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type Button}">
-                                    <Border Background="{TemplateBinding Background}"
-                                        CornerRadius="15"
-                                        SnapsToDevicePixels="True">
-                                        <Border.Effect>
-                                            <DropShadowEffect Color="Black"
-                                                BlurRadius="15"
-                                                ShadowDepth="3"
-                                                Opacity="0.4"/>
-                                        </Border.Effect>
-                                        <ContentPresenter HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-
-                        <!-- Fare üstüne gelince sadece zoom efekti -->
-                        <Style.Triggers>
+        <!-- ComboBoxItem Style -->
+        <Style TargetType="ComboBoxItem">
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="Foreground" Value="{StaticResource TextForeground}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBoxItem">
+                        <Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter/>
+                        </Border>
+                        <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Trigger.EnterActions>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
-                                                To="1.08" Duration="0:0:0.2" />
-                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
-                                                To="1.08" Duration="0:0:0.2" />
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </Trigger.EnterActions>
-                                <Trigger.ExitActions>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
-                                                To="1" Duration="0:0:0.2" />
-                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
-                                                To="1" Duration="0:0:0.2" />
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </Trigger.ExitActions>
+                                <Setter Property="Background" Value="#383838"/>
                             </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-            </Button>
-            <local:OverlayHost x:Name="OverlayHost" Panel.ZIndex="999"/>
-        </Grid>
-    </Viewbox>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="{StaticResource PrimaryColor}"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- CheckBox Style Dark -->
+        <Style TargetType="CheckBox">
+            <Setter Property="Margin" Value="0,8,15,8"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="{StaticResource TextForeground}"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <!-- Label/TextBlock Style Dark -->
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource TextMuted}"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,0,0,6"/>
+            <Setter Property="FontSize" Value="12"/>
+        </Style>
+
+        <!-- Section Header Style Dark -->
+        <Style x:Key="SectionHeaderStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="ExtraBold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="{StaticResource PrimaryColor}"/>
+            <Setter Property="Padding" Value="16,10"/>
+            <Setter Property="Margin" Value="0,0,0,15"/>
+        </Style>
+
+        <!-- Action Button Style Dark -->
+        <Style x:Key="ActionButtonStyle" TargetType="Button">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="Padding" Value="20,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="8" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Opacity" Value="0.85"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Frame Rounded Border -->
+        <Style x:Key="CardBorderStyle" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource CardBackground}"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="25"/>
+            <Setter Property="Margin" Value="0,0,0,25"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderColor}"/>
+        </Style>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- TOP HEADER -->
+        <Border Grid.Row="0" Background="{StaticResource TopHeaderBackground}" Padding="30" BorderBrush="{StaticResource BorderColor}" BorderThickness="0,0,0,1">
+            <Grid>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Width="6" Height="54" Background="{StaticResource TitleAccentGradient}" Margin="0,0,20,0" CornerRadius="3"/>
+                    <Border Width="42" Height="42" CornerRadius="21" Background="#243447" BorderBrush="#3A5269" BorderThickness="1" VerticalAlignment="Center" Margin="0,0,14,0">
+                        <TextBlock Text="⚙" FontSize="18" Foreground="#D1E6FF" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,1,0,0"/>
+                    </Border>
+                    <StackPanel VerticalAlignment="Center">
+                        <Border Background="#1F2937" BorderBrush="#374151" BorderThickness="1" CornerRadius="12" Padding="10,3" HorizontalAlignment="Left" Margin="0,0,0,6">
+                            <TextBlock Text="SERVİS YÖNETİM PANELİ" FontSize="10" FontWeight="Bold" Foreground="#93C5FD"/>
+                        </Border>
+                        <TextBlock Text="YENİ SERVİS KAYDI" FontSize="28" FontWeight="Black" Foreground="White" />
+                        <TextBlock Text="Cihaz kabul, takip ve dış servis yönlendirme işlemlerini tek ekrandan yönetin." FontSize="13" Foreground="{StaticResource TextMuted}" Margin="0,3,0,0"/>
+                    </StackPanel>
+                    <Border Margin="24,0,0,0" Padding="14,7" CornerRadius="16" Background="#0F1E2E" BorderBrush="#23415F" BorderThickness="1" VerticalAlignment="Center">
+                        <TextBlock x:Name="txtKayitNo" Text="" FontSize="13" FontWeight="Bold" Foreground="#7DD3FC" VerticalAlignment="Center"/>
+                    </Border>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Button Content="📋 KOPYALA" Background="#4B5563" Style="{StaticResource ActionButtonStyle}" 
+                            Margin="0,0,10,0" Command="{Binding KopyalaCommand}">
+                    </Button>
+
+                    <Button Content="🚀 DIŞ SERVİSE GÖNDER" Background="{StaticResource WarningColor}" Style="{StaticResource ActionButtonStyle}" 
+                            Margin="0,0,10,0" Command="{Binding DisServiseGonderCommand}">
+                    </Button>
+
+                    <Button Content="📄 FİŞ YAZDIR" Background="{StaticResource SuccessColor}" Style="{StaticResource ActionButtonStyle}" 
+                            Margin="0,0,10,0" Command="{Binding FisiYazdirCommand}">
+                    </Button>
+
+                    <Button Content="💾 KAYDET" Background="{StaticResource PrimaryColor}" Style="{StaticResource ActionButtonStyle}" 
+                            Margin="0,0,10,0" Command="{Binding KaydetCommand}">
+                    </Button>
+
+                    <Button Content="← GERİ" Background="#374151" Style="{StaticResource ActionButtonStyle}" 
+                            Command="{Binding GeriDonCommand}">
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- FORM CONTENT -->
+        <Viewbox Grid.Row="1" Stretch="Uniform" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+            <Grid MaxWidth="1400" Width="1400" HorizontalAlignment="Stretch" Margin="30">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="30"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- SOL SÜTUN - KART 1: MÜŞTERİ BİLGİLERİ -->
+                <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Style="{StaticResource CardBorderStyle}">
+                    <StackPanel>
+                        <Border CornerRadius="6" Background="#263A4D" Margin="-25,-25,-25,25">
+                            <TextBlock Text="MÜŞTERİ BİLGİLERİ" Style="{StaticResource SectionHeaderStyle}" Background="Transparent" Margin="0" Padding="25,15"/>
+                        </Border>
+
+                        <StackPanel>
+                            <TextBlock Text="Ad Soyadı *"/>
+                            <TextBox Text="{Binding AdSoyad, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,15"/>
+
+                            <TextBlock Text="Bayi Adı"/>
+                            <ComboBox SelectedItem="{Binding BayiAdi, UpdateSourceTrigger=PropertyChanged}" 
+                                     ItemsSource="{Binding BayiListesi}" Margin="0,0,0,15"/>
+
+                            <TextBlock Text="Cep Telefonu *"/>
+                            <TextBox Text="{Binding CepTelefonu, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,15" PreviewTextInput="SayiSadece_PreviewTextInput" TextChanged="Telefon_TextChanged" MaxLength="15" ToolTip="Örn: (5XX) XXX XX XX"/>
+
+                            <TextBlock Text="E-Posta"/>
+                            <TextBox Text="{Binding EPosta, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,15"/>
+
+                            <TextBlock Text="Açık Adres"/>
+                            <TextBox Text="{Binding Adres, UpdateSourceTrigger=PropertyChanged}" Height="120" 
+                                    TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" Padding="12"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- SAĞ SÜTUN - KART 1: CİHAZ BİLGİLERİ -->
+                <Border Grid.Row="0" Grid.Column="2" Style="{StaticResource CardBorderStyle}">
+                    <StackPanel>
+                        <Border CornerRadius="6" Background="#263A4D" Margin="-25,-25,-25,25">
+                            <TextBlock Text="CİHAZ BİLGİLERİ" Style="{StaticResource SectionHeaderStyle}" Background="Transparent" Margin="0" Padding="25,15"/>
+                        </Border>
+
+                        <Grid Margin="0,0,0,15">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="15"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="15"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Cihaz Türü *"/>
+                                <TextBox Text="{Binding CihazTuru, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="Marka *"/>
+                                <TextBox Text="{Binding Marka, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="4">
+                                <TextBlock Text="Model *"/>
+                                <TextBox Text="{Binding Model, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid Margin="0,0,0,15">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="15"/>
+                                <ColumnDefinition Width="120"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="IMEI / Seri No"/>
+                                <TextBox Text="{Binding ImeiNo, UpdateSourceTrigger=PropertyChanged}" MaxLength="15" PreviewTextInput="SayiSadece_PreviewTextInput" ToolTip="15 Haneli IMEI veya Seri No"/>
+                            </StackPanel>
+
+                            <Button Grid.Column="2" Content="BTK SORGULA" Background="#374151" 
+                                   Style="{StaticResource ActionButtonStyle}" Margin="0,24,0,0" Width="120"
+                                   Command="{Binding ImeiSorgulaCommand}"/>
+                        </Grid>
+
+                        <StackPanel>
+                            <TextBlock Text="Arıza / Şikayet Detayı *"/>
+                            <TextBox Text="{Binding SikayetAriza, UpdateSourceTrigger=PropertyChanged}" Height="80" 
+                                    TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" Padding="12"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- SAĞ SÜTUN - KART 2: SERVİS VE GARANTİ KONTROLLERİ -->
+                <Border Grid.Row="1" Grid.Column="2" Style="{StaticResource CardBorderStyle}">
+                    <StackPanel>
+                        <Border CornerRadius="6" Background="#263A4D" Margin="-25,-25,-25,25">
+                            <TextBlock Text="SERVİS VE GARANTİ DURUMU" Style="{StaticResource SectionHeaderStyle}" Background="Transparent" Margin="0" Padding="25,15"/>
+                        </Border>
+
+                        <Grid Margin="0,0,0,15">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="15"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="İlgili Teknisyen"/>
+                                <ComboBox SelectedItem="{Binding IlgiliTeknisyen, UpdateSourceTrigger=PropertyChanged}"
+                                         ItemsSource="{Binding TekniksijenListesi}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="Servis Durumu"/>
+                                <ComboBox SelectedItem="{Binding ServisDurumu, UpdateSourceTrigger=PropertyChanged}">
+                                    <System:String xmlns:System="clr-namespace:System;assembly=mscorlib">Kabul Edildi</System:String>
+                                    <System:String xmlns:System="clr-namespace:System;assembly=mscorlib">İşlemde</System:String>
+                                    <System:String xmlns:System="clr-namespace:System;assembly=mscorlib">Bitti</System:String>
+                                    <System:String xmlns:System="clr-namespace:System;assembly=mscorlib">Dış Servis'te</System:String>
+                                    <System:String xmlns:System="clr-namespace:System;assembly=mscorlib">Tamamlandı</System:String>
+                                    <System:String xmlns:System="clr-namespace:System;assembly=mscorlib">İade Edildi</System:String>
+                                </ComboBox>
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid Margin="0,0,0,15">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Cihaz Seçenek" Foreground="{StaticResource TextForeground}" FontWeight="Bold" Margin="0,0,0,10"/>
+                                <CheckBox Content="Yeni" IsChecked="{Binding Yeni}"/>
+                                <CheckBox Content="Eski" IsChecked="{Binding Eski}"/>
+                                <CheckBox Content="Tamir Görmüş" IsChecked="{Binding TamirGormus}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1">
+                                <TextBlock Text="Garanti" Foreground="{StaticResource TextForeground}" FontWeight="Bold" Margin="0,0,0,10"/>
+                                <CheckBox Content="Garantili" IsChecked="{Binding Garantili}"/>
+                                <CheckBox Content="Garantisiz" IsChecked="{Binding Garantisiz}"/>
+                                <CheckBox Content="Servis Garanti" IsChecked="{Binding ServisGarantili}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="Diğer" Foreground="{StaticResource TextForeground}" FontWeight="Bold" Margin="0,0,0,10"/>
+                                <CheckBox Content="Yedeklensin" IsChecked="{Binding YedeklemeYapilsin}"/>
+                            </StackPanel>
+                        </Grid>
+
+                    </StackPanel>
+                </Border>
+
+                <!-- ALT ORTAK ALAN - EK BİLGİLER -->
+                <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource CardBorderStyle}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Ek Bilgiler (Parola, Aksesuar vb.)"/>
+                            <TextBox Text="{Binding EkBilgiler, UpdateSourceTrigger=PropertyChanged}" Height="60" 
+                                    TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" Padding="12"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Hesaplanan Fiyat / Ücret Bilgisi (₺)"/>
+                            <TextBox Text="{Binding FiyatBilgisi, UpdateSourceTrigger=PropertyChanged}" Height="60" FontSize="20" FontWeight="Bold" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+            </Grid>
+        </Viewbox>
+    </Grid>
 </Page>
-
-
-

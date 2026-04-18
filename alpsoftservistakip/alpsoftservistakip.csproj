@@ -142,7 +142,35 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controls\ServisKayitFisi.xaml.cs">
+      <DependentUpon>ServisKayitFisi.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Class1.cs" />
+    <Compile Include="Models\Class2.cs" />
     <Compile Include="Class1.cs" />
+    <Compile Include="Models\ServisKayitFisiData.cs" />
+    <Compile Include="PageKayitOlustur.xaml.cs">
+      <DependentUpon>PageKayitOlustur.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PageToptanciListesi.xaml.cs">
+      <DependentUpon>PageToptanciListesi.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PageToptanciEkle.xaml.cs">
+      <DependentUpon>PageToptanciEkle.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PageToptanciDetay.xaml.cs">
+      <DependentUpon>PageToptanciDetay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PageCariListesi.xaml.cs">
+      <DependentUpon>PageCariListesi.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PageCariEkle.xaml.cs">
+      <DependentUpon>PageCariEkle.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PageCariDetay.xaml.cs">
+      <DependentUpon>PageCariDetay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Services\WpfPrintService.cs" />
     <Compile Include="Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
     </Compile>
@@ -194,18 +222,42 @@
     <Compile Include="ViewModels\PageKayitOlusturViewModel.cs" />
     <Compile Include="ViewModels\PageDisServisViewModel.cs" />
     <Compile Include="ViewModels\Window7ViewModel.cs" />
-    <Compile Include="PageKayitOlustur.xaml.cs">
-      <DependentUpon>PageKayitOlustur.xaml</DependentUpon>
-    </Compile>
     <Compile Include="PageDisServis.xaml.cs">
       <DependentUpon>PageDisServis.xaml</DependentUpon>
     </Compile>
     <Compile Include="Page5.xaml.cs">
       <DependentUpon>Page5.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Page6.xaml.cs">
-      <DependentUpon>Page6.xaml</DependentUpon>
-    </Compile>
+    <Page Include="Controls\ServisKayitFisi.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PageKayitOlustur.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PageToptanciListesi.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PageToptanciEkle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PageToptanciDetay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PageCariListesi.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PageCariEkle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PageCariDetay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Window1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -262,19 +314,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PageKayitOlustur.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="PageDisServis.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Page5.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Page6.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

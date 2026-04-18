@@ -7,14 +7,14 @@
     <framework targetVersion="4.7.2" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="alpsoftservistakip.exe.manifest" size="11587">
+    <dependentAssembly dependencyType="install" codebase="alpsoftservistakip.exe.manifest" size="11588">
       <assemblyIdentity name="alpsoftservistakip.exe" version="1.0.0.7" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>uqnYSTMAKCtT1Wz7set0csLRWHzqjoREW2tURcPygw0=</dsig:DigestValue>
+        <dsig:DigestValue>mak0BMr8jqxzgv3TTshMRI87qYWcex3pn2Xj+luSeaM=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
