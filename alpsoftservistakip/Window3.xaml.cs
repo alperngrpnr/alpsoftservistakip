@@ -126,6 +126,12 @@ namespace alpsoftservistakip
 
         private void IsciKaydet_Click(object sender, RoutedEventArgs e)
         {
+            if (Class1.AktifKullanici.ID == -1)
+            {
+                MessageBox.Show("Demo hesapta yeni işçi (personel) ekleyemezsiniz veya var olan ayarları değiştiremezsiniz.\n\nDemoyu denediğiniz için teşekkürler!", "Yetkisiz İşlem", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             // Boş alan kontrolü
             if (string.IsNullOrEmpty(txtYeniAd.Text) ||
                 string.IsNullOrEmpty(txtYeniEmail.Text) ||
@@ -244,6 +250,98 @@ namespace alpsoftservistakip
         }
 
         // Element-level fade helpers for smooth in-window page transitions
+        private void btnStokTakibi_Click(object sender, RoutedEventArgs e)
+        {
+            if (Class1.AktifKullanici.HasStokTakibi)
+            {
+                // Stok takibi sekmesine yönlendir (Sayfayı sonradan yaparsınız)
+                MessageBox.Show("Stok Takibi modülü henüz yapım aşamasında.", "Bilgi", MessageBoxButton.OK, MessageBoxImage.Information);
+                // System.Windows.Controls.Page stokSayfasi = new PageStok();
+                // ShowOverlayPage(stokSayfasi);
+            }
+            else
+            {
+                StokKilitTabakasi.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void btnStokIptal_Click(object sender, RoutedEventArgs e)
+        {
+            StokKilitTabakasi.Visibility = Visibility.Collapsed;
+            txtStokKodu.Clear();
+        }
+
+        private async void btnStokAktiflestir_Click(object sender, RoutedEventArgs e)
+        {
+            string girilenKod = txtStokKodu.Text.Trim(); // ToUpper kaldırdık CaseSensitive SQL denetsin
+
+            if (string.IsNullOrEmpty(girilenKod))
+            {
+                MessageBox.Show("Lütfen bir aktivasyon kodu girin.", "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            try
+            {
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    await con.OpenAsync();
+
+                    // Girdiğiniz kodun LicenseKeys.LicenseKey ile eşleşip eşleşmediğini denetle
+                    string searchSql = "SELECT Id FROM [LicenseKeys] WHERE LicenseKey = @kod AND IsUsed = 0";
+                    int bulunduId = 0;
+
+                    using (SqlCommand cmdSearch = new SqlCommand(searchSql, con))
+                    {
+                        cmdSearch.Parameters.AddWithValue("@kod", girilenKod);
+                        object result = await cmdSearch.ExecuteScalarAsync();
+                        if (result != null)
+                        {
+                            bulunduId = Convert.ToInt32(result);
+                        }
+                    }
+
+                    // Kod varsa ve kullanılmamışsa:
+                    if (bulunduId > 0)
+                    {
+                        // 1. Şirketin Stok Modülünü aç
+                        string sql = "UPDATE [Companies] SET HasStockModule = 1 WHERE Id = @sirketId";
+                        using (SqlCommand cmd = new SqlCommand(sql, con))
+                        {
+                            cmd.Parameters.AddWithValue("@sirketId", Class1.AktifKullanici.SirketID);
+                            await cmd.ExecuteNonQueryAsync();
+                        }
+
+                        // 2. Kodu kullanılmış olarak işaretle ki başkası tekrar girmesin
+                        string updKeySql = "UPDATE [LicenseKeys] SET IsUsed = 1, UsedByCompanyId = @sirketId, UsedDate = GETDATE() WHERE Id = @keyId";
+                        using (SqlCommand updCmd = new SqlCommand(updKeySql, con))
+                        {
+                            updCmd.Parameters.AddWithValue("@sirketId", Class1.AktifKullanici.SirketID);
+                            updCmd.Parameters.AddWithValue("@keyId", bulunduId);
+                            await updCmd.ExecuteNonQueryAsync();
+                        }
+
+                        // Cihazdaki oturumu anlık güncelle
+                        Class1.AktifKullanici.HasStokTakibi = true;
+
+                        MessageBox.Show("Tebrikler! Stok Takibi özelliği başarıyla aktifleştirildi.\nArtık bu özelliği doya doya kullanabilirsiniz.", 
+                                        "Aktifleştirme Başarılı", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                        StokKilitTabakasi.Visibility = Visibility.Collapsed;
+                        txtStokKodu.Clear();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Girdiğiniz aktivasyon kodu hatalı, geçersiz veya daha önce kullanılmış!", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Bağlantı hatası oluştu: " + ex.Message, "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         private Task FadeOutElementAsync(UIElement el, int ms = 200)
         {
             var tcs = new TaskCompletionSource<bool>();

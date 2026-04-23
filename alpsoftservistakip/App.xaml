@@ -1,8 +1,14 @@
-﻿<Application x:Class="alpsoftservistakip.App"
+<Application x:Class="alpsoftservistakip.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              StartupUri="Window11.xaml"
              ShutdownMode="OnExplicitShutdown">
     <Application.Resources>
+        <!-- Tüm tablolardaki ve listelerdeki seçili/tıklanmış satırların çok koyu mavi olup metni okunmaz hale getirmesini engeller -->
+        <!-- Seçili satır arkaplanını çok açık mavi, metinleri net okunur lacivert yapar -->
+        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#E1F0FA"/>
+        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="#1A202C"/>
+        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="#EDF2F7"/>
+        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="#1A202C"/>
     </Application.Resources>
 </Application>

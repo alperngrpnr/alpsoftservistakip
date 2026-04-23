@@ -85,8 +85,47 @@ namespace alpsoftservistakip
             {
                 var fromAddress = new MailAddress("alpsoft41@gmail.com", "Alpsoft Yazılım");
                 var toAddress = new MailAddress(aliciEmail);
-                string subject = "Şifre Sıfırlama Doğrulama Kodu";
-                string body = $"<div style='font-family:Arial;'><h2>ALPSOFT</h2><p>Kodunuz: <b>{dogrulamaKodu}</b></p></div>";
+                string subject = "Şifre Sıfırlama Doğrulama Kodu - ALPSOFT";
+
+                // Mail içerik tasarımı oldukça modern ve profesyonel bir görünüme kavuşturuldu.
+                string body = $@"
+                <div style='font-family: ""Segoe UI"", Arial, sans-serif; background-color: #F4F7F6; padding: 40px 10px;'>
+                    <div style='max-width: 600px; margin: 0 auto; background-color: #FFFFFF; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);'>
+
+                        <!-- Üst Banner (Logolu kısım) -->
+                        <div style='background-color: #252B36; padding: 30px; text-align: center;'>
+                            <h1 style='color: #FFF5C721; margin: 0; font-size: 28px; letter-spacing: 2px;'>ALPSOFT</h1>
+                            <p style='color: #A0AEC0; margin: 5px 0 0 0; font-size: 14px;'>Servis Yönetim Platformu</p>
+                        </div>
+
+                        <!-- Ana İçerik -->
+                        <div style='padding: 40px 30px;'>
+                            <h2 style='color: #2D3748; margin-top: 0;'>Şifre Sıfırlama Talebi</h2>
+                            <p style='font-size: 16px; line-height: 1.6; color: #4A5568;'>
+                                Merhaba,<br><br>
+                                Hesabınızın şifresini sıfırlamak için bir talepte bulundunuz. İşleminize devam etmek için aşağıdaki 6 haneli doğrulama kodunu kullanabilirsiniz:
+                            </p>
+
+                            <!-- Kod Kutusu -->
+                            <div style='background-color: #F8FAFC; border: 2px dashed #CBD5E1; border-radius: 8px; padding: 25px; text-align: center; margin: 35px 0;'>
+                                <span style='font-size: 36px; font-weight: bold; letter-spacing: 8px; color: #E74C3C;'>{dogrulamaKodu}</span>
+                            </div>
+
+                            <p style='font-size: 14px; color: #718096; line-height: 1.5;'>
+                                Eğer bu talebi siz yapmadıysanız, lütfen bu e-postayı dikkate almayın ve hesabınızın güvende olduğundan emin olun.<br><br>
+                                <strong>Önemli:</strong> Güvenliğiniz için bu doğrulama kodunu hiç kimseyle paylaşmayınız.
+                            </p>
+                        </div>
+
+                        <!-- Alt Kısım (Footer) -->
+                        <div style='background-color: #F1F5F9; padding: 20px; text-align: center; border-top: 1px solid #E2E8F0;'>
+                            <p style='margin: 0; font-size: 12px; color: #A0AEC0;'>
+                                &copy; {DateTime.Now.Year} Alpsoft Yazılım - Tüm hakları saklıdır.
+                            </p>
+                        </div>
+
+                    </div>
+                </div>";
 
                 var smtp = new SmtpClient
                 {
@@ -120,6 +159,81 @@ namespace alpsoftservistakip
 
                 login();
                 e.Handled = true;
+            }
+        }
+
+        private void btnDemo_Click(object sender, RoutedEventArgs e)
+        {
+            GridDemoPopup.Visibility = Visibility.Visible;
+            txtDemoName.Focus();
+        }
+
+        private void btnDemoIptal_Click(object sender, RoutedEventArgs e)
+        {
+            GridDemoPopup.Visibility = Visibility.Collapsed;
+            txtDemoName.Clear();
+        }
+
+        private void btnDemoBasla_Click(object sender, RoutedEventArgs e)
+        {
+            string isim = txtDemoName.Text.Trim();
+            if (string.IsNullOrEmpty(isim))
+            {
+                MessageBox.Show("Lütfen adınızı girin.", "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connString))
+                {
+                    conn.Open();
+
+                    // DemoLogins tablosu yoksa oluştur
+                    string createTableSql = @"
+                        IF NOT EXISTS(SELECT * FROM sys.tables WHERE name = 'DemoLogins')
+                        BEGIN
+                            CREATE TABLE DemoLogins (
+                                Id INT IDENTITY(1,1) PRIMARY KEY,
+                                Name NVARCHAR(MAX),
+                                LoginDate DATETIME DEFAULT GETDATE()
+                            )
+                        END";
+                    using (SqlCommand cmdCreate = new SqlCommand(createTableSql, conn))
+                    {
+                        cmdCreate.ExecuteNonQuery();
+                    }
+
+                    // Demo kaydını kaydet
+                    string insertSql = "INSERT INTO DemoLogins (Name, LoginDate) VALUES (@p1, GETDATE())";
+                    using (SqlCommand cmdInsert = new SqlCommand(insertSql, conn))
+                    {
+                        cmdInsert.Parameters.AddWithValue("@p1", isim);
+                        cmdInsert.ExecuteNonQuery();
+                    }
+                }
+
+                // Demo kullanıcı ayarları
+                Class1.AktifKullanici.ID = -1; // Gerçek bir kullanıcı değil
+                Class1.AktifKullanici.SirketID = -1; // Gerçek şirket değil
+                Class1.AktifKullanici.SirketAdi = "DEMO ŞİRKETİ";
+                Class1.AktifKullanici.KullaniciAdi = isim;
+                Class1.AktifKullanici.IsAdmin = true; // Demoda yönetim paneli vb. görebilsin
+                Class1.AktifKullanici.HasStokTakibi = true; // Demoda stok takibini test edebilsin
+
+                aktifKullaniciID = Class1.AktifKullanici.ID;
+
+                MessageBox.Show($"Hoş geldiniz, {isim}!\nDemo sürümüne giriş yaptınız. Uygulama verileri üzerinde değişiklik yapabilirsiniz ancak diğer kullanıcılarla çakışmamak adına gerçek veri girmemenizi öneririz.",
+                    "Demo Giriş Başarılı", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                // Ana pencereyi aç
+                Window3 mainWin = new Window3();
+                mainWin.Show();
+                this.Hide();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Demo girişi sırasında bir hata oluştu: " + ex.Message, "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -165,9 +279,17 @@ namespace alpsoftservistakip
                         cmdAdd.ExecuteNonQuery();
                     }
 
+                    // Modül yetkisi için Company tablosunda HasStockModule kontrolü ve ekleme
+                    string addModuleColSql = "IF NOT EXISTS(SELECT * FROM sys.columns WHERE Name = N'HasStockModule' AND Object_ID = Object_ID(N'Companies')) " +
+                                             "BEGIN ALTER TABLE [Companies] ADD HasStockModule BIT NOT NULL DEFAULT 0; END";
+                    using (SqlCommand cmdModuleAdd = new SqlCommand(addModuleColSql, conn))
+                    {
+                        cmdModuleAdd.ExecuteNonQuery();
+                    }
+
                     // Şirket ve Kullanıcı bilgilerini birleştirerek alıyoruz
                     string sql = @"
-                        SELECT u.Id, u.CompanyId, u.FullName, u.Role, c.CompanyName, ISNULL(u.IsLoggedIn, 0) as IsLoggedIn 
+                        SELECT u.Id, u.CompanyId, u.FullName, u.Role, c.CompanyName, ISNULL(u.IsLoggedIn, 0) as IsLoggedIn, ISNULL(c.HasStockModule, 0) as HasStockModule
                         FROM [Users] u 
                         INNER JOIN Companies c ON u.CompanyId = c.Id 
                         WHERE u.Email = @email AND u.PasswordHash = @pass AND u.IsActive = 1";
@@ -212,6 +334,7 @@ namespace alpsoftservistakip
                             Class1.AktifKullanici.SirketAdi = reader["CompanyName"].ToString();
                             Class1.AktifKullanici.KullaniciAdi = reader["FullName"].ToString();
                             Class1.AktifKullanici.IsAdmin = reader["Role"].ToString() == "Admin";
+                            Class1.AktifKullanici.HasStokTakibi = Convert.ToBoolean(reader["HasStockModule"]);
 
                             // Eski değişkeni de destekle
                             aktifKullaniciID = Class1.AktifKullanici.ID;

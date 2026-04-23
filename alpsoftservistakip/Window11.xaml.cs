@@ -10,7 +10,7 @@ namespace alpsoftservistakip
 {
     public partial class Window11 : Window
     {
-        private const string CURRENT_VERSION = "1.0.0";
+        private const string CURRENT_VERSION = "1.0.2";
         private const string VERSION_URL = "https://github.com/alperngrpnr/alpsoftupdates/releases/latest/download/version.txt";
         private const string SETUP_URL = "https://github.com/alperngrpnr/alpsoftupdates/releases/latest/download/AlpsoftSetup.exe";
 
@@ -59,11 +59,15 @@ namespace alpsoftservistakip
                 {
                     client.DefaultRequestHeaders.Add("User-Agent", "AlpsoftUpdater");
 
-                    string latestVersion = (await client.GetStringAsync(VERSION_URL)).Trim();
+                    // GitHub'ın eski sürümü(önbelleği) göndermesini engellemek için linkin sonuna rastgele bir değer ekliyoruz
+                    string cacheBusterUrl = $"{VERSION_URL}?t={DateTime.Now.Ticks}";
+
+                    string latestVersion = (await client.GetStringAsync(cacheBusterUrl)).Trim();
 
                     await Dispatcher.InvokeAsync(() => SetProgress(20, "Sürüm kontrol edildi..."));
 
-                    if (new Version(latestVersion) > new Version(CURRENT_VERSION))
+                    if (Version.TryParse(latestVersion, out Version parsedLatestVersion) && 
+                        parsedLatestVersion > new Version(CURRENT_VERSION))
                     {
                         await DownloadAndInstallUpdate(latestVersion);
                         return;
@@ -72,7 +76,8 @@ namespace alpsoftservistakip
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Güncelleme hatası: " + ex.Message);
+                // Sorunun ne olduğunu görebilmemiz için log yerine ekranda gösterin
+                MessageBox.Show("Güncelleme denetlenirken hata oluştu:\n" + ex.Message, "Güncelleme Hatası", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
 
             await ContinueStartup();

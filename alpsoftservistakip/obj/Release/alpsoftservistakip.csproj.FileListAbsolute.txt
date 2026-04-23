@@ -70,7 +70,6 @@ C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Release\Pa
 C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Release\PageDisServis.baml
 C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Release\Page5.g.cs
 C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Release\Page5.baml
-C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Release\alpsoftservistakip.exe.config
 C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Release\PageCariListesi.g.cs
 C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Release\PageCariEkle.g.cs
 C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Release\PageCariDetay.g.cs
@@ -85,3 +84,4 @@ C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Release\Pa
 C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Release\PageToptanciDetay.baml
 C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Release\Controls\ServisKayitFisi.baml
 C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Release\Controls\ServisKayitFisi.g.cs
+C:\Users\alper\source\repos\alpsoftservistakip\alpsoftservistakip\obj\Release\alpsoftservistakip.exe.config

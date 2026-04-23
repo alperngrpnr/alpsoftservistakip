@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data.SqlClient;
 using System.Security.Cryptography;
 using System.Text;
@@ -19,6 +19,11 @@ namespace alpsoftservistakip
             kullaniciEmail = gelenEmail;
         }
 
+        private void Kapat_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            this.Close();
+        }
+
         private void btnIslem_Click(object sender, RoutedEventArgs e)
         {
             // AŞAMA 1: KOD DOĞRULAMA
@@ -27,9 +32,10 @@ namespace alpsoftservistakip
                 if (txtCode.Text.Trim() == asilKod)
                 {
                     // Başarılı: Kod alanını kapat, şifre alanını aç
-                    txtCode.Visibility = Visibility.Collapsed;
+                    brdCode.Visibility = Visibility.Collapsed;
                     pnlYeniSifre.Visibility = Visibility.Visible;
-                    lblBilgi.Text = "Yeni şifrenizi giriniz:";
+                    lblBilgi.Text = "Onaylandı! Aşağıdan yeni şifrenizi belirleyebilirsiniz.";
+                    lblBilgi.Foreground = new System.Windows.Media.SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#2ECC71"));
                     btnIslem.Content = "ŞİFREYİ GÜNCELLE";
                 }
                 else

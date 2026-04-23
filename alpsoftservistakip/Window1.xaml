@@ -1,8 +1,8 @@
-﻿<Window x:Class="alpsoftservistakip.LoginWindow"
+<Window x:Class="alpsoftservistakip.LoginWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:alpsoftservistakip.Controls"
-        Title="Alpsoft - Giriş" Height="550" Width="400" 
+        Title="Alpsoft - Giriş" Height="610" Width="400" 
         WindowStartupLocation="CenterScreen" WindowStyle="None" 
         AllowsTransparency="True" Background="Transparent">
 
@@ -70,7 +70,43 @@
                                Cursor="Hand" MouseLeftButtonUp="KayitOl_Click" Margin="5,0,0,0"/>
                 </StackPanel>
 
+                <!-- Demo Giriş Butonu -->
+                <Button x:Name="btnDemo" Content="UYGULAMAYI DEMO OLARAK DENE" Background="#FF252B36" Foreground="White" 
+                        Height="40" Margin="0,20,0,0" FontWeight="Bold" FontSize="12" Cursor="Hand" Click="btnDemo_Click">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="10"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+
             </StackPanel>
+
+            <!-- DEMO İSİM SORMA POPUP -->
+            <Grid x:Name="GridDemoPopup" Background="#CC000000" Visibility="Collapsed" Panel.ZIndex="50">
+                <Border Background="White" CornerRadius="15" Width="320" Height="250" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="20">
+                    <StackPanel>
+                        <TextBlock Text="DEMO SÜRÜM" FontSize="20" FontWeight="Bold" Foreground="#FF252B36" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                        <TextBlock Text="Hangi isimle denemek istiyorsunuz?" Foreground="#666" TextWrapping="Wrap" HorizontalAlignment="Center" TextAlignment="Center" Margin="0,0,0,20"/>
+
+                        <TextBox x:Name="txtDemoName" Height="40" FontSize="16" Padding="10,0" Background="#F5F5F5" BorderBrush="#DDD" BorderThickness="1" Margin="0,0,0,20" VerticalContentAlignment="Center"/>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0" Content="İPTAL" Background="#EEE" Foreground="#333" Height="40" FontWeight="Bold" Cursor="Hand" Click="btnDemoIptal_Click">
+                                <Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="8"/></Style></Button.Resources>
+                            </Button>
+                            <Button Grid.Column="2" Content="BAŞLA" Background="#FFF5C721" Foreground="#FF252B36" Height="40" FontWeight="Bold" Cursor="Hand" Click="btnDemoBasla_Click">
+                                <Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="8"/></Style></Button.Resources>
+                            </Button>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </Grid>
 
             <!-- Overlay host for in-window pages -->
             <local:OverlayHost x:Name="OverlayHost" Panel.ZIndex="999"/>

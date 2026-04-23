@@ -1,4 +1,4 @@
-﻿namespace alpsoftservistakip
+namespace alpsoftservistakip
 {
     public static class Class1
     {
@@ -15,5 +15,6 @@
         public string KullaniciAdi { get; set; }
         public string SirketAdi { get; set; }
         public bool IsAdmin { get; set; }
+        public bool HasStokTakibi { get; set; }
     }
 }

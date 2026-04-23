@@ -107,13 +107,13 @@
                     </LinearGradientBrush>
                 </Rectangle.Fill>
             </Rectangle>
-      <Rectangle HorizontalAlignment="Left" Margin="36,36,0,36" Width="1839" Fill="#FFF5C721" Panel.ZIndex="10"/>
+            <Rectangle HorizontalAlignment="Left" Margin="36,36,0,236" Width="1839" Fill="#FFF5C721" Panel.ZIndex="10"/>
 
             <Image Source="/Alpsoftlogotransparan.png" Width="1179" Height="1118" HorizontalAlignment="Left" VerticalAlignment="Top" 
-                   RenderTransformOrigin="0.467,0.62" Panel.ZIndex="11" Margin="375,-347,0,0"/>
+                   RenderTransformOrigin="0.467,0.62" Panel.ZIndex="11" Margin="367,-195,0,0"/>
 
             <!-- Button container grid centered with 7 columns as requested replacing old properties -->
-            <UniformGrid Columns="6" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,582,0,0" Panel.ZIndex="14" Width="1600">
+            <UniformGrid Columns="7" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,582,0,0" Panel.ZIndex="14" Width="1600">
                 <Button x:Name="kayitlar" Content="KAYITLAR" FontSize="18" Foreground="White" Background="#1E293B" Height="100" Margin="10,0" Click="kayitlar_Click" FontFamily="Arial Black" Cursor="Hand">
                     <Button.RenderTransform>
                         <ScaleTransform ScaleX="1" ScaleY="1"/>
@@ -365,7 +365,78 @@
                         </Style>
                     </Button.Style>
                 </Button>
+
+                <Button x:Name="btnStokTakibi" Content="STOK TAKİBİ" FontSize="18" Foreground="White" Background="#1E293B" Height="100" Margin="10,0" Click="btnStokTakibi_Click" FontFamily="Arial Black" Cursor="Hand">
+                    <Button.RenderTransform>
+                        <ScaleTransform ScaleX="1" ScaleY="1"/>
+                    </Button.RenderTransform>
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}" CornerRadius="20" BorderBrush="#334155" BorderThickness="2" Padding="15">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#E74C3C"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Trigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)" To="1.05" Duration="0:0:0.1"/>
+                                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)" To="1.05" Duration="0:0:0.1"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </Trigger.EnterActions>
+                                    <Trigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)" To="1" Duration="0:0:0.2"/>
+                                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)" To="1" Duration="0:0:0.2"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </Trigger.ExitActions>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
             </UniformGrid>
+
+            <Grid x:Name="StokKilitTabakasi" Panel.ZIndex="51" Visibility="Collapsed">
+                <Rectangle Fill="Black" Opacity="0.7"/>
+                <Border Background="White" Width="500" Height="280" CornerRadius="20" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="30">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="30" Color="#000" Opacity="0.5" ShadowDepth="10"/>
+                    </Border.Effect>
+                    <StackPanel>
+                        <TextBlock Text="🔒 STOK TAKİBİ KİLİTLİ" FontSize="22" FontWeight="Bold" Foreground="#E74C3C" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                        <TextBlock Text="Bu özelliği kullanabilmek için aktivasyon kodu gereklidir." Foreground="#555" TextWrapping="Wrap" HorizontalAlignment="Center" TextAlignment="Center" Margin="0,0,0,20"/>
+
+                        <TextBox x:Name="txtStokKodu" Height="45" FontSize="18" Padding="10,0" Background="#F8FAFC" BorderBrush="#CBD5E1" BorderThickness="2" Margin="0,0,0,20" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="15"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0" Content="İPTAL" Background="#E2E8F0" Foreground="#334155" Height="45" FontWeight="Bold" Cursor="Hand" Click="btnStokIptal_Click">
+                                <Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="10"/></Style></Button.Resources>
+                            </Button>
+                            <Button Grid.Column="2" Content="AKTİFLEŞTİR" Background="#3B82F6" Foreground="White" Height="45" FontWeight="Bold" Cursor="Hand" Click="btnStokAktiflestir_Click">
+                                <Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="10"/></Style></Button.Resources>
+                            </Button>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </Grid>
 
             <Grid x:Name="AdminPanelTabakasi" Panel.ZIndex="50" Visibility="Collapsed">
                 <Rectangle Fill="Black" Opacity="0.7"/>
@@ -456,7 +527,9 @@
                        Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}}"/>
             <Frame x:Name="OverlayFrame" NavigationUIVisibility="Hidden" Visibility="Collapsed" Background="Transparent" Panel.ZIndex="999"
                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <Label Content="UYGULAMAMIZ BETA SÜRÜMÜNDEDİR HATALARI LÜTFEN BİZE BİLDİRİNİZ !" HorizontalAlignment="Center" Height="48" Margin="0,832,0,0" VerticalAlignment="Top" Width="874" FontSize="24" Background="{x:Null}" Foreground="Red" FontWeight="Bold"/>
+            <Label Content="MAİL : alpsoft41@gmail.com" HorizontalAlignment="Left" Height="50" Margin="798,876,0,0" VerticalAlignment="Top" Width="362" FontSize="24" Background="{x:Null}" Foreground="Red" FontWeight="Bold"/>
 
-    </Grid>
+        </Grid>
     </Viewbox>
 </Window>
