@@ -1,10 +1,14 @@
 using System;
-using System.Data;
-using System.Data.SqlClient;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using alpsoftservistakip.Helpers;
+using alpsoftservistakip.Models;
+using Newtonsoft.Json;
 
 namespace alpsoftservistakip
 {
@@ -25,35 +29,27 @@ namespace alpsoftservistakip
         {
             try
             {
-                using (SqlConnection con = Veritabani.BaglantiAl())
+                using (var client = new HttpClient())
                 {
-                    await con.OpenAsync();
-                    string query = "SELECT CariID, AdSoyadUnvan, Telefon, VergiDairesi, ISNULL(GuncelBakiye,0) as GuncelBakiye, " +
-                                   "CASE " +
-                                   "  WHEN ISNULL(GuncelBakiye,0) > 0 THEN 'Borclu' " +
-                                   "  WHEN ISNULL(GuncelBakiye,0) < 0 THEN 'Alacakli' " +
-                                   "  ELSE 'Sifir' " +
-                                   "END AS BakiyeDurumu " +
-                                   "FROM Cariler WHERE SirketID = @sirketId";
-
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Class1.JwtToken);
+                    string url = $"{ApiConfig.Api}/Cariler";
                     if (!string.IsNullOrWhiteSpace(aramaMetni))
                     {
-                        query += " AND AdSoyadUnvan LIKE @arama";
+                        url += $"?arama={Uri.EscapeDataString(aramaMetni)}";
                     }
 
-                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    var response = await client.GetAsync(url);
+                    if (!response.IsSuccessStatusCode)
                     {
-                        cmd.Parameters.AddWithValue("@sirketId", Class1.AktifKullanici.SirketID);
-                        if (!string.IsNullOrWhiteSpace(aramaMetni))
-                        {
-                            cmd.Parameters.AddWithValue("@arama", "%" + aramaMetni + "%");
-                        }
-
-                        SqlDataAdapter da = new SqlDataAdapter(cmd);
-                        DataTable dt = new DataTable();
-                        await Task.Run(() => da.Fill(dt));
-                        dgCariler.ItemsSource = dt.DefaultView;
+                        var err = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show("Cariler yüklenirken hata oluştu: " + err, "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
                     }
+
+                    var json = await response.Content.ReadAsStringAsync();
+                    var list = JsonConvert.DeserializeObject<List<CariListeDto>>(json);
+                    
+                    dgCariler.ItemsSource = list;
                 }
             }
             catch (Exception ex)
@@ -94,10 +90,10 @@ namespace alpsoftservistakip
 
         private void dgCariler_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (dgCariler.SelectedItem is DataRowView row)
+            if (dgCariler.SelectedItem is CariListeDto row)
             {
-                int cariId = Convert.ToInt32(row["CariID"]);
-                string adSoyad = row["AdSoyadUnvan"].ToString();
+                int cariId = row.CariID;
+                string adSoyad = row.AdSoyadUnvan;
 
                 Window mevcutPencere = Window.GetWindow(this);
                 if (mevcutPencere is Window3 window3)
@@ -108,5 +104,4 @@ namespace alpsoftservistakip
         }
     }
 }
-
 

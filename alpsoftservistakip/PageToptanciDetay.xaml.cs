@@ -1,9 +1,12 @@
 using System;
-using System.Data;
-using System.Data.SqlClient;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using alpsoftservistakip.Helpers;
+using alpsoftservistakip.Models;
+using Newtonsoft.Json;
 
 namespace alpsoftservistakip
 {
@@ -22,99 +25,35 @@ namespace alpsoftservistakip
         {
             try
             {
-                using (SqlConnection con = Veritabani.BaglantiAl())
+                using (var client = new HttpClient())
                 {
-                    await con.OpenAsync();
-
-                    // TOPTANCI BİLGİLERİNİ YÜKLEYİN
-                    string toptanciQuery = @"
-                        SELECT FirmaAdi, Telefon, IBAN
-                        FROM Toptancilar
-                        WHERE ID = @id AND SirketID = @sirketId";
-
-                    using (SqlCommand cmd = new SqlCommand(toptanciQuery, con))
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Class1.JwtToken);
+                    var response = await client.GetAsync($"{ApiConfig.Api}/Toptanci/{_toptanciId}/detay");
+                    
+                    if (!response.IsSuccessStatusCode)
                     {
-                        cmd.Parameters.AddWithValue("@id", _toptanciId);
-                        cmd.Parameters.AddWithValue("@sirketId", Class1.AktifKullanici.SirketID);
-
-                        using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
-                        {
-                            if (await dr.ReadAsync())
-                            {
-                                txtToptanciAdi.Text = dr["FirmaAdi"]?.ToString() ?? "";
-                                txtTelefon.Text = dr["Telefon"]?.ToString() ?? "-";
-                                txtIBAN.Text = dr["IBAN"]?.ToString() ?? "-";
-                            }
-                        }
+                        var err = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Veriler yüklenirken hata: {err}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
                     }
 
-                    // PARÇA ALIMLARI TABLOSUNU YÜKLEYİN
-                    string parcaQuery = @"
-                        SELECT ID, ParcaAdi, Adet, BirimFiyati, ToplamTutar, OdenenTutar, BorcluTutar, IslemTarihi
-                        FROM ToptanciParcaAlimlar
-                        WHERE ToptanciID = @toptanciId AND SirketID = @sirketId
-                        ORDER BY IslemTarihi DESC";
-
-                    using (SqlCommand cmd = new SqlCommand(parcaQuery, con))
-                    {
-                        cmd.Parameters.AddWithValue("@toptanciId", _toptanciId);
-                        cmd.Parameters.AddWithValue("@sirketId", Class1.AktifKullanici.SirketID);
-                        SqlDataAdapter da = new SqlDataAdapter(cmd);
-                        DataTable dt = new DataTable();
-                        await Task.Run(() => da.Fill(dt));
-                        dgParcaAlimlar.ItemsSource = dt.DefaultView;
-                    }
-
-                    // ÖZET HESAPLARINı YAP
-                    await HesaplaOzetAsync();
+                    var json = await response.Content.ReadAsStringAsync();
+                    var dto = JsonConvert.DeserializeObject<ToptanciDetayDto>(json);
+                    
+                    txtToptanciAdi.Text = dto.FirmaAdi ?? "";
+                    txtTelefon.Text = dto.Telefon ?? "-";
+                    txtIBAN.Text = dto.IBAN ?? "-";
+                    
+                    dgParcaAlimlar.ItemsSource = dto.ParcaAlimlari;
+                    
+                    txtToplamAdet.Text = $"{dto.ToplamAdet} ADET";
+                    txtToplamTutar.Text = $"$ {dto.ToplamHarcanan:N2}";
+                    txtToplamBorc.Text = $"$ {dto.ToplamBorc:N2}";
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Veriler yüklenirken hata: {ex.Message}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        private async Task HesaplaOzetAsync()
-        {
-            try
-            {
-                using (SqlConnection con = Veritabani.BaglantiAl())
-                {
-                    await con.OpenAsync();
-
-                    string query = @"
-                        SELECT 
-                            ISNULL(SUM(Adet), 0) AS ToplamAdet,
-                            ISNULL(SUM(ToplamTutar), 0) AS ToplamHarcanan,
-                            ISNULL(SUM(BorcluTutar), 0) AS ToplamBorc
-                        FROM ToptanciParcaAlimlar
-                        WHERE ToptanciID = @toptanciId AND SirketID = @sirketId";
-
-                    using (SqlCommand cmd = new SqlCommand(query, con))
-                    {
-                        cmd.Parameters.AddWithValue("@toptanciId", _toptanciId);
-                        cmd.Parameters.AddWithValue("@sirketId", Class1.AktifKullanici.SirketID);
-
-                        using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
-                        {
-                            if (await dr.ReadAsync())
-                            {
-                                int toplamAdet = Convert.ToInt32(dr["ToplamAdet"]);
-                                decimal toplamHarcanan = Convert.ToDecimal(dr["ToplamHarcanan"]);
-                                decimal toplamBorc = Convert.ToDecimal(dr["ToplamBorc"]);
-
-                                txtToplamAdet.Text = $"{toplamAdet} ADET";
-                                txtToplamTutar.Text = $"$ {toplamHarcanan:N2}";
-                                txtToplamBorc.Text = $"$ {toplamBorc:N2}";
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Hesaplamalar sırasında hata: {ex.Message}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

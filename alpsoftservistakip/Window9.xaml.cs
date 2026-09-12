@@ -1,7 +1,9 @@
-﻿using System;
-using System.Data;
-using System.Data.SqlClient;
+using System;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Services = alpsoftservistakip.Services;
@@ -10,6 +12,8 @@ using System.Windows.Media;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.ComponentModel;
+using alpsoftservistakip.Helpers;
+using alpsoftservistakip.Models;
 
 namespace alpsoftservistakip
 {
@@ -19,7 +23,7 @@ namespace alpsoftservistakip
         private int _kayitId;
         private bool _yuklemeDevamEdiyor = true; // ✅ EKLEME
 
-        private const string ConnectionString = "Server=91.247.168.204,1433;Database=alpsoftservistakip;User Id=sa;Password=Alperengurpinar4160552009;TrustServerCertificate=True;";
+        // Veritabani baglantisi kaldirildi - API kullaniliyor
 
         public Window9()
         {
@@ -138,50 +142,48 @@ namespace alpsoftservistakip
 
         // --- DETAY YÜKLEME METODU ---
 
-        private void LoadRecordDetails(int id)
+        private async void LoadRecordDetails(int id)
         {
-            using (SqlConnection con = new SqlConnection(ConnectionString))
+            try
             {
-                try
+                using (var client = new HttpClient())
                 {
-                    con.Open();
-                    string sorgu = "SELECT * FROM kayitlicihazlar WHERE ID = @ID";
-                    SqlCommand cmd = new SqlCommand(sorgu, con);
-                    cmd.Parameters.AddWithValue("@ID", id);
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Class1.JwtToken);
+                    var response = await client.GetAsync($"{ApiConfig.Api}/KayitliCihazlar/{id}");
+                    if (!response.IsSuccessStatusCode) return;
 
-                    SqlDataReader reader = cmd.ExecuteReader();
+                    var json = await response.Content.ReadAsStringAsync();
+                    var cihaz = Newtonsoft.Json.JsonConvert.DeserializeObject<KayitliCihazDto>(json);
+                    if (cihaz == null) return;
 
-                    if (reader.Read())
-                    {
-                        SetText(adsoyad_skayit, reader["IsimSoyisim"], "Ad Soyad*");
-                        SetText(bayiadi_skayit, reader["BayiAdi"], "Bayi Adı");
-                        SetText(ceptelefonu_skayit, reader["CepTelefonu"], "Cep Telefonu*");
-                        SetText(adres_skayit, reader["Adres"], "Adres");
-                        SetText(eposta_skayit, reader["EPosta"], "E-Posta");
-                        SetText(cihaztürü_skayit, reader["CihazTuru"], "Cihaz Türü*");
-                        SetText(marka_skayit, reader["Marka"], "Marka*");
-                        SetText(model_skayit, reader["Model"], "Model*");
-                        SetText(imeino_skayit, reader["IMEI"], "IMEI No");
-                        SetText(ekbilgiler_skayit, reader["EkBilgiler"], "Ek Bilgiler");
-                        SetText(sikayetiariza_skayit, reader["Ariza"], "Şikayet/Arıza*");
-                        SetText(fiyatbilgisi_skayit1, reader["FiyatBilgisi"], "Fiyat Bilgisi");
-                        SetText(ilgiliteknisyen1, reader["ServisTeknisyen"], "İlgili Teknisyen");
+                    SetText(adsoyad_skayit, cihaz.IsimSoyisim, "Ad Soyad*");
+                    SetText(bayiadi_skayit, cihaz.BayiAdi, "Bayi Adı");
+                    SetText(ceptelefonu_skayit, cihaz.CepTelefonu, "Cep Telefonu*");
+                    SetText(adres_skayit, cihaz.Adres, "Adres");
+                    SetText(eposta_skayit, cihaz.EPosta, "E-Posta");
+                    SetText(cihaztürü_skayit, cihaz.CihazTuru, "Cihaz Türü*");
+                    SetText(marka_skayit, cihaz.Marka, "Marka*");
+                    SetText(model_skayit, cihaz.Model, "Model*");
+                    SetText(imeino_skayit, cihaz.IMEI, "IMEI No");
+                    SetText(ekbilgiler_skayit, cihaz.EkBilgiler, "Ek Bilgiler");
+                    SetText(sikayetiariza_skayit, cihaz.Ariza, "Şikayet/Arıza*");
+                    SetText(fiyatbilgisi_skayit1, cihaz.FiyatBilgisi, "Fiyat Bilgisi");
+                    SetText(ilgiliteknisyen1, cihaz.ServisTeknisyen, "İlgili Teknisyen");
 
-                        servisdurumtext.Text = reader["ServisDurumu"]?.ToString();
+                    servisdurumtext.Text = cihaz.ServisDurumu;
 
-                        yeni.IsChecked = reader["Yeni"] != DBNull.Value && (bool)reader["Yeni"];
-                        eski.IsChecked = reader["Eski"] != DBNull.Value && (bool)reader["Eski"];
-                        tamirgörmüs.IsChecked = reader["TamirGormus"] != DBNull.Value && (bool)reader["TamirGormus"];
-                        garantili.IsChecked = reader["Garantili"] != DBNull.Value && (bool)reader["Garantili"];
-                        garantisiz.IsChecked = reader["Garantisiz"] != DBNull.Value && (bool)reader["Garantisiz"];
-                        servisgarantili.IsChecked = reader["ServisGarantili"] != DBNull.Value && (bool)reader["ServisGarantili"];
-                        yedeklemeyapilsin.IsChecked = reader["YedeklemeYapilsin"] != DBNull.Value && (bool)reader["YedeklemeYapilsin"];
-                    }
+                    yeni.IsChecked = cihaz.Yeni;
+                    eski.IsChecked = cihaz.Eski;
+                    tamirgörmüs.IsChecked = cihaz.TamirGormus;
+                    garantili.IsChecked = cihaz.Garantili;
+                    garantisiz.IsChecked = cihaz.Garantisiz;
+                    servisgarantili.IsChecked = cihaz.ServisGarantili;
+                    yedeklemeyapilsin.IsChecked = cihaz.YedeklemeYapilsin;
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Hata: " + ex.Message);
-                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Hata: " + ex.Message);
             }
         }
 
@@ -445,79 +447,46 @@ namespace alpsoftservistakip
 
         // --- KAYIT METODU ---
 
-        private void sarviskaydınıkaydet_Click(object sender, RoutedEventArgs e)
+        private async void sarviskaydınıkaydet_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(ConnectionString))
+                using (var client = new HttpClient())
                 {
-                    conn.Open();
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Class1.JwtToken);
 
-                    string query = @"
-INSERT INTO Servisler
-(
-BayiAdi,
-IsimSoyisim,
-CepTelefonu,
-Adres,
-Eposta,
-CihazTuru,
-Marka,
-Model,
-ImeiNo,
-EkBilgiler,
-ServisDurumu,
-Teknisyen,
-SikayetAriza,
-Fiyat
-)
-VALUES
-(
-@BayiAdi,
-@IsimSoyisim,
-@CepTelefonu,
-@Adres,
-@Eposta,
-@CihazTuru,
-@Marka,
-@Model,
-@ImeiNo,
-@EkBilgiler,
-@ServisDurumu,
-@Teknisyen,
-@SikayetAriza,
-@Fiyat
-)";
+                    string Clean(string text, string placeholder)
+                        => (text == placeholder || string.IsNullOrWhiteSpace(text)) ? null : text;
 
-                    SqlCommand cmd = new SqlCommand(query, conn);
-
-                    // ✅ Boşsa NULL gönder
-                    object DB(string text)
+                    var dto = new CreateKayitliCihazDto
                     {
-                        return string.IsNullOrWhiteSpace(text)
-                            ? (object)DBNull.Value
-                            : text;
+                        BayiAdi = Clean(bayiadi_skayit.Text, "Bayi Adı"),
+                        IsimSoyisim = Clean(adsoyad_skayit.Text, "Ad Soyad*"),
+                        CepTelefonu = Clean(ceptelefonu_skayit.Text, "Cep Telefonu*"),
+                        Adres = Clean(adres_skayit.Text, "Adres"),
+                        EPosta = Clean(eposta_skayit.Text, "E-Posta"),
+                        CihazTuru = Clean(cihaztürü_skayit.Text, "Cihaz Türü*"),
+                        Marka = Clean(marka_skayit.Text, "Marka*"),
+                        Model = Clean(model_skayit.Text, "Model*"),
+                        IMEI = Clean(imeino_skayit.Text, "IMEI No"),
+                        EkBilgiler = Clean(ekbilgiler_skayit.Text, "Ek Bilgiler"),
+                        ServisDurumu = servisdurumtext.Text,
+                        ServisTeknisyen = Clean(ilgiliteknisyen1.Text, "İlgili Teknisyen"),
+                        Ariza = Clean(sikayetiariza_skayit.Text, "Şikayet/Arıza*"),
+                        FiyatBilgisi = Clean(fiyatbilgisi_skayit1.Text, "Fiyat Bilgisi")
+                    };
+
+                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(dto);
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+                    var response = await client.PostAsync($"{ApiConfig.Api}/KayitliCihazlar", content);
+
+                    if (response.IsSuccessStatusCode)
+                        MessageBox.Show("✅ Kayıt başarıyla eklendi");
+                    else
+                    {
+                        var err = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show("HATA: " + err);
                     }
-
-
-                    cmd.Parameters.AddWithValue("@BayiAdi", DB(bayiadi_skayit.Text));
-                    cmd.Parameters.AddWithValue("@IsimSoyisim", DB(adsoyad_skayit.Text));
-                    cmd.Parameters.AddWithValue("@CepTelefonu", DB(ceptelefonu_skayit.Text));
-                    cmd.Parameters.AddWithValue("@Adres", DB(adres_skayit.Text));
-                    cmd.Parameters.AddWithValue("@Eposta", DB(eposta_skayit.Text));
-                    cmd.Parameters.AddWithValue("@CihazTuru", DB(cihaztürü_skayit.Text));
-                    cmd.Parameters.AddWithValue("@Marka", DB(marka_skayit.Text));
-                    cmd.Parameters.AddWithValue("@Model", DB(model_skayit.Text));
-                    cmd.Parameters.AddWithValue("@ImeiNo", DB(imeino_skayit.Text));
-                    cmd.Parameters.AddWithValue("@EkBilgiler", DB(ekbilgiler_skayit.Text));
-                    cmd.Parameters.AddWithValue("@ServisDurumu", DB(servisdurumtext.Text));
-                    cmd.Parameters.AddWithValue("@Teknisyen", DB(ilgiliteknisyen1.Text));
-                    cmd.Parameters.AddWithValue("@SikayetAriza", DB(sikayetiariza_skayit.Text));
-                    cmd.Parameters.AddWithValue("@Fiyat", DB(fiyatbilgisi_skayit1.Text));
-
-                    cmd.ExecuteNonQuery();
-
-                    MessageBox.Show("✅ Kayıt başarıyla eklendi");
                 }
             }
             catch (Exception ex)

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Xps;
 using System.Windows.Xps.Packaging;
+using alpsoftservistakip.Helpers;
 
 namespace alpsoftservistakip
 {
@@ -144,7 +145,7 @@ namespace alpsoftservistakip
                     cmd.Parameters.AddWithValue("@m", markadisservis.Text == PlaceholderMarka ? "" : markadisservis.Text);
                     cmd.Parameters.AddWithValue("@mo", modeldisservis.Text == PlaceholderModel ? "" : modeldisservis.Text);
                     cmd.Parameters.AddWithValue("@a", arizadisservis.Text == PlaceholderAriza ? "" : arizadisservis.Text);
-                    cmd.Parameters.AddWithValue("@k", LoginWindow.aktifKullaniciID);
+                    cmd.Parameters.AddWithValue("@k", Class1.AktifKullanici.ID);
                     cmd.Parameters.AddWithValue("@it", ilgiliteknisyendisservis.Text == PlaceholderTeknisyen ? "" : ilgiliteknisyendisservis.Text);
                     cmd.Parameters.AddWithValue("@yb", bayiadidisservis.Text == PlaceholderBayi ? "" : bayiadidisservis.Text);
                     cmd.Parameters.AddWithValue("@dt", DateTime.Now);
@@ -764,27 +765,33 @@ namespace alpsoftservistakip
         // =========================
         // DİĞER YARDIMCI METOTLAR
         // =========================
-        private void LoadRecordDetails(int id)
+        private async void LoadRecordDetails(int id)
         {
             try
             {
-                using (SqlConnection con = new SqlConnection(connectionString))
+                using (System.Net.Http.HttpClient client = new System.Net.Http.HttpClient())
                 {
-                    con.Open();
-                    SqlCommand cmd = new SqlCommand("SELECT * FROM disserviskayitlarnew WHERE KayitID=@id", con);
-                    cmd.Parameters.AddWithValue("@id", id);
-                    using (SqlDataReader r = cmd.ExecuteReader())
+                    client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Class1.JwtToken);
+                    var response = await client.GetAsync($"{ApiConfig.Api}/DisServis/{id}");
+                    if (response.IsSuccessStatusCode)
                     {
-                        if (r.Read())
+                        var json = await response.Content.ReadAsStringAsync();
+                        var data = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(json);
+
+                        if (data != null)
                         {
-                            SetTextBoxValue(isimsoyisimdisservis, r["IsimSoyisim"]);
-                            SetTextBoxValue(telefonnumarasidisservis, r["TelefonNumarasi"]);
-                            SetTextBoxValue(markadisservis, r["Marka"]);
-                            SetTextBoxValue(modeldisservis, r["Model"]);
-                            SetTextBoxValue(arizadisservis, r["Ariza"]);
-                            SetTextBoxValue(ilgiliteknisyendisservis, r["İlgiliTeknisyen"]);
-                            SetTextBoxValue(bayiadidisservis, r["YetkiliBayi"]);
+                            SetTextBoxValue(isimsoyisimdisservis, data.isimSoyisim);
+                            SetTextBoxValue(telefonnumarasidisservis, data.cepTelefonu);
+                            SetTextBoxValue(markadisservis, data.marka);
+                            SetTextBoxValue(modeldisservis, data.model);
+                            SetTextBoxValue(arizadisservis, data.ariza);
+                            SetTextBoxValue(ilgiliteknisyendisservis, data.ilgiliTeknisyen);
+                            SetTextBoxValue(bayiadidisservis, data.yetkiliBayi);
                         }
+                    }
+                    else
+                    {
+                        MessageBox.Show("API üzerinden dış servis kaydı bulunamadı.", "Hata", MessageBoxButton.OK, MessageBoxImage.Warning);
                     }
                 }
             }

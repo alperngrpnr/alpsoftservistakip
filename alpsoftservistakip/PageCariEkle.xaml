@@ -6,132 +6,174 @@
       xmlns:local="clr-namespace:alpsoftservistakip"
       mc:Ignorable="d" 
       d:DesignHeight="700" d:DesignWidth="1000"
-      Background="#F0F4F8"
-      Title="PageCariEkle">
+      Background="#0D1017"
+      Title="Cari Ekle">
 
     <Page.Resources>
-        <SolidColorBrush x:Key="PrimaryColor" Color="#3498DB"/>
-        <SolidColorBrush x:Key="SecondaryDark" Color="#2C3E50"/>
-        <SolidColorBrush x:Key="SuccessColor" Color="#2ECC71"/>
+        <SolidColorBrush x:Key="BgPage" Color="#0D1017"/>
+        <SolidColorBrush x:Key="BgCard" Color="#151923"/>
+        <SolidColorBrush x:Key="BgInput" Color="#181D29"/>
+        <SolidColorBrush x:Key="BorderNormal" Color="#252D3D"/>
+        <SolidColorBrush x:Key="BorderFocus" Color="#06B6D4"/>
+        <SolidColorBrush x:Key="TextPrimary" Color="#F8FAFC"/>
+        <SolidColorBrush x:Key="TextSecondary" Color="#94A3B8"/>
+        <SolidColorBrush x:Key="TextMuted" Color="#64748B"/>
+        <SolidColorBrush x:Key="AccentCyan" Color="#0891B2"/>
 
         <!-- Stil: Başlık Yazıları -->
         <Style TargetType="TextBlock" x:Key="FormLabelStyle">
             <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Foreground" Value="#718096"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Margin" Value="0,0,0,5"/>
+            <Setter Property="Foreground" Value="{StaticResource TextSecondary}"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Margin" Value="0,0,0,6"/>
         </Style>
 
         <!-- Stil: TextBox -->
         <Style TargetType="TextBox" x:Key="FormInputStyle">
-            <Setter Property="Height" Value="45"/>
-            <Setter Property="Padding" Value="15,0"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Background" Value="#F8FAFC"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Background" Value="{StaticResource BgInput}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="BorderBrush" Value="#E2E8F0"/>
-            <Setter Property="Foreground" Value="#2D3748"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderNormal}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+            <Setter Property="CaretBrush" Value="#22D3EE"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Margin" Value="0,0,0,20"/>
+            <Setter Property="Margin" Value="0,0,0,16"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
-                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="10">
-                            <ScrollViewer x:Name="PART_ContentHost" VerticalAlignment="Center"/>
+                        <Border x:Name="bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="8">
+                            <ScrollViewer x:Name="PART_ContentHost" VerticalAlignment="Center" Margin="2,0"/>
                         </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="BorderBrush" Value="#3E4A62"/>
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="bd" Property="BorderBrush" Value="{StaticResource BorderFocus}"/>
+                                <Setter TargetName="bd" Property="Background" Value="#1C2333"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-
-        <!-- Stil: Kaydet Butonu -->
-        <Style x:Key="SaveButton" TargetType="Button">
-            <Setter Property="Background" Value="{StaticResource SuccessColor}"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="FontSize" Value="16"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Height" Value="55"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" CornerRadius="10">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#27AE60"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
     </Page.Resources>
 
-    <Grid Margin="40">
+    <Grid Background="{StaticResource BgPage}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!-- Üst Başlık ve Geri Dön -->
-        <Grid Grid.Row="0" Margin="0,0,0,30">
-            <StackPanel Orientation="Horizontal">
-                <Border Width="5" Height="35" Background="{StaticResource SuccessColor}" Margin="0,0,15,0"/>
-                <TextBlock Text="Yeni Cari / Müşteri Ekle" FontSize="30" FontWeight="ExtraBold" Foreground="{StaticResource SecondaryDark}"/>
+        <Grid Grid.Row="0" Margin="24,20,24,20">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Border Width="4" Height="28" Background="{StaticResource AccentCyan}" Margin="0,0,12,0" CornerRadius="2"/>
+                <Border Width="30" Height="30" CornerRadius="7" Background="#083344" BorderBrush="#0E7490" BorderThickness="1" Margin="0,0,10,0" VerticalAlignment="Center">
+                    <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="#22D3EE" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="Yeni Cari / Müşteri Kaydı" FontSize="20" FontWeight="Bold" Foreground="{StaticResource TextPrimary}"/>
+                    <TextBlock Text="Sisteme yeni müşteri veya cari hesap tanımlayın" FontSize="11" Foreground="{StaticResource TextMuted}"/>
+                </StackPanel>
             </StackPanel>
 
-            <Button HorizontalAlignment="Right" Content="Vazgeç / İptal" Width="180" Height="45" Click="btnIptal_Click"
-                    Background="White" Foreground="#E74C3C" BorderBrush="#E74C3C" BorderThickness="1.5" FontWeight="Bold" Cursor="Hand">
-                <Button.Resources>
-                    <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="22.5"/>
-                    </Style>
-                </Button.Resources>
+            <Button HorizontalAlignment="Right" Content="Vazgeç / İptal" Click="btnIptal_Click"
+                    Background="#1E2433" Foreground="#F87171" BorderBrush="#7F1D1D" BorderThickness="1" 
+                    FontWeight="SemiBold" FontSize="12" Cursor="Hand" Padding="16,8"
+                    RenderTransformOrigin="0.5,0.5">
+                <Button.RenderTransform>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Button.RenderTransform>
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="8" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="#3B1D20"/>
+                                <Setter TargetName="bd" Property="BorderBrush" Value="#EF4444"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.96" ScaleY="0.96"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="bd" Property="Background" Value="#1A0D0F"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
             </Button>
         </Grid>
 
         <!-- Form Alanı -->
-        <Border Grid.Row="1" Background="White" CornerRadius="20" Padding="40" MaxWidth="800" HorizontalAlignment="Left">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="30" Opacity="0.05" ShadowDepth="5" Color="Black"/>
-            </Border.Effect>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <Border Background="{StaticResource BgCard}" CornerRadius="12" Padding="28" MaxWidth="850" HorizontalAlignment="Left" Margin="24,0,24,24" BorderBrush="{StaticResource BorderNormal}" BorderThickness="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="40"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+                    <!-- Sol Sütun -->
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Müşteri Adı Soyadı / Firma Ünvanı *" Style="{StaticResource FormLabelStyle}"/>
+                        <TextBox x:Name="txtUnvan" Style="{StaticResource FormInputStyle}"/>
 
-                <!-- Sol Sütun -->
-                <StackPanel Grid.Column="0">
-                    <TextBlock Text="Müşteri Adı Özsoyad / Firma Ünvanı *" Style="{StaticResource FormLabelStyle}"/>
-                    <TextBox x:Name="txtUnvan" Style="{StaticResource FormInputStyle}"/>
+                        <TextBlock Text="Telefon Numarası" Style="{StaticResource FormLabelStyle}"/>
+                        <TextBox x:Name="txtTelefon" Style="{StaticResource FormInputStyle}" MaxLength="11" PreviewTextInput="txtTelefon_PreviewTextInput"/>
 
-                    <TextBlock Text="Telefon Numarası" Style="{StaticResource FormLabelStyle}"/>
-                    <TextBox x:Name="txtTelefon" Style="{StaticResource FormInputStyle}" MaxLength="11" PreviewTextInput="txtTelefon_PreviewTextInput"/>
+                        <TextBlock Text="E-Posta Adresi" Style="{StaticResource FormLabelStyle}"/>
+                        <TextBox x:Name="txtEmail" Style="{StaticResource FormInputStyle}"/>
+                    </StackPanel>
 
-                    <TextBlock Text="E-Posta Adresi" Style="{StaticResource FormLabelStyle}"/>
-                    <TextBox x:Name="txtEmail" Style="{StaticResource FormInputStyle}"/>
-                </StackPanel>
+                    <!-- Sağ Sütun -->
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Vergi Dairesi" Style="{StaticResource FormLabelStyle}"/>
+                        <TextBox x:Name="txtVergiDairesi" Style="{StaticResource FormInputStyle}"/>
 
-                <!-- Sağ Sütun -->
-                <StackPanel Grid.Column="2">
-                    <TextBlock Text="Vergi Dairesi" Style="{StaticResource FormLabelStyle}"/>
-                    <TextBox x:Name="txtVergiDairesi" Style="{StaticResource FormInputStyle}"/>
+                        <TextBlock Text="Vergi Numarası / T.C. Kimlik" Style="{StaticResource FormLabelStyle}"/>
+                        <TextBox x:Name="txtVergiNo" Style="{StaticResource FormInputStyle}"/>
 
-                    <TextBlock Text="Vergi Numarası / T.C. Kimlik" Style="{StaticResource FormLabelStyle}"/>
-                    <TextBox x:Name="txtVergiNo" Style="{StaticResource FormInputStyle}"/>
+                        <TextBlock Text="Açık Adres" Style="{StaticResource FormLabelStyle}"/>
+                        <TextBox x:Name="txtAdres" Style="{StaticResource FormInputStyle}" Height="80" TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" Padding="12,10"/>
 
-                    <TextBlock Text="Açık Adres" Style="{StaticResource FormLabelStyle}"/>
-                    <TextBox x:Name="txtAdres" Style="{StaticResource FormInputStyle}" Height="80" TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" Padding="15,10"/>
-
-                    <Button Content="Cariyi Kaydet" Style="{StaticResource SaveButton}" Margin="0,10,0,0" Click="btnKaydet_Click"/>
-                </StackPanel>
-            </Grid>
-        </Border>
+                        <Button Content="Cariyi Kaydet" Margin="0,10,0,0" Height="42" Click="btnKaydet_Click" Cursor="Hand" FontWeight="Bold" FontSize="13"
+                                RenderTransformOrigin="0.5,0.5">
+                            <Button.RenderTransform>
+                                <ScaleTransform ScaleX="1" ScaleY="1"/>
+                            </Button.RenderTransform>
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border x:Name="bd" Background="#0891B2" BorderBrush="#0E7490" BorderThickness="1" CornerRadius="8">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="bd" Property="Background" Value="#06B6D4"/>
+                                            <Setter TargetName="bd" Property="BorderBrush" Value="#22D3EE"/>
+                                        </Trigger>
+                                        <Trigger Property="IsPressed" Value="True">
+                                            <Setter Property="RenderTransform">
+                                                <Setter.Value>
+                                                    <ScaleTransform ScaleX="0.96" ScaleY="0.96"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Setter TargetName="bd" Property="Background" Value="#083344"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </ScrollViewer>
     </Grid>
 </Page>

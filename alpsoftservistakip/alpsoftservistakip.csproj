@@ -70,10 +70,10 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>
@@ -121,6 +121,9 @@
     <Reference Include="System.Printing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -142,13 +145,19 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controls\SatisFisi.xaml.cs">
+      <DependentUpon>SatisFisi.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ServisKayitFisi.xaml.cs">
       <DependentUpon>ServisKayitFisi.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\JObjectPropertyConverter.cs" />
     <Compile Include="Models\Class1.cs" />
-    <Compile Include="Models\Class2.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="Models\ServisKayitFisiData.cs" />
+    <Compile Include="Models\DisServisKayitDto.cs" />
+    <Compile Include="Models\DisServisTasimaDto.cs" />
+    <Compile Include="Helper\ApiConfig.cs" />
     <Compile Include="PageKayitOlustur.xaml.cs">
       <DependentUpon>PageKayitOlustur.xaml</DependentUpon>
     </Compile>
@@ -171,9 +180,6 @@
       <DependentUpon>PageCariDetay.xaml</DependentUpon>
     </Compile>
     <Compile Include="Services\WpfPrintService.cs" />
-    <Compile Include="Window1.xaml.cs">
-      <DependentUpon>Window1.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Window10.xaml.cs">
       <DependentUpon>Window10.xaml</DependentUpon>
     </Compile>
@@ -228,6 +234,110 @@
     <Compile Include="Page5.xaml.cs">
       <DependentUpon>Page5.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DisServisPopup.xaml.cs">
+      <DependentUpon>DisServisPopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ForgotPasswordPage.xaml.cs">
+      <DependentUpon>ForgotPasswordPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LoginHostWindow.xaml.cs">
+      <DependentUpon>LoginHostWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LoginPage.xaml.cs">
+      <DependentUpon>LoginPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PageKategoriYonetimi.xaml.cs">
+      <DependentUpon>PageKategoriYonetimi.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PageMailKurulumYardim.xaml.cs">
+      <DependentUpon>PageMailKurulumYardim.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PageSatisGecmisi.xaml.cs">
+      <DependentUpon>PageSatisGecmisi.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PageStokSatis.xaml.cs">
+      <DependentUpon>PageStokSatis.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PageStokTakibi.xaml.cs">
+      <DependentUpon>PageStokTakibi.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PageStokUrunEkle.xaml.cs">
+      <DependentUpon>PageStokUrunEkle.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="RegisterPage.xaml.cs">
+      <DependentUpon>RegisterPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PageAdminPanel.xaml.cs">
+      <DependentUpon>PageAdminPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AppClientFactory.cs" />
+    <Compile Include="Class1.cs" />
+    <Compile Include="CustomMessageBox.cs" />
+    <Compile Include="Helpers\SessionHelper.cs" />
+    <Compile Include="Helpers\ToptanciHelper.cs" />
+    <Compile Include="Helpers\BarcodeGenerator.cs" />
+    <Compile Include="Models\TanexTemplates.cs" />
+    <Compile Include="WindowBarkodYazdir.xaml.cs">
+      <DependentUpon>WindowBarkodYazdir.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AppSession.cs" />
+    <Compile Include="Models\BasitEkleDto.cs" />
+    <Compile Include="Models\CariComboDto.cs" />
+    <Compile Include="Models\CariDetayDto.cs" />
+    <Compile Include="Models\CariEkleDto.cs" />
+    <Compile Include="Models\CariHareketDto.cs" />
+    <Compile Include="Models\CariHareketEkleDto.cs" />
+    <Compile Include="Models\CariListesiDto.cs" />
+    <Compile Include="Models\CreateKayitliCihazDto.cs" />
+    <Compile Include="Models\DemoLoginDto.cs" />
+    <Compile Include="Models\EmailDto.cs" />
+    <Compile Include="Models\FiltreVerileriDto.cs" />
+    <Compile Include="Models\IsciEkleDto.cs" />
+    <Compile Include="Models\IscilerDto.cs" />
+    <Compile Include="Models\KategoriDto.cs" />
+    <Compile Include="Models\KategoriEkleDto.cs" />
+    <Compile Include="Models\KayitliCihazDto.cs" />
+    <Compile Include="Models\KayitliCihazModel.cs" />
+    <Compile Include="Models\KullaniciEkleDto.cs" />
+    <Compile Include="Models\KullaniciListeDto.cs" />
+    <Compile Include="Models\KullaniciModelDto.cs" />
+    <Compile Include="Models\LoginRequest.cs" />
+    <Compile Include="Models\LoginResponse.cs" />
+    <Compile Include="Models\MarkaDto.cs" />
+    <Compile Include="Models\MarkaEkleDto.cs" />
+    <Compile Include="Models\ModelDto.cs" />
+    <Compile Include="Models\ModelEkleDto.cs" />
+    <Compile Include="Models\RegisterDto.cs" />
+    <Compile Include="Models\ResetPassword.cs" />
+    <Compile Include="Models\ResetPasswordDto.cs" />
+    <Compile Include="Models\ResetPasswordRequest.cs" />
+    <Compile Include="Models\SatisKalemDto.cs" />
+    <Compile Include="Models\SatisListeDto.cs" />
+    <Compile Include="Models\SatisListeFiltreDto.cs" />
+    <Compile Include="Models\SatisTamamlaDto.cs" />
+    <Compile Include="Models\SatisTamamlaSonucDto.cs" />
+    <Compile Include="Models\SonrakiUrunKoduDto.cs" />
+    <Compile Include="Models\SonSatisDto.cs" />
+    <Compile Include="Models\StokAktivasyon.cs" />
+    <Compile Include="Models\StokAktivasyonDto.cs" />
+    <Compile Include="Models\StokFiltreDto.cs" />
+    <Compile Include="Models\StokListeDto.cs" />
+    <Compile Include="Models\StokUrunDetayDto.cs" />
+    <Compile Include="Models\StokUrunKaydetDto.cs" />
+    <Compile Include="Models\StokUrunListeDto.cs" />
+    <Compile Include="Models\StokUrunSecDto.cs" />
+    <Compile Include="Models\ToptanciDetayDto.cs" />
+    <Compile Include="Models\ToptanciKaydetDto.cs" />
+    <Compile Include="Models\ToptanciListeDto.cs" />
+    <Compile Include="Models\ToptanciParcaAlimDto.cs" />
+    <Compile Include="Models\UrunDto.cs" />
+    <Compile Include="Models\WorkerCreateDto.cs" />
+    <Compile Include="Models\WorkerDto.cs" />
+    <Compile Include="ViewModels\Page5ViewModel.cs" />
+    <Compile Include="ViewModels\Window5ViewModel.cs" />
+    <Page Include="Controls\SatisFisi.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\ServisKayitFisi.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -258,10 +368,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Window1.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Window10.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -283,6 +389,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Window3.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowBarkodYazdir.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -319,6 +429,54 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Page5.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DisServisPopup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ForgotPasswordPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LoginHostWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LoginPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PageKategoriYonetimi.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PageMailKurulumYardim.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PageSatisGecmisi.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PageStokSatis.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PageStokTakibi.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PageStokUrunEkle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RegisterPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PageAdminPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

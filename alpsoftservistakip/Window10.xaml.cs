@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,7 +34,7 @@ namespace alpsoftservistakip
             
             await Task.Delay(2500); // 2.5 saniye splash
 
-            LoginWindow login = new LoginWindow();
+            LoginHostWindow login = new LoginHostWindow();
             login.Show();
 
             this.Close();

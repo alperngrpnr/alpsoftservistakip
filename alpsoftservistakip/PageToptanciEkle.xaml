@@ -6,20 +6,20 @@
       xmlns:local="clr-namespace:alpsoftservistakip"
       mc:Ignorable="d" 
       d:DesignHeight="700" d:DesignWidth="1000"
-      Background="#F0F4F8"
+      Background="#0D1017"
       Title="PageToptanciEkle">
 
     <Page.Resources>
-        <SolidColorBrush x:Key="PrimaryColor" Color="#3498DB"/>
-        <SolidColorBrush x:Key="SecondaryDark" Color="#2C3E50"/>
-        <SolidColorBrush x:Key="SuccessColor" Color="#2ECC71"/>
+        <SolidColorBrush x:Key="PrimaryColor" Color="#3B82F6"/>
+        <SolidColorBrush x:Key="SecondaryDark" Color="#F8FAFC"/>
+        <SolidColorBrush x:Key="SuccessColor" Color="#10B981"/>
 
         <!-- Stil: Başlık Yazıları -->
         <Style TargetType="TextBlock" x:Key="FormLabelStyle">
             <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Foreground" Value="#718096"/>
+            <Setter Property="Foreground" Value="#94A3B8"/>
             <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Margin" Value="0,0,0,5"/>
+            <Setter Property="Margin" Value="0,0,0,6"/>
         </Style>
 
         <!-- Stil: TextBox -->
@@ -27,10 +27,11 @@
             <Setter Property="Height" Value="45"/>
             <Setter Property="Padding" Value="15,0"/>
             <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Background" Value="#F8FAFC"/>
+            <Setter Property="Background" Value="#181D29"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="BorderBrush" Value="#E2E8F0"/>
-            <Setter Property="Foreground" Value="#2D3748"/>
+            <Setter Property="BorderBrush" Value="#252D3D"/>
+            <Setter Property="Foreground" Value="#F8FAFC"/>
+            <Setter Property="CaretBrush" Value="#3B82F6"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Margin" Value="0,0,0,20"/>
             <Setter Property="Template">
@@ -42,6 +43,11 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter Property="BorderBrush" Value="#3B82F6"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
 
         <!-- Stil: Kaydet Butonu -->
@@ -63,7 +69,7 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#27AE60"/>
+                    <Setter Property="Background" Value="#059669"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -78,30 +84,26 @@
         <!-- Üst Başlık ve Geri Dön -->
         <Grid Grid.Row="0" Margin="0,0,0,30">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <TextBlock Text="📦" FontSize="36" Margin="0,0,15,0" VerticalAlignment="Center"/>
-                <TextBlock x:Name="txtUstBaslik" Text="YENİ TOPTANCI EKLE" FontSize="32" FontWeight="ExtraBold" Foreground="{StaticResource SecondaryDark}" VerticalAlignment="Center"/>
+                <TextBlock Text="📦" FontSize="32" Margin="0,0,12,0" VerticalAlignment="Center"/>
+                <TextBlock x:Name="txtUstBaslik" Text="YENİ TOPTANCI EKLE" FontSize="28" FontWeight="ExtraBold" Foreground="#F8FAFC" VerticalAlignment="Center"/>
             </StackPanel>
 
-            <Button HorizontalAlignment="Right" Content="✕ VAZGEÇ" Width="160" Height="45" Click="btnIptal_Click"
-                    Background="White" Foreground="#E74C3C" BorderBrush="#E74C3C" BorderThickness="2" FontWeight="Bold" FontSize="14" Cursor="Hand">
+            <Button HorizontalAlignment="Right" Content="✕ VAZGEÇ" Width="140" Height="42" Click="btnIptal_Click"
+                    Background="#1E293B" Foreground="#EF4444" BorderBrush="#EF4444" BorderThickness="1" FontWeight="Bold" FontSize="13" Cursor="Hand">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="22.5"/>
+                        <Setter Property="CornerRadius" Value="10"/>
                     </Style>
                 </Button.Resources>
             </Button>
         </Grid>
 
         <!-- Form Alanı -->
-        <Border Grid.Row="1" Background="White" CornerRadius="25" Padding="50" MaxWidth="900" HorizontalAlignment="Center">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="40" Opacity="0.08" ShadowDepth="10" Color="Black"/>
-            </Border.Effect>
-
+        <Border Grid.Row="1" Background="#151923" CornerRadius="16" Padding="50" MaxWidth="900" HorizontalAlignment="Center" BorderBrush="#252D3D" BorderThickness="1">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="60"/> <!-- Genişletildi -->
+                    <ColumnDefinition Width="60"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
@@ -111,22 +113,22 @@
 
                 <!-- Sol Sütun -->
                 <StackPanel Grid.Column="0">
-                    <TextBlock Text="Toptancı Adı / Firma Ünvanı *" Style="{StaticResource FormLabelStyle}" Foreground="#2C3E50" FontSize="16"/>
-                    <TextBox x:Name="txtFirmaAdi" Style="{StaticResource FormInputStyle}" Height="50" FontSize="16" Margin="0,0,0,25"/>
+                    <TextBlock Text="Toptancı Adı / Firma Ünvanı *" Style="{StaticResource FormLabelStyle}"/>
+                    <TextBox x:Name="txtFirmaAdi" Style="{StaticResource FormInputStyle}" Height="50" FontSize="15" Margin="0,0,0,25"/>
 
-                    <TextBlock Text="Telefon Numarası" Style="{StaticResource FormLabelStyle}" Foreground="#2C3E50" FontSize="16"/>
-                    <TextBox x:Name="txtTelefon" Style="{StaticResource FormInputStyle}" Height="50" FontSize="16" MaxLength="15" Margin="0,0,0,25"/>
+                    <TextBlock Text="Telefon Numarası" Style="{StaticResource FormLabelStyle}"/>
+                    <TextBox x:Name="txtTelefon" Style="{StaticResource FormInputStyle}" Height="50" FontSize="15" MaxLength="15" Margin="0,0,0,25"/>
                 </StackPanel>
 
                 <!-- Sağ Sütun -->
                 <StackPanel Grid.Column="2">
-                    <TextBlock Text="IBAN Bilgisi" Style="{StaticResource FormLabelStyle}" Foreground="#2C3E50" FontSize="16"/>
-                    <TextBox x:Name="txtIBAN" Style="{StaticResource FormInputStyle}" Height="50" FontSize="16" MaxLength="34" Margin="0,0,0,25"/>
+                    <TextBlock Text="IBAN Bilgisi" Style="{StaticResource FormLabelStyle}"/>
+                    <TextBox x:Name="txtIBAN" Style="{StaticResource FormInputStyle}" Height="50" FontSize="15" MaxLength="34" Margin="0,0,0,25"/>
 
-                    <TextBlock Text="Açıklama / Notlar" Style="{StaticResource FormLabelStyle}" Foreground="#2C3E50" FontSize="16"/>
+                    <TextBlock Text="Açıklama / Notlar" Style="{StaticResource FormLabelStyle}"/>
                     <TextBox x:Name="txtAciklama" Style="{StaticResource FormInputStyle}" Height="95" TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" Padding="15,10" Margin="0,0,0,25"/>
 
-                    <Button x:Name="btnKaydet" Content="💾 KAYDET" Style="{StaticResource SaveButton}" Margin="0,15,0,0" Click="btnKaydet_Click" Height="60" FontSize="18"/>
+                    <Button x:Name="btnKaydet" Content="💾 KAYDET" Style="{StaticResource SaveButton}" Margin="0,15,0,0" Click="btnKaydet_Click" Height="55" FontSize="16"/>
                 </StackPanel>
             </Grid>
         </Border>

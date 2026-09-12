@@ -6,45 +6,46 @@
       xmlns:local="clr-namespace:alpsoftservistakip"
       mc:Ignorable="d" 
       d:DesignHeight="950" d:DesignWidth="1400"
-      Background="#F0F4F8"
+      Background="#0D1017"
       Title="Toptancı Yönetimi">
 
     <Page.Resources>
-        <SolidColorBrush x:Key="PrimaryColor" Color="#3498DB"/>
-        <SolidColorBrush x:Key="SecondaryDark" Color="#2C3E50"/>
+        <SolidColorBrush x:Key="PrimaryColor" Color="#3B82F6"/>
+        <SolidColorBrush x:Key="SecondaryDark" Color="#F8FAFC"/>
 
         <Style TargetType="DataGrid">
-            <Setter Property="Background" Value="White"/>
+            <Setter Property="Background" Value="#151923"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="RowHeight" Value="55"/>
             <Setter Property="FontFamily" Value="Segoe UI"/>
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="HeadersVisibility" Value="Column"/>
             <Setter Property="GridLinesVisibility" Value="Horizontal"/>
-            <Setter Property="HorizontalGridLinesBrush" Value="#EDF2F7"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#252D3D"/>
         </Style>
 
         <Style TargetType="DataGridColumnHeader">
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="Foreground" Value="#718096"/>
+            <Setter Property="Background" Value="#181D29"/>
+            <Setter Property="Foreground" Value="#94A3B8"/>
             <Setter Property="FontFamily" Value="Segoe UI"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="Padding" Value="15,10"/>
-            <Setter Property="BorderThickness" Value="0,0,0,2"/>
-            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="BorderBrush" Value="#252D3D"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
         </Style>
 
         <Style TargetType="DataGridRow">
-            <Setter Property="Background" Value="White"/>
+            <Setter Property="Background" Value="#151923"/>
+            <Setter Property="Foreground" Value="#F8FAFC"/>
             <Style.Triggers>
                 <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Background" Value="#E1F0FA"/>
-                    <Setter Property="Foreground" Value="#2C3E50"/>
+                    <Setter Property="Background" Value="#1E3A8A"/>
+                    <Setter Property="Foreground" Value="#FFFFFF"/>
                 </Trigger>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#F8FAFC"/>
+                    <Setter Property="Background" Value="#1E293B"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -86,19 +87,21 @@
         </Style>
 
         <Style x:Key="TopBackBtn" TargetType="Button" BasedOn="{StaticResource TopActionBtn}">
-            <Setter Property="Background" Value="{StaticResource SecondaryDark}"/>
+            <Setter Property="Background" Value="#1E293B"/>
+            <Setter Property="BorderBrush" Value="#252D3D"/>
+            <Setter Property="BorderThickness" Value="1"/>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#1F2D3A"/>
+                    <Setter Property="Background" Value="#334155"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
 
         <Style x:Key="TopPrimaryBtn" TargetType="Button" BasedOn="{StaticResource TopActionBtn}">
-            <Setter Property="Background" Value="{StaticResource PrimaryColor}"/>
+            <Setter Property="Background" Value="#2563EB"/>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#2980B9"/>
+                    <Setter Property="Background" Value="#1D4ED8"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -113,9 +116,9 @@
 
         <!-- Üst Başlık ve Geri Dön Butonu -->
         <Grid Grid.Row="0" Margin="0,0,0,20">
-            <StackPanel Orientation="Horizontal">
-                <Border Width="5" Height="35" Background="{StaticResource PrimaryColor}" Margin="0,0,15,0"/>
-                <TextBlock Text="Toptancı Yönetimi" FontSize="30" FontWeight="ExtraBold" Foreground="{StaticResource SecondaryDark}"/>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Border Width="5" Height="35" Background="{StaticResource PrimaryColor}" Margin="0,0,15,0" CornerRadius="2"/>
+                <TextBlock Text="Toptancı Yönetimi" FontSize="28" FontWeight="ExtraBold" Foreground="#F8FAFC" VerticalAlignment="Center"/>
             </StackPanel>
 
             <Button HorizontalAlignment="Right" Content="ANA MENÜYE DÖN" Width="220" Click="btnGeri_Click" Style="{StaticResource TopBackBtn}"/>
@@ -125,17 +128,17 @@
         <Grid Grid.Row="1" Margin="0,0,0,20">
             <StackPanel Orientation="Horizontal">
                 <!-- Arama Kutusu -->
-                <Border Width="400" Height="45" CornerRadius="22.5" Background="White" BorderBrush="#E2E8F0" BorderThickness="1">
+                <Border Width="400" Height="45" CornerRadius="10" Background="#181D29" BorderBrush="#252D3D" BorderThickness="1">
                     <Grid>
-                        <TextBox x:Name="txtArama" Background="Transparent" BorderThickness="0" Padding="20,0" 
-                                 VerticalContentAlignment="Center" FontSize="14" TextChanged="txtArama_TextChanged"/>
-                        <TextBlock Text="Toptancı Adı Ara..." Foreground="#A0AEC0" Margin="20,0" VerticalAlignment="Center" IsHitTestVisible="False">
+                        <TextBox x:Name="txtArama" Background="Transparent" Foreground="#F8FAFC" BorderThickness="0" Padding="15,0" 
+                                 VerticalContentAlignment="Center" FontSize="14" TextChanged="txtArama_TextChanged" CaretBrush="#3B82F6"/>
+                        <TextBlock Text="Toptancı Adı Ara..." Foreground="#64748B" Margin="15,0" VerticalAlignment="Center" IsHitTestVisible="False">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="Visibility" Value="Collapsed"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding Text, ElementName=txtArama}" Value="">
-                                            <Setter Property="Visibility" Value="Visible"/>
+                                             <Setter Property="Visibility" Value="Visible"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -146,10 +149,10 @@
 
                 <!-- Arama Temizle -->
                 <Button Content="Temizle" Margin="10,0,0,0" Height="45" Width="100" Click="btnTemizle_Click"
-                        Background="White" Foreground="#2C3E50" FontWeight="SemiBold" BorderBrush="#E2E8F0" BorderThickness="1" Cursor="Hand">
+                        Background="#181D29" Foreground="#94A3B8" FontWeight="SemiBold" BorderBrush="#252D3D" BorderThickness="1" Cursor="Hand">
                     <Button.Resources>
                         <Style TargetType="Border">
-                            <Setter Property="CornerRadius" Value="22.5"/>
+                            <Setter Property="CornerRadius" Value="10"/>
                         </Style>
                     </Button.Resources>
                 </Button>
@@ -160,11 +163,7 @@
         </Grid>
 
         <!-- DataGrid (Tablo) -->
-        <Border Grid.Row="2" Background="White" CornerRadius="15" Padding="15">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="30" Opacity="0.05" ShadowDepth="5" Color="Black"/>
-            </Border.Effect>
-
+        <Border Grid.Row="2" Background="#151923" CornerRadius="12" Padding="15" BorderBrush="#252D3D" BorderThickness="1">
             <DataGrid x:Name="dgToptancilar" AutoGenerateColumns="False" IsReadOnly="True" 
                       SelectionMode="Single" MouseDoubleClick="dgToptancilar_MouseDoubleClick">
                 <DataGrid.Columns>
@@ -173,7 +172,7 @@
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="FontWeight" Value="Bold"/>
-                                <Setter Property="Foreground" Value="{StaticResource SecondaryDark}"/>
+                                <Setter Property="Foreground" Value="#F8FAFC"/>
                                 <Setter Property="VerticalAlignment" Value="Center"/>
                             </Style>
                         </DataGridTextColumn.ElementStyle>

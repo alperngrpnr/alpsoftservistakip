@@ -1,10 +1,14 @@
 using System;
-using System.Data;
-using System.Data.SqlClient;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using alpsoftservistakip.Helpers;
+using alpsoftservistakip.Models;
+using Newtonsoft.Json;
 
 namespace alpsoftservistakip
 {
@@ -20,34 +24,27 @@ namespace alpsoftservistakip
         {
             try
             {
-                using (SqlConnection con = Veritabani.BaglantiAl())
+                using (var client = new HttpClient())
                 {
-                    await con.OpenAsync();
-                    string query = @"
-                        SELECT ID, FirmaAdi, Telefon, IBAN, OlusturulmaTarihi
-                        FROM Toptancilar
-                        WHERE SirketID = @sirketId";
-
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Class1.JwtToken);
+                    string url = $"{ApiConfig.Api}/Toptanci/liste";
                     if (!string.IsNullOrWhiteSpace(aramaMetni))
                     {
-                        query += " AND FirmaAdi LIKE @arama";
+                        url += $"?arama={Uri.EscapeDataString(aramaMetni)}";
                     }
 
-                    query += " ORDER BY FirmaAdi ASC";
-
-                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    var response = await client.GetAsync(url);
+                    if (!response.IsSuccessStatusCode)
                     {
-                        cmd.Parameters.AddWithValue("@sirketId", Class1.AktifKullanici.SirketID);
-                        if (!string.IsNullOrWhiteSpace(aramaMetni))
-                        {
-                            cmd.Parameters.AddWithValue("@arama", "%" + aramaMetni + "%");
-                        }
-
-                        SqlDataAdapter da = new SqlDataAdapter(cmd);
-                        DataTable dt = new DataTable();
-                        await Task.Run(() => da.Fill(dt));
-                        dgToptancilar.ItemsSource = dt.DefaultView;
+                        var err = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Veriler yüklenirken hata: {err}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
                     }
+
+                    var json = await response.Content.ReadAsStringAsync();
+                    var list = JsonConvert.DeserializeObject<List<ToptanciListeDto>>(json);
+                    
+                    dgToptancilar.ItemsSource = list;
                 }
             }
             catch (Exception ex)
@@ -88,9 +85,9 @@ namespace alpsoftservistakip
 
         private void dgToptancilar_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (dgToptancilar.SelectedItem is DataRowView row)
+            if (dgToptancilar.SelectedItem is ToptanciListeDto row)
             {
-                int toptanciId = Convert.ToInt32(row["ID"]);
+                int toptanciId = row.ID;
                 Window pencere = Window.GetWindow(this);
                 if (pencere is Window3 window3)
                 {

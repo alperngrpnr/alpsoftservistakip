@@ -1,7 +1,13 @@
 using System;
-using System.Data.SqlClient;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using alpsoftservistakip.Helpers;
+using alpsoftservistakip.Models;
+using Newtonsoft.Json;
 
 namespace alpsoftservistakip
 {
@@ -29,23 +35,27 @@ namespace alpsoftservistakip
 
             try
             {
-                using (SqlConnection con = Veritabani.BaglantiAl())
+                using (var client = new HttpClient())
                 {
-                    await con.OpenAsync();
-                    string query = @"INSERT INTO Cariler (SirketID, AdSoyadUnvan, Telefon, Email, Adres, VergiDairesi, VergiNo) 
-                                     VALUES (@sirketId, @unvan, @telefon, @email, @adres, @vd, @vno)";
-
-                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Class1.JwtToken);
+                    var dto = new CariEkleDto 
                     {
-                        cmd.Parameters.AddWithValue("@sirketId", Class1.AktifKullanici.SirketID);
-                        cmd.Parameters.AddWithValue("@unvan", unvan);
-                        cmd.Parameters.AddWithValue("@telefon", string.IsNullOrEmpty(telefon) ? (object)DBNull.Value : telefon);
-                        cmd.Parameters.AddWithValue("@email", string.IsNullOrEmpty(email) ? (object)DBNull.Value : email);
-                        cmd.Parameters.AddWithValue("@adres", string.IsNullOrEmpty(adres) ? (object)DBNull.Value : adres);
-                        cmd.Parameters.AddWithValue("@vd", string.IsNullOrEmpty(vergiDairesi) ? (object)DBNull.Value : vergiDairesi);
-                        cmd.Parameters.AddWithValue("@vno", string.IsNullOrEmpty(vergiNo) ? (object)DBNull.Value : vergiNo);
-
-                        await cmd.ExecuteNonQueryAsync();
+                        AdSoyadUnvan = unvan,
+                        Telefon = telefon,
+                        Email = email,
+                        Adres = adres,
+                        VergiDairesi = vergiDairesi,
+                        VergiNo = vergiNo
+                    };
+                    
+                    var content = new StringContent(JsonConvert.SerializeObject(dto), Encoding.UTF8, "application/json");
+                    var response = await client.PostAsync($"{ApiConfig.Api}/Cariler", content);
+                    
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        var err = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show("Cari eklenirken hata oluştu: " + err, "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
                     }
                 }
 

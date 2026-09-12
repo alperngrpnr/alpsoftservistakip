@@ -1,8 +1,13 @@
 using System;
-using System.Data.SqlClient;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using alpsoftservistakip.Helpers;
+using alpsoftservistakip.Models;
+using Newtonsoft.Json;
 
 namespace alpsoftservistakip
 {
@@ -29,30 +34,25 @@ namespace alpsoftservistakip
         {
             try
             {
-                using (SqlConnection con = Veritabani.BaglantiAl())
+                using (var client = new HttpClient())
                 {
-                    await con.OpenAsync();
-                    string query = @"
-                        SELECT FirmaAdi, Telefon, IBAN, Aciklama
-                        FROM Toptancilar
-                        WHERE ID = @id AND SirketID = @sirketId";
-
-                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Class1.JwtToken);
+                    var response = await client.GetAsync($"{ApiConfig.Api}/Toptanci/{_toptanciId.Value}/detay");
+                    
+                    if (!response.IsSuccessStatusCode)
                     {
-                        cmd.Parameters.AddWithValue("@id", _toptanciId.Value);
-                        cmd.Parameters.AddWithValue("@sirketId", Class1.AktifKullanici.SirketID);
-
-                        using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
-                        {
-                            if (await dr.ReadAsync())
-                            {
-                                txtFirmaAdi.Text = dr["FirmaAdi"]?.ToString() ?? "";
-                                txtTelefon.Text = dr["Telefon"]?.ToString() ?? "";
-                                txtIBAN.Text = dr["IBAN"]?.ToString() ?? "";
-                                txtAciklama.Text = dr["Aciklama"]?.ToString() ?? "";
-                            }
-                        }
+                        var err = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Veriler yüklenirken hata: {err}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
                     }
+
+                    var json = await response.Content.ReadAsStringAsync();
+                    var dto = JsonConvert.DeserializeObject<ToptanciDetayDto>(json);
+                    
+                    txtFirmaAdi.Text = dto.FirmaAdi ?? "";
+                    txtTelefon.Text = dto.Telefon ?? "";
+                    txtIBAN.Text = dto.IBAN ?? "";
+                    txtAciklama.Text = dto.Aciklama ?? "";
                 }
             }
             catch (Exception ex)
@@ -76,61 +76,37 @@ namespace alpsoftservistakip
 
             try
             {
-                using (SqlConnection con = Veritabani.BaglantiAl())
+                using (var client = new HttpClient())
                 {
-                    await con.OpenAsync();
-
-                    if (_toptanciId.HasValue)
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Class1.JwtToken);
+                    var dto = new ToptanciKaydetDto 
                     {
-                        // GÜNCELLE
-                        string query = @"
-                            UPDATE Toptancilar
-                            SET FirmaAdi = @firmaAdi, Telefon = @telefon, IBAN = @iban, 
-                                Aciklama = @aciklama, GuncellemeTarihi = GETDATE()
-                            WHERE ID = @id AND SirketID = @sirketId";
-
-                        using (SqlCommand cmd = new SqlCommand(query, con))
-                        {
-                            cmd.Parameters.AddWithValue("@id", _toptanciId.Value);
-                            cmd.Parameters.AddWithValue("@firmaAdi", firmaAdi);
-                            cmd.Parameters.AddWithValue("@telefon", string.IsNullOrEmpty(telefon) ? (object)DBNull.Value : telefon);
-                            cmd.Parameters.AddWithValue("@iban", string.IsNullOrEmpty(iban) ? (object)DBNull.Value : iban);
-                            cmd.Parameters.AddWithValue("@aciklama", string.IsNullOrEmpty(aciklama) ? (object)DBNull.Value : aciklama);
-                            cmd.Parameters.AddWithValue("@sirketId", Class1.AktifKullanici.SirketID);
-                            await cmd.ExecuteNonQueryAsync();
-                        }
-                        MessageBox.Show("Toptancı başarıyla güncellendi.", "Başarılı", MessageBoxButton.OK, MessageBoxImage.Information);
-                    }
-                    else
+                        ID = _toptanciId ?? 0,
+                        FirmaAdi = firmaAdi,
+                        Telefon = telefon,
+                        IBAN = iban,
+                        Aciklama = aciklama
+                    };
+                    
+                    var content = new StringContent(JsonConvert.SerializeObject(dto), Encoding.UTF8, "application/json");
+                    var response = await client.PostAsync($"{ApiConfig.Api}/Toptanci/kaydet", content);
+                    
+                    if (!response.IsSuccessStatusCode)
                     {
-                        // YENİ EKLE
-                        string query = @"
-                            INSERT INTO Toptancilar (SirketID, FirmaAdi, Telefon, IBAN, Aciklama)
-                            VALUES (@sirketId, @firmaAdi, @telefon, @iban, @aciklama)";
-
-                        using (SqlCommand cmd = new SqlCommand(query, con))
-                        {
-                            cmd.Parameters.AddWithValue("@sirketId", Class1.AktifKullanici.SirketID);
-                            cmd.Parameters.AddWithValue("@firmaAdi", firmaAdi);
-                            cmd.Parameters.AddWithValue("@telefon", string.IsNullOrEmpty(telefon) ? (object)DBNull.Value : telefon);
-                            cmd.Parameters.AddWithValue("@iban", string.IsNullOrEmpty(iban) ? (object)DBNull.Value : iban);
-                            cmd.Parameters.AddWithValue("@aciklama", string.IsNullOrEmpty(aciklama) ? (object)DBNull.Value : aciklama);
-                            await cmd.ExecuteNonQueryAsync();
-                        }
-                        MessageBox.Show("Toptancı başarıyla eklendi.", "Başarılı", MessageBoxButton.OK, MessageBoxImage.Information);
+                        var err = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Kaydetme sırasında hata: {err}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
                     }
                 }
 
+                MessageBox.Show("Toptancı bilgileri başarıyla kaydedildi.", "Başarılı", MessageBoxButton.OK, MessageBoxImage.Information);
+                
                 if (_yenilemeFonksiyonu != null)
                 {
                     await _yenilemeFonksiyonu();
                 }
 
                 GeriDon();
-            }
-            catch (SqlException ex) when (ex.Number == 2627)
-            {
-                MessageBox.Show("Bu toptancı adı zaten mevcut!", "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             catch (Exception ex)
             {

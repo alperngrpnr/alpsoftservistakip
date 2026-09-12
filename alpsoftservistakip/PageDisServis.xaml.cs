@@ -23,8 +23,27 @@ namespace alpsoftservistakip
 
         private void disMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (dgdisservisVeriler.SelectedItem is DataRowView row)
+            if (dgdisservisVeriler.SelectedItem != null)
             {
+                var selectedItem = dgdisservisVeriler.SelectedItem;
+                Newtonsoft.Json.Linq.JObject row = new Newtonsoft.Json.Linq.JObject();
+
+                if (selectedItem is System.Data.DataRowView dataRowView)
+                {
+                    foreach (System.Data.DataColumn col in dataRowView.Row.Table.Columns)
+                    {
+                        var val = dataRowView[col.ColumnName];
+                        if (val != null && val != DBNull.Value)
+                            row[col.ColumnName] = Newtonsoft.Json.Linq.JToken.FromObject(val);
+                        else
+                            row[col.ColumnName] = Newtonsoft.Json.Linq.JValue.CreateNull();
+                    }
+                }
+                else
+                {
+                    row = Newtonsoft.Json.Linq.JObject.FromObject(selectedItem);
+                }
+
                 int id = GetServisKayitId(row);
 
                 Window3 mainWindow = Application.Current.Windows.OfType<Window3>().FirstOrDefault();
@@ -48,15 +67,16 @@ namespace alpsoftservistakip
             }
         }
 
-        private int GetServisKayitId(DataRowView row)
+        private int GetServisKayitId(Newtonsoft.Json.Linq.JObject row)
         {
             string[] oncelikliKolonlar = { "ServisKayitID", "ServisKayitId", "CihazKayitID", "CihazKayitId", "KaynakKayitID", "KaynakKayitId" };
 
             foreach (var kolon in oncelikliKolonlar)
             {
-                if (row.DataView.Table.Columns.Contains(kolon) && row[kolon] != DBNull.Value)
+                var token = row.GetValue(kolon, System.StringComparison.OrdinalIgnoreCase);
+                if (token != null && token.Type != Newtonsoft.Json.Linq.JTokenType.Null)
                 {
-                    if (int.TryParse(row[kolon].ToString(), out int id) && id > 0)
+                    if (int.TryParse(token.ToString(), out int id) && id > 0)
                     {
                         return id;
                     }

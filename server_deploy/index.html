@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="tr" prefix="og: https://ogp.me/ns#">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>AlpSoft Servis Takip | Teknik Servis & İşletme Yönetim Sistemi</title>
+    
+    <meta name="description" content="AlpSoft Teknik Servis Takip Yazılımı ile müşteri kayıtlarını, cihaz tamir süreçlerini, cari hesapları, stok ve kasa hareketlerini tek ekrandan profesyonelce yönetin.">
+    <meta name="keywords" content="teknik servis programı, servis takip sistemi, telefon tamir takip yazılımı, cihaz servis takip otomasyonu, ön muhasebe, stok yönetimi, alpsoft">
+    <meta name="author" content="AlpSoft Yazılım Teknolojileri">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <link rel="canonical" href="https://alpsoftservistakip.com/">
+    
+    <meta property="og:locale" content="tr_TR">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="AlpSoft Servis Takip | Teknik Servis ve İşletme Yönetim Sistemi">
+    <meta property="og:description" content="Teknik servis ve müşteri süreçlerinizi dijitalleştirin. Barkodlu servis fişi, cari ve kasa takibi tek tıkla elinizin altında.">
+    <meta property="og:url" content="https://alpsoftservistakip.com/">
+    <meta property="og:site_name" content="AlpSoft">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- TARAYICI CACHE'İNİ KIRMAK İÇİN v=5 YAPILDI -->
+    <link rel="stylesheet" href="style.css?v=5">
+</head>
+<body>
+
+    <nav class="navbar" role="navigation" aria-label="Ana Menü">
+        <div class="container nav-container">
+            <a href="#" class="logo" aria-label="AlpSoft Ana Sayfa">
+                <i class="fa-solid fa-microchip" aria-hidden="true"></i> Alp<span>Soft</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#ozellikler">Özellikler</a></li>
+                <li><a href="#galeri">Ekranlar</a></li>
+                <li><a href="#nasil-calisir">Nasıl Çalışır?</a></li>
+                <li><a href="#fiyatlar">Fiyatlar</a></li>
+                <li><a href="#sss">S.S.S.</a></li>
+            </ul>
+            <div class="nav-buttons">
+                <!-- CANLI CİHAZ TAKİP BUTONU -->
+                <a href="/takip" class="btn-takip-nav" title="Cihaz Durumu Sorgula">
+                    <i class="fa-solid fa-magnifying-glass"></i> Cihaz Sorgula
+                </a>
+                <button id="themeToggle" class="theme-toggle-btn" title="Karanlık/Aydınlık Mod" aria-label="Temayı Değiştir">
+                    <i class="fa-solid fa-sun" id="themeIcon" aria-hidden="true"></i>
+                </button>
+                <a href="#fiyatlar" class="btn-primary scroll-to-prices">Ücretsiz Dene</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="container hero-container">
+            <div class="hero-content">
+                <span class="badge">Sürüm 1.0 Yayında! 🚀</span>
+                <h1>Teknik Servis ve İşletmenizi <br><span>Tek Ekrandan Yönetin</span></h1>
+                <p>Müşteri kayıtlarından ön muhasebeye, cihaz takiplerinden personel yönetimine kadar ihtiyacınız olan her şey AlpSoft'ta.</p>
+                <div class="hero-buttons">
+                    <a href="#fiyatlar" class="btn-primary btn-large scroll-to-prices">Hemen Başla</a>
+                    <a href="#galeri" class="btn-outline btn-large"><i class="fa-solid fa-images" aria-hidden="true"></i> Ekranları İncele</a>
+                </div>
+
+                <!-- VITRINE ENTEGRE CANLI CIHAZ SORGULAMA KARTI -->
+                <div class="hero-tracking-card">
+                    <div class="hero-tracking-header">
+                        <i class="fa-solid fa-qrcode"></i> Canlı Cihaz Durumu Sorgulama
+                    </div>
+                    <form action="/takip" method="GET" class="hero-tracking-form">
+                        <div class="hero-tracking-input-wrap">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" name="kod" class="hero-tracking-input" placeholder="Servis No (Örn: SRV-000123) veya IMEI" autocomplete="off" required>
+                        </div>
+                        <button type="submit" class="btn-primary hero-tracking-btn">
+                            Sorgula <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </form>
+                    <div class="hero-tracking-hint">
+                        <i class="fa-solid fa-circle-check"></i> Fişinizdeki QR kodu okutabilir veya servis numaranızı yazarak sorgulayabilirsiniz.
+                    </div>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="hero-image-wrapper">
+                    <img src="img/1.png" alt="AlpSoft Servis Yönetim Paneli" class="software-preview-img">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="indir" class="download-section">
+        <div class="container">
+            <div class="download-container">
+                <div class="download-content">
+                    <h2>AlpSoft'u Bilgisayarınıza İndirin</h2>
+                    <p>Hemen şimdi Windows için AlpSoft masaüstü uygulamasını indirin ve işletmenizi saniyeler içinde dijitalleştirin. Hızlı, güvenilir ve her zaman güncel.</p>
+                    <div class="download-specs">
+                        <span><i class="fa-brands fa-windows" aria-hidden="true"></i> Windows 10 & 11 Uyumlu</span>
+                        <span><i class="fa-solid fa-microchip" aria-hidden="true"></i> 64-bit Mimari</span>
+                        <span><i class="fa-solid fa-cloud-arrow-down" aria-hidden="true"></i> Sürüm: v1.0.0</span>
+                    </div>
+                    <div class="download-actions">
+                        <a href="https://github.com/alperngrpnr/alpsoftupdates/releases/latest/download/AlpsoftSetup.exe" class="btn-primary btn-large download-btn">
+                            <i class="fa-solid fa-download" aria-hidden="true"></i> Windows İçin İndir
+                        </a>
+                    </div>
+                </div>
+                <div class="download-image">
+                    <div class="download-image-wrapper">
+                        <img src="img/2.png" alt="AlpSoft Windows Uygulaması" class="software-preview-img">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="ozellikler" class="features-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>İşletmenize Hız Katan Özellikler</h2>
+                <p>AlpSoft, teknik servis süreçlerindeki karmaşayı bitirmek ve işinizi hızlandırmak için tasarlandı.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="icon"><i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i></div>
+                    <h3>Gelişmiş Servis Takibi</h3>
+                    <p>Cihazın kabulünden teslimine kadar tüm süreçleri barkodlu ve online QR kodlu sistemle anlık takip edin.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon"><i class="fa-solid fa-wallet" aria-hidden="true"></i></div>
+                    <h3>Cari ve Kasa Yönetimi</h3>
+                    <p>Gelir-gider tablolarınızı, toptancı borçlarınızı ve günlük kasanızı eksiksiz yönetin.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon"><i class="fa-solid fa-boxes-stacked" aria-hidden="true"></i></div>
+                    <h3>Stok ve Hızlı Satış</h3>
+                    <p>Ürün envanterinizi kontrol altında tutun, perakende satışlarınızı saniyeler içinde tamamlayın.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BÜYÜK GALERİ BÖLÜMÜ -->
+    <section id="galeri" class="gallery-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Sistem Arayüzleri</h2>
+                <p>AlpSoft'un kullanıcı dostu ve modern ekran detaylarını inceleyin.</p>
+            </div>
+            <div class="gallery-wrapper">
+                <div class="gallery-slider">
+                    <div class="gallery-track" id="galleryTrack">
+                        <!-- Javascript buraya 1'den 24'e kadar fotoları otomatik dizecek -->
+                    </div>
+                </div>
+                <div class="gallery-controls">
+                    <button class="gallery-btn" id="prevGallery"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
+                    <div class="gallery-counter"><span id="currentGalleryNum">1</span> / 24</div>
+                    <button class="gallery-btn" id="nextGallery"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="nasil-calisir" class="video-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Sistem Nasıl Çalışır?</h2>
+                <p>AlpSoft'un kolay ve kullanıcı dostu arayüzünü videolarla keşfedin.</p>
+            </div>
+            <div class="video-grid">
+                <div class="main-video">
+                    <div class="video-placeholder">
+                        <i class="fa-solid fa-circle-play" aria-hidden="true"></i>
+                        <p>1. Sisteme Giriş ve Genel Bakış Videonuz</p>
+                    </div>
+                </div>
+                <div class="sub-videos">
+                    <div class="video-placeholder small">
+                        <i class="fa-solid fa-circle-play" aria-hidden="true"></i>
+                        <p>2. Servis Kaydı Oluşturma</p>
+                    </div>
+                    <div class="video-placeholder small">
+                        <i class="fa-solid fa-circle-play" aria-hidden="true"></i>
+                        <p>3. Stok ve Hızlı Satış Yönetimi</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="fiyatlar" class="pricing-section">
+        <div class="container">
+            <div class="section-header mobile-only-header">
+                <h2>Yıllık Planlarla Avantajı Yakalayın</h2>
+                <p>İhtiyacınıza uygun paketi seçin ve anında dijitalleşmeye başlayın</p>
+            </div>
+
+            <div class="laptop-stage" id="laptopStage">
+                <div class="laptop-3d">
+                    <div class="laptop-lid" id="laptopLid">
+                        <div class="laptop-screen">
+                            <div class="screen-content" id="screenContent">
+                                
+                                <div class="laptop-brand-bar">
+                                    <i class="fa-solid fa-microchip" aria-hidden="true"></i> Alp<span>Soft</span>
+                                </div>
+                                
+                                <div class="screen-header">
+                                    <h2>Yıllık Planlarla Avantajı Yakalayın</h2>
+                                    <p>İhtiyacınıza uygun paketi seçin ve anında dijitalleşmeye başlayın</p>
+                                </div>
+
+                                <div class="pop-out-cards" id="popOutCards">
+                                    <div class="pricing-card">
+                                        <h3 class="package-name">Başlangıç</h3>
+                                        <div class="price-box">
+                                            <span class="currency">₺</span><span class="price">5.000</span><span class="duration">/yıl</span>
+                                        </div>
+                                        <ul class="feature-list">
+                                            <li><i class="fa-solid fa-check check" aria-hidden="true"></i> 1 Kullanıcı Sınırı</li>
+                                            <li><i class="fa-solid fa-check check" aria-hidden="true"></i> Servis Kaydı Görüntüleme</li>
+                                            <li><i class="fa-solid fa-check check" aria-hidden="true"></i> Günlük Kasa Takibi</li>
+                                        </ul>
+                                        <a href="https://wa.me/905466480160?text=Merhaba,%20AlpSoft%20Başlangıç%20Paketi%20satın%20almak%20istiyorum." target="_blank" rel="noopener noreferrer" class="btn-outline btn-full card-buy-btn"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i> WhatsApp'tan Al</a>
+                                    </div>
+                                    <div class="pricing-card">
+                                        <h3 class="package-name">Standart</h3>
+                                        <div class="price-box">
+                                            <span class="currency">₺</span><span class="price">6.500</span><span class="duration">/yıl</span>
+                                        </div>
+                                        <ul class="feature-list">
+                                            <li><i class="fa-solid fa-check check" aria-hidden="true"></i> 3 Kullanıcı Sınırı</li>
+                                            <li><i class="fa-solid fa-check check" aria-hidden="true"></i> Dış Servis Takibi</li>
+                                            <li><i class="fa-solid fa-check check" aria-hidden="true"></i> Personel Yönetimi</li>
+                                        </ul>
+                                        <a href="https://wa.me/905466480160?text=Merhaba,%20AlpSoft%20Standart%20Paketi%20satın%20almak%20istiyorum." target="_blank" rel="noopener noreferrer" class="btn-outline btn-full card-buy-btn"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i> WhatsApp'tan Al</a>
+                                    </div>
+                                    <div class="pricing-card recommended">
+                                        <div class="recommended-badge">En Çok Tercih Edilen</div>
+                                        <h3 class="package-name">Pro</h3>
+                                        <div class="price-box">
+                                            <span class="currency">₺</span><span class="price">7.500</span><span class="duration">/yıl</span>
+                                        </div>
+                                        <ul class="feature-list">
+                                            <li><i class="fa-solid fa-check check" aria-hidden="true"></i> 6 Kullanıcı Sınırı</li>
+                                            <li class="highlight"><i class="fa-solid fa-check check" aria-hidden="true"></i> Stok ve Hızlı Satış</li>
+                                            <li><i class="fa-solid fa-check check" aria-hidden="true"></i> Döviz Hesaplayıcı & Cari</li>
+                                        </ul>
+                                        <a href="https://wa.me/905466480160?text=Merhaba,%20AlpSoft%20Pro%20Paketi%20satın%20almak%20istiyorum." target="_blank" rel="noopener noreferrer" class="btn-primary btn-full card-buy-btn btn-glow"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Hemen Satın Al</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="laptop-base-full">
+                        <div class="notch"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="calculator-section">
+        <div class="container">
+            <div class="calculator-container">
+                <div class="calc-text">
+                    <h3>Büyük Bir Ekibiniz Mi Var? Özel Paket Oluşturun</h3>
+                    <p>6 kullanıcıdan fazlasına mı ihtiyacınız var? Sınırları kaldırın. Eklediğiniz <strong>her yeni kullanıcı için aylık sadece 200 ₺</strong> (Yıllık +2.400 ₺) ödeyerek Ultimate seviyesine geçin.</p>
+                </div>
+                <div class="calc-box">
+                    <label for="userRange">Toplam Kullanıcı İhtiyacınız: <span id="userCountText">7</span> Kişi</label>
+                    <input type="range" id="userRange" min="7" max="50" value="7" step="1" aria-label="Kullanıcı Sayısı Seçimi">
+                    <div class="calc-result">
+                        <div class="res-row"><span>Pro Paket Taban Fiyatı:</span> <span>7.500 ₺</span></div>
+                        <div class="res-row"><span>Ekstra Kullanıcı Farkı:</span> <span id="extraCostText">+2.400 ₺</span></div>
+                        <div class="res-total"><span>Toplam Yıllık Fiyat:</span> <span id="totalPriceText">9.900 ₺</span></div>
+                    </div>
+                    <a href="https://wa.me/905466480160?text=Merhaba,%20AlpSoft%20Özel%20Paket%20almak%20istiyorum.%20(${users}%20Kullanıcı,%20${total.toLocaleString('tr-TR')}%20TL)" id="customBuyBtn" target="_blank" rel="noopener noreferrer" class="btn-primary btn-full" style="margin-top:15px;"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Özel Paketi Satın Al</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="sss" class="faq-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Sıkça Sorulan Sorular</h2>
+                <p>AlpSoft teknik servis programı ile ilgili merak ettiğiniz detaylar.</p>
+            </div>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Paketimi sonradan yükseltebilir miyim?</span>
+                        <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Kesinlikle! Başlangıç veya Standart paket ile başlayıp, işleriniz büyüdüğünde dilediğiniz zaman Pro veya Özel pakete geçiş yapabilirsiniz. Sadece aradaki fiyat farkını ödersiniz.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Verilerim güvende mi, silinme riski var mı?</span>
+                        <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Tüm verileriniz otomatik olarak bulut sunucularımızda şifrelenerek yedeklenmektedir. Bilgisayarınız çökse veya bozulsa bile verilerinize hiçbir zarar gelmez. Yeni cihazınızdan giriş yapıp kaldığınız yerden devam edebilirsiniz.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>İnternet bağlantısı zorunlu mu?</span>
+                        <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Evet, AlpSoft online yedekleme ve TCMB anlık döviz çekimi gibi gelişmiş özellikler sunduğu için, en güncel verilerle senkronize çalışabilmesi adına internet bağlantısı gerektirir.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container footer-container">
+            <div class="footer-about">
+                <a href="#" class="logo footer-logo">
+                    <i class="fa-solid fa-microchip" aria-hidden="true"></i> Alp<span>Soft</span>
+                </a>
+                <p>İşletmenizin dijital dönüşümündeki en güçlü partneriniz.</p>
+            </div>
+            <div class="footer-contact">
+                <p><a href="/takip" style="color:var(--accent); font-weight:700;"><i class="fa-solid fa-magnifying-glass"></i> Cihaz Durumu Sorgula</a></p>
+                <p><i class="fa-solid fa-envelope" aria-hidden="true"></i> alpsoft41@gmail.com</p>
+                <p><i class="fa-solid fa-phone" aria-hidden="true"></i> +90 (546) 648 01 60</p>
+                <p><i class="fa-solid fa-location-dot" aria-hidden="true"></i> İzmit, Kocaeli, Türkiye</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 AlpSoft Yazılım Teknolojileri. Tüm hakları saklıdır.</p>
+        </div>
+    </footer>
+
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+            if (themeIcon) themeIcon.classList.replace('fa-sun', 'fa-moon');
+        }
+
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('light-mode');
+                if (document.body.classList.contains('light-mode')) {
+                    themeIcon.classList.replace('fa-sun', 'fa-moon');
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    themeIcon.classList.replace('fa-moon', 'fa-sun');
+                    localStorage.setItem('theme', 'dark');
+                }
+            });
+        }
+
+        // --- BÜYÜK GALERİ MOTORU ---
+        const track = document.getElementById('galleryTrack');
+        const currentSlideNum = document.getElementById('currentGalleryNum');
+        const totalSlides = 24;
+        let currentIndex = 0;
+
+        if (track) {
+            for (let i = 1; i <= totalSlides; i++) {
+                const slide = document.createElement('div');
+                slide.className = 'gallery-slide';
+                slide.innerHTML = `<img src="img/${i}.png" alt="AlpSoft Ekran Görüntüsü ${i}" loading="lazy">`;
+                track.appendChild(slide);
+            }
+
+            function updateSlider() {
+                track.style.transform = `translateX(-${currentIndex * 100}%)`;
+                currentSlideNum.innerText = currentIndex + 1;
+            }
+
+            function nextSlide() {
+                currentIndex = (currentIndex + 1) % totalSlides;
+                updateSlider();
+            }
+
+            function prevSlide() {
+                currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+                updateSlider();
+            }
+
+            document.getElementById('nextGallery').addEventListener('click', nextSlide);
+            document.getElementById('prevGallery').addEventListener('click', prevSlide);
+
+            let sliderInterval = setInterval(nextSlide, 4000);
+
+            const galleryWrapper = document.querySelector('.gallery-wrapper');
+            galleryWrapper.addEventListener('mouseenter', () => clearInterval(sliderInterval));
+            galleryWrapper.addEventListener('mouseleave', () => {
+                sliderInterval = setInterval(nextSlide, 4000);
+            });
+        }
+
+        document.querySelectorAll('.faq-item').forEach(item => {
+            const question = item.querySelector('.faq-question');
+            if (question) {
+                question.addEventListener('click', () => {
+                    const isActive = item.classList.contains('active');
+                    document.querySelectorAll('.faq-item').forEach(faq => faq.classList.remove('active'));
+                    if (!isActive) item.classList.add('active');
+                });
+            }
+        });
+
+        const userRange = document.getElementById('userRange');
+        const userCountText = document.getElementById('userCountText');
+        const extraCostText = document.getElementById('extraCostText');
+        const totalPriceText = document.getElementById('totalPriceText');
+        const customBuyBtn = document.getElementById('customBuyBtn');
+        
+        const basePrice = 7500; 
+        const costPerExtraUser = 2400; 
+
+        if (userRange) {
+            userRange.addEventListener('input', (e) => {
+                const users = parseInt(e.target.value);
+                if (userCountText) userCountText.innerText = users;
+                const extraUsers = users - 6;
+                const extraCost = extraUsers * costPerExtraUser;
+                const total = basePrice + extraCost;
+                
+                if (extraCostText) extraCostText.innerText = `+${extraCost.toLocaleString('tr-TR')} ₺`;
+                if (totalPriceText) totalPriceText.innerText = `${total.toLocaleString('tr-TR')} ₺`;
+                
+                if (customBuyBtn) {
+                    customBuyBtn.href = `https://wa.me/905466480160?text=Merhaba,%20AlpSoft%20Özel%20Paket%20almak%20istiyorum.%20(${users}%20Kullanıcı,%20${total.toLocaleString('tr-TR')}%20TL)`;
+                }
+            });
+        }
+
+        document.querySelectorAll('a[href^="#"]').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('href');
+                if(targetId === "#") return;
+                const section = document.querySelector(targetId);
+                if (section) {
+                    e.preventDefault();
+                    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Data.SqlClient;
 using System.Security.Cryptography;
@@ -131,7 +131,7 @@ namespace alpsoftservistakip
                             trans.Commit();
                             MessageBox.Show("Kayıt Başarılı! 🎉");
 
-                            await Services.NavigationService.ShowWindowAsync(new LoginWindow());
+                            await Services.NavigationService.ShowWindowAsync(new LoginHostWindow());
                             this.Close();
                         }
                         catch (Exception ex)
@@ -162,7 +162,7 @@ namespace alpsoftservistakip
         private void BtnLogin_Click(object sender, MouseButtonEventArgs e)
         {
             // Giriş penceresinden bir örnek oluşturuyoruz
-            LoginWindow loginWin = new LoginWindow();
+            LoginHostWindow loginWin = new LoginHostWindow();
 
             // Yeni pencereyi gösteriyoruz
             loginWin.Show();

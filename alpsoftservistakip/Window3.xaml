@@ -4,44 +4,65 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:alpsoftservistakip.Controls"
-        
         mc:Ignorable="d"
         Title="ALPSOFT | Servis Yönetim Platformu" 
         WindowStyle="None"
         ResizeMode="CanResize" 
         WindowState="Maximized" 
         WindowStartupLocation="CenterScreen"
-        MinHeight="720"
-        MinWidth="1080" Closing="Window_Closing" StateChanged="Window3_StateChanged">
+        MinHeight="580"
+        MinWidth="900" Closing="Window_Closing" StateChanged="Window3_StateChanged"
+        Background="#181A20"
+        BorderBrush="#181A20"
+        BorderThickness="0"
+        UseLayoutRounding="True"
+        SnapsToDevicePixels="True">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0" 
+                      ResizeBorderThickness="6" 
+                      GlassFrameThickness="0" 
+                      CornerRadius="0" 
+                      UseAeroCaptionButtons="False" />
+    </WindowChrome.WindowChrome>
 
     <Window.Resources>
-        <LinearGradientBrush x:Key="TitleBarBg" StartPoint="0,0" EndPoint="1,0">
-            <GradientStop Color="#0B1220" Offset="0"/>
-            <GradientStop Color="#111827" Offset="0.5"/>
-            <GradientStop Color="#0F172A" Offset="1"/>
-        </LinearGradientBrush>
-        <SolidColorBrush x:Key="TitleBarBorder" Color="#1E293B"/>
-        <SolidColorBrush x:Key="TitleBarButtonFg" Color="#CBD5E1"/>
-
-        <Style x:Key="TitleBarButtonStyle" TargetType="Button">
-            <Setter Property="Width" Value="46"/>
-            <Setter Property="Height" Value="34"/>
+        <!-- Sidebar Button Style -->
+        <Style x:Key="SidebarButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="50"/>
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="{StaticResource TitleBarButtonFg}"/>
+            <Setter Property="Foreground" Value="#E2E8F0"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="20,0,0,0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
             <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Setter.Value>
+            </Setter>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="6">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="8" Margin="10,2">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="#1E293B"/>
+                                <Setter TargetName="Bd" Property="Background" Value="#21252D"/>
+                                <Setter Property="Foreground" Value="#FFFFFF"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="#334155"/>
+                                <Setter Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.97" ScaleY="0.97"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="Bd" Property="Background" Value="#171A21"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -49,487 +70,304 @@
             </Setter>
         </Style>
 
-        <Style x:Key="TitleBarCloseButtonStyle" TargetType="Button" BasedOn="{StaticResource TitleBarButtonStyle}">
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#DC2626"/>
-                    <Setter Property="Foreground" Value="White"/>
-                </Trigger>
-            </Style.Triggers>
+        <!-- Main Button Style (Quick Access) -->
+        <Style x:Key="MainButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Height" Value="80"/>
+            <Setter Property="Background" Value="#121418"/>
+            <Setter Property="Foreground" Value="#F8FAFC"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#2A2E35"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderBrush}" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="12">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#21252D"/>
+                                <Setter Property="Foreground" Value="#FFD026"/>
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="#FFD026"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.95" ScaleY="0.95"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="Bd" Property="Background" Value="#0F1114"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
     </Window.Resources>
 
-    <Viewbox Stretch="Uniform">
-        <Grid HorizontalAlignment="Center" Width="1920" Height="1080" VerticalAlignment="Center" Background="#FFF5C721">
+    <Grid x:Name="RootGrid" RenderTransformOrigin="0.5,0.5">
+        <Grid.RenderTransform>
+            <TransformGroup>
+                <ScaleTransform ScaleX="1" ScaleY="1" />
+                <TranslateTransform Y="0" />
+            </TransformGroup>
+        </Grid.RenderTransform>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-            <Border Panel.ZIndex="200" Background="{StaticResource TitleBarBg}" BorderBrush="{StaticResource TitleBarBorder}" BorderThickness="0,0,0,1" Height="52" VerticalAlignment="Top" MouseDown="Window_MouseDown">
-                <Grid Margin="14,0,10,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
+        <!-- Top Title Bar -->
+        <Border Grid.Row="0" Background="#121418" MouseDown="Window_MouseDown">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="230"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Column="0">
-                        <Border Width="26" Height="26" CornerRadius="13" Background="#2563EB" Margin="0,0,10,0">
-                            <TextBlock Text="A" Foreground="White" FontWeight="Bold" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                        <StackPanel>
-                            <TextBlock Text="ALPSOFT SERVİS YÖNETİM PLATFORMU" Foreground="White" FontSize="12" FontWeight="Bold"/>
-                            <TextBlock Text="Kurumsal Servis Takip Sistemi" Foreground="#94A3B8" FontSize="10"/>
-                        </StackPanel>
-                    </StackPanel>
-
-                    <Border Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="12,4" CornerRadius="12" Background="#1E293B" BorderBrush="#334155" BorderThickness="1">
-                        <TextBlock Text="SİSTEM AKTİF" Foreground="#93C5FD" FontSize="10" FontWeight="SemiBold"/>
+                <!-- Top Left Logo Area -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="15,0,0,0">
+                    <Border Background="#FFD026" Width="24" Height="24" CornerRadius="6" Margin="0,0,10,0">
+                        <TextBlock Text="A" Foreground="#121418" FontWeight="Black" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
+                    <TextBlock Text="ALPSOFT" Foreground="#FFFFFF" FontWeight="Bold" FontSize="14" VerticalAlignment="Center"/>
+                    <TextBlock Text=" SERVİS YÖNETİM PLATFORMU" Foreground="#94A3B8" FontSize="10" FontWeight="SemiBold" VerticalAlignment="Center" Margin="5,2,0,0"/>
+                </StackPanel>
 
-                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
-                        <Button Style="{StaticResource TitleBarButtonStyle}" Click="btnMinimize_Click" Margin="0,0,4,0">
-                            <TextBlock Text="&#xE921;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
+                <!-- Top Center Active Badge -->
+                <Border Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#0C1B18" BorderBrush="#143329" BorderThickness="1" CornerRadius="12" Padding="15,4">
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Width="6" Height="6" Fill="#10B981" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="SİSTEM AKTİF" Foreground="#10B981" FontSize="10" FontWeight="Bold" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Top Right Controls -->
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,10,0">
+                    <Button Width="40" Height="30" Background="Transparent" BorderThickness="0" Foreground="#ADB5BD" Click="btnMinimize_Click" Cursor="Hand">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="border" Background="Transparent">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="border" Property="Background" Value="#21252D"/>
+                                        <Setter Property="Foreground" Value="#FFFFFF"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                        <TextBlock Text="&#xE921;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
+                    </Button>
+                    <Button Width="40" Height="30" Background="Transparent" BorderThickness="0" Foreground="#ADB5BD" Click="btnMaximize_Click" Cursor="Hand">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="border" Background="Transparent">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="border" Property="Background" Value="#21252D"/>
+                                        <Setter Property="Foreground" Value="#FFFFFF"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                        <TextBlock x:Name="txtMaximizeIcon" Text="&#xE922;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
+                    </Button>
+                    <Button Width="40" Height="30" Background="Transparent" BorderThickness="0" Foreground="#ADB5BD" Click="btnClose_Click" Cursor="Hand">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="border" Background="Transparent">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="border" Property="Background" Value="#E81123"/>
+                                        <Setter Property="Foreground" Value="#FFFFFF"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                        <TextBlock Text="&#xE8BB;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Main Content Area -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="230"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Sidebar -->
+            <Border Grid.Column="0" Background="#121418">
+                <Grid>
+                    <StackPanel Margin="0,20,0,0">
+                        <TextBlock Text="MENÜ" Foreground="#94A3B8" FontSize="11" FontWeight="Bold" Margin="20,0,0,10"/>
+                        
+                        <Button Style="{StaticResource SidebarButtonStyle}" Click="kayitlar_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE14C;" FontFamily="Segoe MDL2 Assets" Margin="0,0,15,0" VerticalAlignment="Center" Foreground="#3B82F6"/>
+                                <TextBlock Text="Kayıtlar" VerticalAlignment="Center"/>
+                            </StackPanel>
                         </Button>
-                        <Button Style="{StaticResource TitleBarButtonStyle}" Click="btnMaximize_Click" Margin="0,0,4,0">
-                            <TextBlock x:Name="txtMaximizeIcon" Text="&#xE923;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
+                        <Button Style="{StaticResource SidebarButtonStyle}" Click="kayitolustur_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" Margin="0,0,15,0" VerticalAlignment="Center" Foreground="#10B981"/>
+                                <TextBlock Text="Kayıt Oluştur" VerticalAlignment="Center"/>
+                            </StackPanel>
                         </Button>
-                        <Button Style="{StaticResource TitleBarCloseButtonStyle}" Click="btnClose_Click">
-                            <TextBlock Text="&#xE8BB;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
+                        <Button x:Name="btnAdminPanelAc" Style="{StaticResource SidebarButtonStyle}" Click="btnAdminPanelAc_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" Margin="0,0,15,0" VerticalAlignment="Center" Foreground="#F59E0B"/>
+                                <TextBlock Text="Admin Paneli" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource SidebarButtonStyle}" Click="disserviskayitlari_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE72D;" FontFamily="Segoe MDL2 Assets" Margin="0,0,15,0" VerticalAlignment="Center" Foreground="#8B5CF6"/>
+                                <TextBlock Text="Dış Servisler" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource SidebarButtonStyle}" Click="caritakip_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE716;" FontFamily="Segoe MDL2 Assets" Margin="0,0,15,0" VerticalAlignment="Center" Foreground="#06B6D4"/>
+                                <TextBlock Text="Cari Takip" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource SidebarButtonStyle}" Click="btnToptanciYonetimi_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE81E;" FontFamily="Segoe MDL2 Assets" Margin="0,0,15,0" VerticalAlignment="Center" Foreground="#F97316"/>
+                                <TextBlock Text="Toptancı" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource SidebarButtonStyle}" Click="btnStokTakibi_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE8B1;" FontFamily="Segoe MDL2 Assets" Margin="0,0,15,0" VerticalAlignment="Center" Foreground="#10B981"/>
+                                <TextBlock Text="Stok Takibi" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource SidebarButtonStyle}" Click="btnSatisGecmisi_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE81C;" FontFamily="Segoe MDL2 Assets" Margin="0,0,15,0" VerticalAlignment="Center" Foreground="#EC4899"/>
+                                <TextBlock Text="Satış Geçmişi" VerticalAlignment="Center"/>
+                            </StackPanel>
                         </Button>
                     </StackPanel>
+                    
+                    <TextBlock Text="v1.0.0 Stable" Foreground="#64748B" FontSize="11" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,20"/>
                 </Grid>
             </Border>
 
-            <Rectangle Panel.ZIndex="199" Height="1" VerticalAlignment="Top" Margin="0,52,0,0">
-                <Rectangle.Fill>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                        <GradientStop Color="#2563EB" Offset="0"/>
-                        <GradientStop Color="#06B6D4" Offset="0.5"/>
-                        <GradientStop Color="#22C55E" Offset="1"/>
-                    </LinearGradientBrush>
-                </Rectangle.Fill>
-            </Rectangle>
-            <Rectangle HorizontalAlignment="Left" Margin="36,36,0,236" Width="1839" Fill="#FFF5C721" Panel.ZIndex="10"/>
-
-            <Image Source="/Alpsoftlogotransparan.png" Width="1179" Height="1118" HorizontalAlignment="Left" VerticalAlignment="Top" 
-                   RenderTransformOrigin="0.467,0.62" Panel.ZIndex="11" Margin="367,-195,0,0"/>
-
-            <!-- Button container grid centered with 7 columns as requested replacing old properties -->
-            <UniformGrid Columns="7" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,582,0,0" Panel.ZIndex="14" Width="1600">
-                <Button x:Name="kayitlar" Content="KAYITLAR" FontSize="18" Foreground="White" Background="#1E293B" Height="100" Margin="10,0" Click="kayitlar_Click" FontFamily="Arial Black" Cursor="Hand">
-                    <Button.RenderTransform>
-                        <ScaleTransform ScaleX="1" ScaleY="1"/>
-                    </Button.RenderTransform>
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Background="{TemplateBinding Background}" CornerRadius="20" BorderBrush="#334155" BorderThickness="2" Padding="15">
-                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="#3B82F6"/>
-                                    <Setter Property="Foreground" Value="White"/>
-                                    <Trigger.EnterActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)" To="1.05" Duration="0:0:0.1"/>
-                                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)" To="1.05" Duration="0:0:0.1"/>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.EnterActions>
-                                    <Trigger.ExitActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)" To="1" Duration="0:0:0.2"/>
-                                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)" To="1" Duration="0:0:0.2"/>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.ExitActions>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                </Button>
-
-                <Button x:Name="kayitolustur" Content="KAYIT OLUŞTUR" FontSize="18" Foreground="White" Background="#1E293B" Height="100" Margin="10,0" Click="kayitolustur_Click" FontFamily="Arial Black" Cursor="Hand">
-                    <Button.RenderTransform>
-                        <ScaleTransform ScaleX="1" ScaleY="1"/>
-                    </Button.RenderTransform>
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Background="{TemplateBinding Background}" CornerRadius="20" BorderBrush="#334155" BorderThickness="2" Padding="15">
-                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="#10B981"/>
-                                    <Setter Property="Foreground" Value="White"/>
-                                    <Trigger.EnterActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)" To="1.05" Duration="0:0:0.1"/>
-                                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)" To="1.05" Duration="0:0:0.1"/>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.EnterActions>
-                                    <Trigger.ExitActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)" To="1" Duration="0:0:0.2"/>
-                                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)" To="1" Duration="0:0:0.2"/>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.ExitActions>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                </Button>
-
-                <Button x:Name="btnAdminPanelAc" Content="ADMİN PANELİ" FontSize="18" Foreground="White" Background="#1E293B" Height="100" Margin="10,0" Click="btnAdminPanelAc_Click" FontFamily="Arial Black" Cursor="Hand">
-                    <Button.RenderTransform>
-                        <ScaleTransform ScaleX="1" ScaleY="1"/>
-                    </Button.RenderTransform>
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Background="{TemplateBinding Background}" CornerRadius="20" BorderBrush="#334155" BorderThickness="2" Padding="15">
-                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="#F59E0B"/>
-                                    <Setter Property="Foreground" Value="White"/>
-                                    <Trigger.EnterActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)" To="1.05" Duration="0:0:0.1"/>
-                                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)" To="1.05" Duration="0:0:0.1"/>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.EnterActions>
-                                    <Trigger.ExitActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)" To="1" Duration="0:0:0.2"/>
-                                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)" To="1" Duration="0:0:0.2"/>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.ExitActions>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                </Button>
-
-                <Button x:Name="disserviskayitlari_Copy" Content="DIŞ SERVİSLER" FontSize="18" Foreground="White" Background="#1E293B" Height="100" Margin="10,0" Click="disserviskayitlari_Copy_Click" FontFamily="Arial Black" Cursor="Hand">
-                    <Button.RenderTransform>
-                        <ScaleTransform ScaleX="1" ScaleY="1"/>
-                    </Button.RenderTransform>
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Background="{TemplateBinding Background}" CornerRadius="20" BorderBrush="#334155" BorderThickness="2" Padding="15">
-                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="#8B5CF6"/>
-                                    <Setter Property="Foreground" Value="White"/>
-                                    <Trigger.EnterActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)" To="1.05" Duration="0:0:0.1"/>
-                                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)" To="1.05" Duration="0:0:0.1"/>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.EnterActions>
-                                    <Trigger.ExitActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)" To="1" Duration="0:0:0.2"/>
-                                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)" To="1" Duration="0:0:0.2"/>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.ExitActions>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                </Button>
-
-                <Button x:Name="btnCariTakip" Content="CARİ TAKİP" FontSize="18" Foreground="White" Background="#1E293B" Height="100" Margin="10,0" Click="caritakip_Click" FontFamily="Arial Black" Cursor="Hand">
-                    <Button.RenderTransform>
-                        <ScaleTransform ScaleX="1" ScaleY="1"/>
-                    </Button.RenderTransform>
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Background="{TemplateBinding Background}" CornerRadius="20" BorderBrush="#334155" BorderThickness="2" Padding="15">
-                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="#06B6D4"/>
-                                    <Setter Property="Foreground" Value="White"/>
-                                    <Trigger.EnterActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)" To="1.05" Duration="0:0:0.1"/>
-                                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)" To="1.05" Duration="0:0:0.1"/>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.EnterActions>
-                                    <Trigger.ExitActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)" To="1" Duration="0:0:0.2"/>
-                                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)" To="1" Duration="0:0:0.2"/>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.ExitActions>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                </Button>
-
-                <Button x:Name="btnToptanciYonetimi" Content="TOPTANCI" FontSize="18" Foreground="White" Background="#1E293B" Height="100" Margin="10,0" Click="btnToptanciYonetimi_Click" FontFamily="Arial Black" Cursor="Hand">
-                    <Button.RenderTransform>
-                        <ScaleTransform ScaleX="1" ScaleY="1"/>
-                    </Button.RenderTransform>
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Background="{TemplateBinding Background}" CornerRadius="20" BorderBrush="#334155" BorderThickness="2" Padding="15">
-                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="#EC4899"/>
-                                    <Setter Property="Foreground" Value="White"/>
-                                    <Trigger.EnterActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)" To="1.05" Duration="0:0:0.1"/>
-                                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)" To="1.05" Duration="0:0:0.1"/>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.EnterActions>
-                                    <Trigger.ExitActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)" To="1" Duration="0:0:0.2"/>
-                                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)" To="1" Duration="0:0:0.2"/>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.ExitActions>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                </Button>
-
-                <Button x:Name="btnStokTakibi" Content="STOK TAKİBİ" FontSize="18" Foreground="White" Background="#1E293B" Height="100" Margin="10,0" Click="btnStokTakibi_Click" FontFamily="Arial Black" Cursor="Hand">
-                    <Button.RenderTransform>
-                        <ScaleTransform ScaleX="1" ScaleY="1"/>
-                    </Button.RenderTransform>
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Background="{TemplateBinding Background}" CornerRadius="20" BorderBrush="#334155" BorderThickness="2" Padding="15">
-                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="#E74C3C"/>
-                                    <Setter Property="Foreground" Value="White"/>
-                                    <Trigger.EnterActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)" To="1.05" Duration="0:0:0.1"/>
-                                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)" To="1.05" Duration="0:0:0.1"/>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.EnterActions>
-                                    <Trigger.ExitActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)" To="1" Duration="0:0:0.2"/>
-                                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)" To="1" Duration="0:0:0.2"/>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.ExitActions>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                </Button>
-            </UniformGrid>
-
-            <Grid x:Name="StokKilitTabakasi" Panel.ZIndex="51" Visibility="Collapsed">
-                <Rectangle Fill="Black" Opacity="0.7"/>
-                <Border Background="White" Width="500" Height="280" CornerRadius="20" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="30">
-                    <Border.Effect>
-                        <DropShadowEffect BlurRadius="30" Color="#000" Opacity="0.5" ShadowDepth="10"/>
-                    </Border.Effect>
-                    <StackPanel>
-                        <TextBlock Text="🔒 STOK TAKİBİ KİLİTLİ" FontSize="22" FontWeight="Bold" Foreground="#E74C3C" HorizontalAlignment="Center" Margin="0,0,0,10"/>
-                        <TextBlock Text="Bu özelliği kullanabilmek için aktivasyon kodu gereklidir." Foreground="#555" TextWrapping="Wrap" HorizontalAlignment="Center" TextAlignment="Center" Margin="0,0,0,20"/>
-
-                        <TextBox x:Name="txtStokKodu" Height="45" FontSize="18" Padding="10,0" Background="#F8FAFC" BorderBrush="#CBD5E1" BorderThickness="2" Margin="0,0,0,20" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="15"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Button Grid.Column="0" Content="İPTAL" Background="#E2E8F0" Foreground="#334155" Height="45" FontWeight="Bold" Cursor="Hand" Click="btnStokIptal_Click">
-                                <Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="10"/></Style></Button.Resources>
-                            </Button>
-                            <Button Grid.Column="2" Content="AKTİFLEŞTİR" Background="#3B82F6" Foreground="White" Height="45" FontWeight="Bold" Cursor="Hand" Click="btnStokAktiflestir_Click">
-                                <Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="10"/></Style></Button.Resources>
-                            </Button>
-                        </Grid>
-                    </StackPanel>
-                </Border>
-            </Grid>
-
-            <Grid x:Name="AdminPanelTabakasi" Panel.ZIndex="50" Visibility="Collapsed">
-                <Rectangle Fill="Black" Opacity="0.7"/>
-                <Border Background="#FF252B36" Width="1400" Height="880" CornerRadius="30" BorderBrush="#FFF5C721" BorderThickness="4">
-                    <Grid Margin="40">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-
-                        <DockPanel Grid.Row="0">
-                            <TextBlock Text="EKİP VE LİSANS YÖNETİMİ" Foreground="#FFF5C721" FontSize="42" FontFamily="Arial Black"/>
-                            <Button Content="KAPAT [X]" HorizontalAlignment="Right" Foreground="White" Background="Transparent" BorderThickness="0" FontSize="20" Click="AdminPanelKapat_Click" Cursor="Hand"/>
-                        </DockPanel>
-
-                        <StackPanel Grid.Row="1" Margin="0,30">
-                            <TextBlock x:Name="txtLisansDurum" Text="Lisans Kullanımı: 1 / 3" Foreground="White" FontSize="22" Margin="0,0,0,10"/>
-                            <ProgressBar x:Name="pbLisans" Value="33" Height="20" Background="#FF1A1F26" Foreground="#FFF5C721" BorderThickness="0"/>
+            <!-- Center View -->
+            <Grid Grid.Column="1">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Border Background="#FFD026" Width="80" Height="80" CornerRadius="20" HorizontalAlignment="Center" Margin="0,0,0,20">
+                        <TextBlock Text="A" Foreground="#121418" FontWeight="Black" FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    
+                    <TextBlock Text="ALPSOFT" Foreground="#FFFFFF" FontSize="32" FontWeight="Black" HorizontalAlignment="Center" FontFamily="Segoe UI"/>
+                    <TextBlock Text="Servis Yönetim Platformu" Foreground="#FFD026" FontSize="14" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,5,0,40"/>
+                    
+                    <Border Background="#121418" CornerRadius="12" BorderBrush="#2A2E35" BorderThickness="1" Width="420" Padding="15" Margin="0,0,0,30">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBlock Text="&#xE11A;" FontFamily="Segoe MDL2 Assets" Foreground="#CBD5E1" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <TextBlock Text="Sol menüden bir işlem seçin" Foreground="#CBD5E1" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center"/>
                         </StackPanel>
+                    </Border>
 
-                        <Grid Grid.Row="2">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="420"/>
-                            </Grid.ColumnDefinitions>
-
-                            <Border Grid.Column="0" Background="White" Margin="0,0,30,0" CornerRadius="15" ClipToBounds="True">
-                                <DataGrid x:Name="dgIsciler" AutoGenerateColumns="False" CanUserAddRows="False" 
-                                          Background="Transparent" BorderThickness="0" RowHeight="55" FontSize="18" VerticalContentAlignment="Center">
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Ad Soyad" Binding="{Binding FullName}" Width="*"/>
-                                        <DataGridTextColumn Header="E-Posta" Binding="{Binding Email}" Width="*"/>
-                                        <DataGridTextColumn Header="Rol" Binding="{Binding Role}" Width="100"/>
-                                        <DataGridTemplateColumn Header="İşlemler" Width="100">
-                                            <DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <Button Content="SİL" Background="#FFEE2E2E" Foreground="White" FontWeight="Bold" 
-                                                            Click="IsciSil_Click" Tag="{Binding Email}" Cursor="Hand">
-                                                        <Button.Resources>
-                                                            <Style TargetType="Border">
-                                                                <Setter Property="CornerRadius" Value="5"/>
-                                                            </Style>
-                                                        </Button.Resources>
-                                                    </Button>
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellTemplate>
-                                        </DataGridTemplateColumn>
-                                    </DataGrid.Columns>
-                                </DataGrid>
-                            </Border>
-
-                            <StackPanel Grid.Column="1" VerticalAlignment="Top">
-                                <TextBlock Text="YENİ İŞÇİ KAYDI" Foreground="White" FontSize="22" Margin="0,0,0,20" FontFamily="Arial Black"/>
-
-                                <TextBlock Text="Ad Soyad:" Foreground="#FFF5C721" Margin="0,5"/>
-                                <TextBox x:Name="txtYeniAd" Height="45" FontSize="18" VerticalContentAlignment="Center" Margin="0,0,0,15"/>
-
-                                <TextBlock Text="E-Posta:" Foreground="#FFF5C721" Margin="0,5"/>
-                                <TextBox x:Name="txtYeniEmail" Height="45" FontSize="18" VerticalContentAlignment="Center" Margin="0,0,0,15"/>
-
-                                <TextBlock Text="Giriş Şifresi:" Foreground="#FFF5C721" Margin="0,5"/>
-                                <TextBox x:Name="txtYeniSifre" Height="45" FontSize="18" VerticalContentAlignment="Center" Margin="0,0,0,15"/>
-
-                                <Button Content="İşçiyi Kaydet" Height="60" Margin="0,20" Background="#FFF5C721" Foreground="#FF252B36" 
-                                        Click="IsciKaydet_Click" FontFamily="Arial Black" FontSize="20">
-                                    <Button.Resources>
-                                        <Style TargetType="Border">
-                                            <Setter Property="CornerRadius" Value="10"/>
-                                        </Style>
-                                    </Button.Resources>
-                                </Button>
-
-                                <TextBlock Text="* Maksimum işçi limitine ulaştığınızda bu alan pasif olur." Foreground="White" Opacity="0.6" FontSize="14" TextWrapping="Wrap"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button Style="{StaticResource MainButtonStyle}" Click="kayitlar_Click" Margin="0,0,15,0">
+                            <StackPanel>
+                                <TextBlock Text="&#xE14C;" FontFamily="Segoe MDL2 Assets" FontSize="20" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                                <TextBlock Text="Kayıtlar" FontSize="12" HorizontalAlignment="Center"/>
                             </StackPanel>
-                        </Grid>
-                    </Grid>
-                </Border>
+                        </Button>
+                        <Button Style="{StaticResource MainButtonStyle}" Click="caritakip_Click" Margin="0,0,15,0">
+                            <StackPanel>
+                                <TextBlock Text="&#xE716;" FontFamily="Segoe MDL2 Assets" FontSize="20" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                                <TextBlock Text="Cari Takip" FontSize="12" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource MainButtonStyle}" Click="btnStokTakibi_Click" Margin="0,0,15,0">
+                            <StackPanel>
+                                <TextBlock Text="&#xE8B1;" FontFamily="Segoe MDL2 Assets" FontSize="20" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                                <TextBlock Text="Stok Takibi" FontSize="12" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource MainButtonStyle}" Click="btnSatisGecmisi_Click" Margin="0,0,15,0">
+                            <StackPanel>
+                                <TextBlock Text="&#xE81C;" FontFamily="Segoe MDL2 Assets" FontSize="20" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                                <TextBlock Text="Satışlar" FontSize="12" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource MainButtonStyle}" Click="disserviskayitlari_Click">
+                            <StackPanel>
+                                <TextBlock Text="&#xE72D;" FontFamily="Segoe MDL2 Assets" FontSize="20" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                                <TextBlock Text="Dış Servisler" FontSize="12" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- The overlay host for dynamically loaded pages -->
+                <local:OverlayHost x:Name="OverlayHost" Panel.ZIndex="100"/>
             </Grid>
-
-            <TextBlock Text="© 2024 Alpsoft - Servis Takip Sistemi" FontSize="20" Foreground="Black" Opacity="0.7" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,1001,0,0" Panel.ZIndex="20"/>
-
-            <!-- Overlay frame to show pages smoothly -->
-            <!-- Semi-transparent backdrop when showing overlay -->
-            <Rectangle x:Name="OverlayBackdrop" Fill="Black" Opacity="0" Visibility="Collapsed" Panel.ZIndex="998" 
-                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                       Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}" 
-                       Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}}"/>
-            <Frame x:Name="OverlayFrame" NavigationUIVisibility="Hidden" Visibility="Collapsed" Background="Transparent" Panel.ZIndex="999"
-                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-            <Label Content="UYGULAMAMIZ BETA SÜRÜMÜNDEDİR HATALARI LÜTFEN BİZE BİLDİRİNİZ !" HorizontalAlignment="Center" Height="48" Margin="0,832,0,0" VerticalAlignment="Top" Width="874" FontSize="24" Background="{x:Null}" Foreground="Red" FontWeight="Bold"/>
-            <Label Content="MAİL : alpsoft41@gmail.com" HorizontalAlignment="Left" Height="50" Margin="798,876,0,0" VerticalAlignment="Top" Width="362" FontSize="24" Background="{x:Null}" Foreground="Red" FontWeight="Bold"/>
-
         </Grid>
-    </Viewbox>
+
+
+        <!-- Stok Kilit Tabakası (Premium Lock) -->
+        <Grid x:Name="StokKilitTabakasi" Visibility="Collapsed" Panel.ZIndex="201" Background="#EA000000">
+            <Border Width="450" Height="340" Background="#181A20" BorderThickness="1" BorderBrush="#3F4452" CornerRadius="16" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="25" ShadowDepth="5" Opacity="0.4" Color="Black"/>
+                </Border.Effect>
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="30">
+                    <TextBlock Text="&#xE72E;" FontFamily="Segoe MDL2 Assets" Foreground="#FFF5C721" FontSize="48" HorizontalAlignment="Center" Margin="0,0,0,15"/>
+                    <TextBlock Text="Stok Modülü Kilitli" Foreground="#FFFFFF" FontSize="22" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                    <TextBlock Text="Bu modülü kullanabilmek için geçerli bir lisans anahtarı girmelisiniz. Lisans satın almak için destek ekibiyle iletişime geçin." 
+                               Foreground="#A0A5B1" FontSize="13" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,25" Width="360"/>
+                    
+                    <TextBox x:Name="txtStokKodu" Width="360" Height="45" FontSize="16" FontWeight="SemiBold" TextAlignment="Center" Background="#252932" Foreground="#FFF5C721" BorderBrush="#3F4452" BorderThickness="1.5" Margin="0,0,0,20">
+                        <TextBox.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="8"/>
+                            </Style>
+                        </TextBox.Resources>
+                    </TextBox>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button x:Name="btnStokIptal" Content="KAPAT" Click="btnStokIptal_Click" Width="140" Height="42" Background="#252932" Foreground="#FFFFFF" FontSize="14" FontWeight="Bold" Cursor="Hand" Margin="0,0,15,0" BorderThickness="0">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="8"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                        <Button x:Name="btnStokAktiflestir" Content="KİLİDİ AÇ" Click="btnStokAktiflestir_Click" Width="140" Height="42" Background="#FFF5C721" Foreground="#121418" FontSize="14" FontWeight="Bold" Cursor="Hand" BorderThickness="0">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="8"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+        
+    </Grid>
 </Window>

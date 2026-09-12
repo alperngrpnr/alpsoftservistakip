@@ -1,10 +1,15 @@
 using System;
-using System.Data;
-using System.Data.SqlClient;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using alpsoftservistakip.Helpers;
+using alpsoftservistakip.Models;
+using Newtonsoft.Json;
 
 namespace alpsoftservistakip
 {
@@ -30,43 +35,41 @@ namespace alpsoftservistakip
         {
             try
             {
-                using (SqlConnection con = Veritabani.BaglantiAl())
+                using (var client = new HttpClient())
                 {
-                    await con.OpenAsync();
-                    string query = "SELECT AdSoyadUnvan, GuncelBakiye FROM Cariler WHERE CariID = @id AND SirketID = @sirketId";
-
-                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Class1.JwtToken);
+                    var response = await client.GetAsync($"{ApiConfig.Api}/Cariler/{_cariId}");
+                    
+                    if (!response.IsSuccessStatusCode)
                     {
-                        cmd.Parameters.AddWithValue("@id", _cariId);
-                        cmd.Parameters.AddWithValue("@sirketId", Class1.AktifKullanici.SirketID);
+                        var err = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show("Cari bilgileri yüklenemedi: " + err, "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
 
-                        using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
-                        {
-                            if (dr.Read())
-                            {
-                                string unvan = dr["AdSoyadUnvan"]?.ToString() ?? "";
-                                decimal bakiye = dr["GuncelBakiye"] != DBNull.Value ? Convert.ToDecimal(dr["GuncelBakiye"]) : 0m;
+                    var json = await response.Content.ReadAsStringAsync();
+                    var dto = JsonConvert.DeserializeObject<CariDetayDto>(json);
+                    
+                    string unvan = dto.AdSoyadUnvan ?? "";
+                    decimal bakiye = dto.GuncelBakiye;
 
-                                txtMusteriAdi.Text = unvan + " - Cari Hesabı";
-                                txtGuncelBakiye.Text = bakiye.ToString("N2", new System.Globalization.CultureInfo("tr-TR")) + " ₺";
+                    txtMusteriAdi.Text = unvan + " - Cari Hesabı";
+                    txtGuncelBakiye.Text = "$" + bakiye.ToString("N2", new System.Globalization.CultureInfo("tr-TR"));
 
-                                if (bakiye > 0)
-                                {
-                                    txtGuncelBakiye.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#E74C3C")); // Kırmızı
-                                    txtDurum.Text = "(Müşteri Borçlu)";
-                                }
-                                else if (bakiye < 0)
-                                {
-                                    txtGuncelBakiye.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2ECC71")); // Yeşil
-                                    txtDurum.Text = "(Müşteri Alacaklı / Size Fazla Ödeme Yaptı)";
-                                }
-                                else
-                                {
-                                    txtGuncelBakiye.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#718096")); // Gri
-                                    txtDurum.Text = "(Hesap Sıfırlandı)";
-                                }
-                            }
-                        }
+                    if (bakiye > 0)
+                    {
+                        txtGuncelBakiye.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#E74C3C")); // Kırmızı
+                        txtDurum.Text = "(Müşteri Borçlu)";
+                    }
+                    else if (bakiye < 0)
+                    {
+                        txtGuncelBakiye.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2ECC71")); // Yeşil
+                        txtDurum.Text = "(Müşteri Alacaklı / Size Fazla Ödeme Yaptı)";
+                    }
+                    else
+                    {
+                        txtGuncelBakiye.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#718096")); // Gri
+                        txtDurum.Text = "(Hesap Sıfırlandı)";
                     }
                 }
             }
@@ -80,37 +83,28 @@ namespace alpsoftservistakip
         {
             try
             {
-                using (SqlConnection con = Veritabani.BaglantiAl())
+                using (var client = new HttpClient())
                 {
-                    await con.OpenAsync();
-                    string query = @"SELECT CAST(0 as bit) as Secili, IslemTarihi, IslemTipi, Tutar, Aciklama 
-                                     FROM CariHareketler 
-                                     WHERE CariID = @id AND SirketID = @sirketId";
-
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Class1.JwtToken);
+                    string url = $"{ApiConfig.Api}/Cariler/{_cariId}/hareketler?";
                     if (baslangic.HasValue)
-                        query += " AND IslemTarihi >= @baslangic";
+                        url += $"baslangic={baslangic.Value:yyyy-MM-dd}&";
                     if (bitis.HasValue)
-                        query += " AND IslemTarihi <= @bitis";
-
-                    query += " ORDER BY IslemTarihi DESC";
-
-                    using (SqlCommand cmd = new SqlCommand(query, con))
+                        url += $"bitis={bitis.Value:yyyy-MM-dd}&";
+                        
+                    var response = await client.GetAsync(url);
+                    
+                    if (!response.IsSuccessStatusCode)
                     {
-                        cmd.Parameters.AddWithValue("@id", _cariId);
-                        cmd.Parameters.AddWithValue("@sirketId", Class1.AktifKullanici.SirketID);
-
-                        if (baslangic.HasValue)
-                            cmd.Parameters.AddWithValue("@baslangic", baslangic.Value.Date);
-
-                        if (bitis.HasValue)
-                            // Bitiş gününün tamamını kapsamak için o günün son saatine ayarlıyoruz
-                            cmd.Parameters.AddWithValue("@bitis", bitis.Value.Date.AddDays(1).AddSeconds(-1));
-
-                        SqlDataAdapter da = new SqlDataAdapter(cmd);
-                        DataTable dt = new DataTable();
-                        await Task.Run(() => da.Fill(dt));
-                        dgHareketler.ItemsSource = dt.DefaultView;
+                        var err = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show("Hareketler yüklenemedi: " + err, "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
                     }
+
+                    var json = await response.Content.ReadAsStringAsync();
+                    var list = JsonConvert.DeserializeObject<List<CariHareketDto>>(json);
+                    
+                    dgHareketler.ItemsSource = list;
                 }
             }
             catch (Exception ex)
@@ -158,7 +152,7 @@ namespace alpsoftservistakip
 
         private async void btnPopupKaydet_Click(object sender, RoutedEventArgs e)
         {
-            string temizTutar = txtIslemTutar.Text.Replace("₺", "").Replace(" ", "").Trim();
+            string temizTutar = txtIslemTutar.Text.Replace("$", "").Replace(" ", "").Trim();
             temizTutar = temizTutar.Replace(".", "").Replace(",", "."); // Bilgisayar dilinden bağımsız mutlak düzeltme
 
             if (!decimal.TryParse(temizTutar, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out decimal tutar) || tutar <= 0)
@@ -171,37 +165,25 @@ namespace alpsoftservistakip
 
             try
             {
-                using (SqlConnection con = Veritabani.BaglantiAl())
+                using (var client = new HttpClient())
                 {
-                    await con.OpenAsync();
-
-                    // Bakiye Güncellemesi: hareketlerden yeniden hesapla (idempotent, çift ekleme yapmaz)
-                    string query = @"INSERT INTO CariHareketler (CariID, SirketID, IslemTarihi, IslemTipi, Tutar, Aciklama) 
-                                     VALUES (@id, @sirketId, @tarih, @tip, @tutar, @aciklama);
-
-                                     UPDATE Cariler
-                                     SET GuncelBakiye = ISNULL((
-                                         SELECT SUM(
-                                             CASE
-                                                 WHEN IslemTipi LIKE N'Borçlandırma%' OR IslemTipi LIKE N'Borc%' THEN Tutar
-                                                 WHEN IslemTipi LIKE N'Tahsilat%' THEN -Tutar
-                                                 ELSE 0
-                                             END)
-                                         FROM CariHareketler
-                                         WHERE CariID = @id AND SirketID = @sirketId
-                                     ), 0)
-                                     WHERE CariID = @id AND SirketID = @sirketId;";
-
-                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Class1.JwtToken);
+                    var dto = new CariHareketEkleDto 
                     {
-                        cmd.Parameters.AddWithValue("@id", _cariId);
-                        cmd.Parameters.AddWithValue("@sirketId", Class1.AktifKullanici.SirketID);
-                        cmd.Parameters.AddWithValue("@tarih", DateTime.Now);
-                        cmd.Parameters.AddWithValue("@tip", _sayfaModu);
-                        cmd.Parameters.AddWithValue("@tutar", tutar);
-                        cmd.Parameters.AddWithValue("@aciklama", string.IsNullOrEmpty(aciklama) ? (object)DBNull.Value : aciklama);
-
-                        await cmd.ExecuteNonQueryAsync();
+                        CariID = _cariId,
+                        IslemTipi = _sayfaModu,
+                        Tutar = tutar,
+                        Aciklama = aciklama
+                    };
+                    
+                    var content = new StringContent(JsonConvert.SerializeObject(dto), Encoding.UTF8, "application/json");
+                    var response = await client.PostAsync($"{ApiConfig.Api}/Cariler/hareket", content);
+                    
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        var err = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show("İşlem kaydedilirken hata oluştu: " + err, "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
                     }
                 }
 
@@ -235,26 +217,16 @@ namespace alpsoftservistakip
 
             try
             {
-                using (SqlConnection con = Veritabani.BaglantiAl())
+                using (var client = new HttpClient())
                 {
-                    await con.OpenAsync();
-
-                    // İlk olarak cariye ait tüm hareketleri (dökümü) sil
-                    string deleteHareketlerQuery = "DELETE FROM CariHareketler WHERE CariID = @id AND SirketID = @sirketId";
-                    using (SqlCommand cmd = new SqlCommand(deleteHareketlerQuery, con))
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Class1.JwtToken);
+                    var response = await client.DeleteAsync($"{ApiConfig.Api}/Cariler/{_cariId}");
+                    
+                    if (!response.IsSuccessStatusCode)
                     {
-                        cmd.Parameters.AddWithValue("@id", _cariId);
-                        cmd.Parameters.AddWithValue("@sirketId", Class1.AktifKullanici.SirketID);
-                        await cmd.ExecuteNonQueryAsync();
-                    }
-
-                    // Sonra carinin kendisini sil
-                    string deleteCariQuery = "DELETE FROM Cariler WHERE CariID = @id AND SirketID = @sirketId";
-                    using (SqlCommand cmd = new SqlCommand(deleteCariQuery, con))
-                    {
-                        cmd.Parameters.AddWithValue("@id", _cariId);
-                        cmd.Parameters.AddWithValue("@sirketId", Class1.AktifKullanici.SirketID);
-                        await cmd.ExecuteNonQueryAsync();
+                        var err = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show("Silme işlemi başarısız: " + err, "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
                     }
                 }
 
@@ -275,55 +247,28 @@ namespace alpsoftservistakip
 
             try
             {
-                using (SqlConnection con = Veritabani.BaglantiAl())
+                using (var client = new HttpClient())
                 {
-                    await con.OpenAsync();
-
-                    // Mevcut bakiyeyi al
-                    decimal mevcutBakiye = 0;
-                    using (SqlCommand cmdGet = new SqlCommand("SELECT ISNULL(GuncelBakiye, 0) FROM Cariler WHERE CariID = @id AND SirketID = @sirketId", con))
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Class1.JwtToken);
+                    var content = new StringContent("", Encoding.UTF8, "application/json");
+                    var response = await client.PostAsync($"{ApiConfig.Api}/Cariler/{_cariId}/sifirla", content);
+                    
+                    if (!response.IsSuccessStatusCode)
                     {
-                        cmdGet.Parameters.AddWithValue("@id", _cariId);
-                        cmdGet.Parameters.AddWithValue("@sirketId", Class1.AktifKullanici.SirketID);
-                        object val = await cmdGet.ExecuteScalarAsync();
-                        if (val != null) mevcutBakiye = Convert.ToDecimal(val);
-                    }
-
-                    if (mevcutBakiye == 0)
-                    {
-                        MessageBox.Show("Müşterinin bakiyesi zaten sıfır.", "Bilgi", MessageBoxButton.OK, MessageBoxImage.Information);
+                        var err = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show("Sıfırlama işlemi başarısız: " + err, "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
                         return;
-                    }
-
-                    // Hareket ekle
-                    string islemTipi = mevcutBakiye > 0 ? "Tahsilat (Sıfırlama)" : "Borçlandırma (Sıfırlama)";
-                    decimal tutar = Math.Abs(mevcutBakiye);
-
-                    string insertQuery = @"INSERT INTO CariHareketler (CariID, SirketID, IslemTarihi, IslemTipi, Tutar, Aciklama) 
-                                           VALUES (@id, @sirketId, @tarih, @tip, @tutar, 'Hesap tamamen sıfırlandı. Eski Bakiye: ' + @eskiStr);
-
-                                           UPDATE Cariler SET GuncelBakiye = 0 WHERE CariID = @id AND SirketID = @sirketId;";
-
-                    using (SqlCommand cmdIns = new SqlCommand(insertQuery, con))
-                    {
-                        cmdIns.Parameters.AddWithValue("@id", _cariId);
-                        cmdIns.Parameters.AddWithValue("@sirketId", Class1.AktifKullanici.SirketID);
-                        cmdIns.Parameters.AddWithValue("@tarih", DateTime.Now);
-                        cmdIns.Parameters.AddWithValue("@tip", islemTipi);
-                        cmdIns.Parameters.AddWithValue("@tutar", tutar);
-                        cmdIns.Parameters.AddWithValue("@eskiStr", mevcutBakiye.ToString("N2") + " ₺");
-
-                        await cmdIns.ExecuteNonQueryAsync();
                     }
                 }
 
-                MessageBox.Show("Hesap başarıyla sıfırlandı.", "Bilgi", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Müşteri bakiyesi başarıyla sıfırlandı.", "Bilgi", MessageBoxButton.OK, MessageBoxImage.Information);
+                
                 await CariBilgileriniDoldur();
                 await CariHareketleriniGetir();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Sıfırlama işlemi sırasında hata oluştu: " + ex.Message, "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Sıfırlama sırasında hata oluştu: " + ex.Message, "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -333,29 +278,27 @@ namespace alpsoftservistakip
 
             if (printDialog.ShowDialog() == true)
             {
-                // Tablodaki seçili satırları filtreliyoruz
-                DataView dv = (DataView)dgHareketler.ItemsSource;
-                DataTable dtOrjinal = dv.Table;
+                var dtOrjinal = dgHareketler.ItemsSource as System.Collections.IEnumerable;
+                if (dtOrjinal == null) return;
 
-                // Seçili olan satırları bul
-                DataRow[] seciliSatirlar = dtOrjinal.Select("Secili = True");
+                var seciliSatirlar = new System.Collections.Generic.List<object>();
+                var orjinalListe = new System.Collections.Generic.List<object>();
 
-                // Eğer seçili olan varsa sadece onları yazdıracağımız bir tablo oluştur, yoksa tümünü al
-                DataTable printTable = dtOrjinal.Clone();
-                if (seciliSatirlar.Length > 0)
+                foreach (var item in dtOrjinal)
                 {
-                    foreach (DataRow row in seciliSatirlar)
+                    orjinalListe.Add(item);
+                    var seciliProp = item.GetType().GetProperty("Secili");
+                    if (seciliProp != null && seciliProp.GetValue(item) is bool secili && secili)
                     {
-                        printTable.ImportRow(row);
+                        seciliSatirlar.Add(item);
                     }
                 }
-                else
-                {
-                    printTable = dtOrjinal.Copy();
-                }
+
+                var printTable = seciliSatirlar.Count > 0 ? seciliSatirlar : orjinalListe;
+                bool varMiSecili = seciliSatirlar.Count > 0;
 
                 // DataGrid veri kaynağını geçici olarak seçili veriler ile değiştiriyoruz
-                dgHareketler.ItemsSource = printTable.DefaultView;
+                dgHareketler.ItemsSource = printTable;
 
                 // Daha Premium Bir Ekstre ve PDF Çıktısı (A4 Yapısı)
                 StackPanel printPanel = new StackPanel();
@@ -370,7 +313,7 @@ namespace alpsoftservistakip
 
                 StackPanel titlePanel = new StackPanel { VerticalAlignment = VerticalAlignment.Center };
                 titlePanel.Children.Add(new TextBlock { Text = "CARİ HESAP EKSTRESİ", FontSize = 32, FontWeight = FontWeights.Black, Foreground = new SolidColorBrush(Color.FromRgb(44, 62, 80)) });
-                titlePanel.Children.Add(new TextBlock { Text = "Resmi Hesap Dökümü" + (seciliSatirlar.Length > 0 ? " (Seçili Kayıtlar Oluşturuldu)" : ""), FontSize = 14, Foreground = Brushes.Gray, Margin = new Thickness(0, 5, 0, 0) });
+                titlePanel.Children.Add(new TextBlock { Text = "Resmi Hesap Dökümü" + (varMiSecili ? " (Seçili Kayıtlar Oluşturuldu)" : ""), FontSize = 14, Foreground = Brushes.Gray, Margin = new Thickness(0, 5, 0, 0) });
                 Grid.SetColumn(titlePanel, 0);
                 headerGrid.Children.Add(titlePanel);
 
@@ -477,7 +420,7 @@ namespace alpsoftservistakip
                     printPanel.Children.Remove(dgHareketler);
 
                     // Tekrar orjinal veri kaynağını bağla
-                    dgHareketler.ItemsSource = dv;
+                    dgHareketler.ItemsSource = dtOrjinal;
                     secKolonu.Visibility = prevSecVisibility;
 
                     dgHareketler.Width = double.NaN; // Genişliği otomatik (Auto) yap

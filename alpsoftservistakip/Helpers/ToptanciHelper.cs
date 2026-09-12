@@ -1,6 +1,10 @@
 using System;
-using System.Data.SqlClient;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
+using alpsoftservistakip.Helpers;
+using Newtonsoft.Json;
 
 namespace alpsoftservistakip
 {
@@ -26,32 +30,22 @@ namespace alpsoftservistakip
                 if (toptanciId <= 0 || adet <= 0 || birimFiyati < 0)
                     return false;
 
-                decimal toplamTutar = adet * birimFiyati;
-
-                using (SqlConnection con = alpsoftservistakip.Veritabani.BaglantiAl())
+                using (var client = new HttpClient())
                 {
-                    await con.OpenAsync();
-
-                    string query = @"
-                        INSERT INTO ToptanciParcaAlimlar 
-                            (SirketID, ToptanciID, KayitID, ParcaAdi, Adet, BirimFiyati, ToplamTutar, BorcluTutar, Aciklama, IslemTarihi)
-                        VALUES 
-                            (@sirketId, @toptanciId, @kayitId, @parcaAdi, @adet, @birimFiyati, @toplamTutar, @toplamTutar, @aciklama, GETDATE())";
-
-                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Class1.JwtToken);
+                    var payload = new
                     {
-                        cmd.Parameters.AddWithValue("@sirketId", sirketId);
-                        cmd.Parameters.AddWithValue("@toptanciId", toptanciId);
-                        cmd.Parameters.AddWithValue("@kayitId", kayitId ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@parcaAdi", parcaAdi);
-                        cmd.Parameters.AddWithValue("@adet", adet);
-                        cmd.Parameters.AddWithValue("@birimFiyati", birimFiyati);
-                        cmd.Parameters.AddWithValue("@toplamTutar", toplamTutar);
-                        cmd.Parameters.AddWithValue("@aciklama", string.IsNullOrEmpty(aciklama) ? (object)DBNull.Value : aciklama);
-
-                        int result = await cmd.ExecuteNonQueryAsync();
-                        return result > 0;
-                    }
+                        ToptanciID = toptanciId,
+                        KayitID = kayitId,
+                        ParcaAdi = parcaAdi,
+                        Adet = adet,
+                        BirimFiyati = birimFiyati,
+                        Aciklama = aciklama
+                    };
+                    var content = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
+                    var response = await client.PostAsync($"{ApiConfig.Api}/Toptanci/parcaekle", content);
+                    
+                    return response.IsSuccessStatusCode;
                 }
             }
             catch (Exception ex)
@@ -69,22 +63,18 @@ namespace alpsoftservistakip
         {
             try
             {
-                using (SqlConnection con = alpsoftservistakip.Veritabani.BaglantiAl())
+                using (var client = new HttpClient())
                 {
-                    await con.OpenAsync();
-                    string query = @"
-                        SELECT ISNULL(SUM(BorcluTutar), 0)
-                        FROM ToptanciParcaAlimlar
-                        WHERE SirketID = @sirketId AND ToptanciID = @toptanciId";
-
-                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Class1.JwtToken);
+                    var response = await client.GetAsync($"{ApiConfig.Api}/Toptanci/{toptanciId}/borc");
+                    
+                    if (response.IsSuccessStatusCode)
                     {
-                        cmd.Parameters.AddWithValue("@sirketId", sirketId);
-                        cmd.Parameters.AddWithValue("@toptanciId", toptanciId);
-
-                        object result = await cmd.ExecuteScalarAsync();
-                        return Convert.ToDecimal(result ?? 0);
+                        var result = await response.Content.ReadAsStringAsync();
+                        if (decimal.TryParse(result, out decimal borc))
+                            return borc;
                     }
+                    return 0;
                 }
             }
             catch (Exception ex)
@@ -102,22 +92,18 @@ namespace alpsoftservistakip
         {
             try
             {
-                using (SqlConnection con = alpsoftservistakip.Veritabani.BaglantiAl())
+                using (var client = new HttpClient())
                 {
-                    await con.OpenAsync();
-                    string query = @"
-                        SELECT ISNULL(SUM(ToplamTutar), 0)
-                        FROM ToptanciParcaAlimlar
-                        WHERE SirketID = @sirketId AND ToptanciID = @toptanciId";
-
-                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Class1.JwtToken);
+                    var response = await client.GetAsync($"{ApiConfig.Api}/Toptanci/{toptanciId}/tutar");
+                    
+                    if (response.IsSuccessStatusCode)
                     {
-                        cmd.Parameters.AddWithValue("@sirketId", sirketId);
-                        cmd.Parameters.AddWithValue("@toptanciId", toptanciId);
-
-                        object result = await cmd.ExecuteScalarAsync();
-                        return Convert.ToDecimal(result ?? 0);
+                        var result = await response.Content.ReadAsStringAsync();
+                        if (decimal.TryParse(result, out decimal tutar))
+                            return tutar;
                     }
+                    return 0;
                 }
             }
             catch (Exception ex)
@@ -135,57 +121,14 @@ namespace alpsoftservistakip
         {
             try
             {
-                using (SqlConnection con = alpsoftservistakip.Veritabani.BaglantiAl())
+                using (var client = new HttpClient())
                 {
-                    await con.OpenAsync();
-
-                    // Mevcut tutarları getir
-                    string selectQuery = @"
-                        SELECT OdenenTutar, ToplamTutar
-                        FROM ToptanciParcaAlimlar
-                        WHERE ID = @id AND SirketID = @sirketId";
-
-                    decimal odenenTutar = 0;
-                    decimal toplamTutar = 0;
-
-                    using (SqlCommand cmd = new SqlCommand(selectQuery, con))
-                    {
-                        cmd.Parameters.AddWithValue("@id", parcaAlimId);
-                        cmd.Parameters.AddWithValue("@sirketId", sirketId);
-
-                        using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
-                        {
-                            if (await dr.ReadAsync())
-                            {
-                                odenenTutar = Convert.ToDecimal(dr["OdenenTutar"]);
-                                toplamTutar = Convert.ToDecimal(dr["ToplamTutar"]);
-                            }
-                        }
-                    }
-
-                    // Yeni ödenen tutar
-                    decimal yeniOdenenTutar = odenenTutar + odenecekTutar;
-                    if (yeniOdenenTutar > toplamTutar)
-                        yeniOdenenTutar = toplamTutar;
-
-                    decimal yeniBorcluTutar = toplamTutar - yeniOdenenTutar;
-
-                    // Güncelle
-                    string updateQuery = @"
-                        UPDATE ToptanciParcaAlimlar
-                        SET OdenenTutar = @odenenTutar, BorcluTutar = @borcluTutar, GuncellemeTarihi = GETDATE()
-                        WHERE ID = @id AND SirketID = @sirketId";
-
-                    using (SqlCommand cmd = new SqlCommand(updateQuery, con))
-                    {
-                        cmd.Parameters.AddWithValue("@id", parcaAlimId);
-                        cmd.Parameters.AddWithValue("@odenenTutar", yeniOdenenTutar);
-                        cmd.Parameters.AddWithValue("@borcluTutar", yeniBorcluTutar);
-                        cmd.Parameters.AddWithValue("@sirketId", sirketId);
-
-                        int result = await cmd.ExecuteNonQueryAsync();
-                        return result > 0;
-                    }
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Class1.JwtToken);
+                    var payload = new { OdenecekTutar = odenecekTutar };
+                    var content = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
+                    var response = await client.PostAsync($"{ApiConfig.Api}/Toptanci/odeme/{parcaAlimId}", content);
+                    
+                    return response.IsSuccessStatusCode;
                 }
             }
             catch (Exception ex)

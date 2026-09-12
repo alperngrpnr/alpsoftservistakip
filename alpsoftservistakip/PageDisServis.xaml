@@ -4,25 +4,35 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:local="clr-namespace:alpsoftservistakip.Controls"
-      mc:Ignorable="d">
+      mc:Ignorable="d"
+      Background="#0D1017">
 
     <Page.Resources>
-        <SolidColorBrush x:Key="PrimaryColor" Color="#3498DB"/>
-        <!-- Window7.xaml içindeki tüm stil tanımları buraya taşındı -->
+        <!-- Color Tokens -->
+        <SolidColorBrush x:Key="BgPage" Color="#0D1017"/>
+        <SolidColorBrush x:Key="BgCard" Color="#151923"/>
+        <SolidColorBrush x:Key="BgInput" Color="#181D29"/>
+        <SolidColorBrush x:Key="BorderNormal" Color="#252D3D"/>
+        <SolidColorBrush x:Key="BorderFocus" Color="#3B82F6"/>
+        <SolidColorBrush x:Key="TextPrimary" Color="#F8FAFC"/>
+        <SolidColorBrush x:Key="TextSecondary" Color="#94A3B8"/>
+        <SolidColorBrush x:Key="TextMuted" Color="#64748B"/>
+        <SolidColorBrush x:Key="AccentColor" Color="#8B5CF6"/>
+
+        <!-- DatePicker Style Dark -->
         <Style TargetType="{x:Type DatePicker}">
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="BorderBrush" Value="#DCDDE1"/>
+            <Setter Property="Background" Value="{StaticResource BgInput}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderNormal}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Foreground" Value="#2C3E50"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
             <Setter Property="FontSize" Value="13"/>
-            <Setter Property="Padding" Value="10,5"/>
-            <Setter Property="Height" Value="40"/>
+            <Setter Property="Height" Value="38"/>
             <Setter Property="IsTodayHighlighted" Value="True"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type DatePicker}">
                         <Grid x:Name="PART_Root">
-                            <Border Background="{TemplateBinding Background}" 
+                            <Border x:Name="borderRoot" Background="{TemplateBinding Background}" 
                                     BorderBrush="{TemplateBinding BorderBrush}" 
                                     BorderThickness="{TemplateBinding BorderThickness}"
                                     CornerRadius="8">
@@ -33,28 +43,78 @@
                                     </Grid.ColumnDefinitions>
 
                                     <DatePickerTextBox x:Name="PART_TextBox" 
-                                                     Grid.Column="0"
-                                                     Foreground="{TemplateBinding Foreground}"
-                                                     Background="Transparent"
-                                                     BorderThickness="0"
-                                                     Padding="10,0"
-                                                     VerticalContentAlignment="Center"/>
-
+                                                       Grid.Column="0"
+                                                       Foreground="{TemplateBinding Foreground}"
+                                                       Background="Transparent"
+                                                       BorderThickness="0"
+                                                       Padding="10,0"
+                                                       VerticalContentAlignment="Center"
+                                                       Focusable="False"
+                                                       IsReadOnly="True">
+                                        <DatePickerTextBox.Style>
+                                            <Style TargetType="{x:Type DatePickerTextBox}">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="{x:Type DatePickerTextBox}">
+                                                            <Grid>
+                                                                <TextBox x:Name="PART_TextBox"
+                                                                         Text="{Binding Path=SelectedDate, RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}, StringFormat='dd.MM.yyyy'}"
+                                                                         Background="Transparent"
+                                                                         Foreground="{StaticResource TextPrimary}"
+                                                                         BorderThickness="0"
+                                                                         VerticalContentAlignment="Center"
+                                                                         Padding="0"
+                                                                         IsReadOnly="True"/>
+                                                                <TextBlock x:Name="PART_Watermark"
+                                                                           Text="Tarih Seçin..."
+                                                                           Foreground="{StaticResource TextMuted}"
+                                                                           VerticalAlignment="Center"
+                                                                           Padding="2,0,0,0"
+                                                                           Visibility="Collapsed"/>
+                                                            </Grid>
+                                                            <ControlTemplate.Triggers>
+                                                                <DataTrigger Binding="{Binding Path=SelectedDate, RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" Value="{x:Null}">
+                                                                    <Setter TargetName="PART_Watermark" Property="Visibility" Value="Visible"/>
+                                                                </DataTrigger>
+                                                            </ControlTemplate.Triggers>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </DatePickerTextBox.Style>
+                                    </DatePickerTextBox>
+                                    
                                     <Button x:Name="PART_Button" 
-                                          Grid.Column="1"
-                                          Background="Transparent"
-                                          BorderThickness="0"
-                                          Width="40"
-                                          Cursor="Hand"
-                                          Focusable="False">
-                                        <Path Data="M19,4H5A2,2 0 0,0 3,6V20A2,2 0 0,0 5,22H19A2,2 0 0,0 21,20V6A2,2 0 0,0 19,4M19,20H5V10H19V20M5,8V6H19V8H5M7,12H12V17H7V12Z" 
-                                              Fill="#3498DB" 
-                                              Stretch="Uniform" 
-                                              Width="18" 
-                                              Height="18"/>
+                                            Grid.Column="1"
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            Width="36"
+                                            Cursor="Hand"
+                                            Focusable="False"
+                                            RenderTransformOrigin="0.5,0.5">
+                                        <Button.RenderTransform>
+                                            <ScaleTransform ScaleX="1" ScaleY="1"/>
+                                        </Button.RenderTransform>
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border x:Name="btnBorder" Background="Transparent" CornerRadius="0,7,7,0">
+                                                    <TextBlock Text="&#xE787;" FontFamily="Segoe MDL2 Assets" FontSize="13" 
+                                                               Foreground="#A78BFA" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="btnBorder" Property="Background" Value="#2E1065"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsPressed" Value="True">
+                                                        <Setter TargetName="btnBorder" Property="Background" Value="#1E0B40"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Button.Template>
                                     </Button>
                                 </Grid>
                             </Border>
+
                             <Popup x:Name="PART_Popup" 
                                    AllowsTransparency="True" 
                                    Placement="Bottom" 
@@ -63,8 +123,7 @@
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="PART_Root" Property="Background" Value="White"/>
-                                <Setter Property="BorderBrush" Value="#3498DB"/>
+                                <Setter TargetName="borderRoot" Property="BorderBrush" Value="{StaticResource BorderFocus}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -72,40 +131,89 @@
             </Setter>
         </Style>
 
-        
+        <!-- Modern Clear Button Style -->
+        <Style x:Key="ModernButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#261618"/>
+            <Setter Property="Foreground" Value="#F87171"/>
+            <Setter Property="BorderBrush" Value="#7F1D1D"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bd" Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8"
+                                Padding="14,8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="#3B1D20"/>
+                                <Setter TargetName="bd" Property="BorderBrush" Value="#EF4444"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.96" ScaleY="0.96"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="bd" Property="Background" Value="#1A0D0F"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- DataGrid Dark Styles -->
         <Style TargetType="DataGrid">
-            <Setter Property="Background" Value="White"/>
+            <Setter Property="Background" Value="{StaticResource BgCard}"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="RowHeight" Value="55"/>
+            <Setter Property="RowHeight" Value="48"/>
             <Setter Property="FontFamily" Value="Segoe UI"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontSize" Value="13"/>
             <Setter Property="HeadersVisibility" Value="Column"/>
             <Setter Property="GridLinesVisibility" Value="Horizontal"/>
-            <Setter Property="HorizontalGridLinesBrush" Value="#EDF2F7"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#1F2533"/>
             <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
         </Style>
 
         <Style TargetType="DataGridColumnHeader">
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="Foreground" Value="#718096"/>
+            <Setter Property="Background" Value="#11141C"/>
+            <Setter Property="Foreground" Value="{StaticResource TextSecondary}"/>
             <Setter Property="FontFamily" Value="Segoe UI"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Padding" Value="15,10"/>
-            <Setter Property="BorderThickness" Value="0,0,0,2"/>
-            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Padding" Value="12,12"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderNormal}"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
         </Style>
 
         <Style TargetType="DataGridRow">
-            <Setter Property="Background" Value="White"/>
+            <Setter Property="Background" Value="{StaticResource BgCard}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
             <Style.Triggers>
-                <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Background" Value="#E1F0FA"/>
-                    <Setter Property="Foreground" Value="#2C3E50"/>
+                <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                    <Setter Property="Background" Value="#171C27"/>
                 </Trigger>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#F8FAFC"/>
+                    <Setter Property="Background" Value="#222938"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#5B21B6"/>
+                    <Setter Property="Foreground" Value="White"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -117,7 +225,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="DataGridCell">
                         <Border Background="{TemplateBinding Background}">
-                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5"/>
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" Margin="6,2"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -128,116 +236,159 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-
-        <Style x:Key="ModernButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#E74C3C"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                CornerRadius="8"
-                                Padding="15,8">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#C0392B"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#A93226"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
     </Page.Resources>
 
-    <Grid Background="#F4F7F9">
+    <Grid Background="{StaticResource BgPage}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="70"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Margin="20,20,0,0">
-            <StackPanel Orientation="Horizontal">
-                <Border Width="5" Height="35" Background="{StaticResource PrimaryColor}" Margin="0,0,15,0"/>
-                <TextBlock Text="Dış Servis Kayıtları" FontSize="30" FontWeight="ExtraBold" Foreground="#2C3E50"/>
-            </StackPanel>
-        </Grid>
+        <!-- TOP TITLE & HEADER -->
+        <Grid Grid.Row="0" Margin="24,20,24,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
 
-        <Grid Grid.Row="1" Margin="20,0">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                <Border CornerRadius="20" Background="White" BorderBrush="#DCDDE1" BorderThickness="1" Width="300" Height="40">
-                    <TextBox x:Name="aramadisservis1" Text="{Binding AramaMetni, UpdateSourceTrigger=PropertyChanged}" 
-                             GotFocus="aramadisservis1_GotFocus" LostFocus="aramadisservis1_LostFocus" 
-                             Background="Transparent" 
-                             BorderThickness="0" VerticalContentAlignment="Center" Padding="15,0" Foreground="#7F8C8D"/>
+                <Border Width="4" Height="28" Background="{StaticResource AccentColor}" Margin="0,0,12,0" CornerRadius="2"/>
+                <Border Width="30" Height="30" CornerRadius="7" Background="#2E1065" BorderBrush="#5B21B6" BorderThickness="1" Margin="0,0,10,0" VerticalAlignment="Center">
+                    <TextBlock Text="&#xE72D;" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="#C084FC" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Border>
-
-                <Border Background="White" CornerRadius="10" Padding="15,8" Margin="20,0,0,0" BorderBrush="#DCDDE1" BorderThickness="1">
-                    <StackPanel Orientation="Horizontal">
-                        <DatePicker x:Name="dtpServisTarihi" 
-                                    Width="180"
-                                    SelectedDate="{Binding SecilenTarih, UpdateSourceTrigger=PropertyChanged}"/>
-                    </StackPanel>
-                </Border>
-
-                <Button x:Name="btnFiltreTemizle" 
-                        Content="🗑 Filtreyi Kaldır" 
-                        Margin="15,0,0,0" 
-                        Height="40" 
-                        Width="150"
-                        Style="{StaticResource ModernButtonStyle}"
-                        Command="{Binding FiltreTemizleCommand}"/>
-
-                <Button x:Name="btnFisiYazdir" 
-                        Content="📄 FİŞ YAZDIR" 
-                        Margin="15,0,0,0" 
-                        Height="40" 
-                        Width="150"
-                        Background="#27AE60"
-                        Foreground="White"
-                        BorderThickness="0"
-                        FontWeight="SemiBold"
-                        FontSize="13"
-                        Cursor="Hand"
-                        Command="{Binding FisiYazdirCommand}"
-                        CommandParameter="{Binding SelectedItem, ElementName=dgdisservisVeriler}">
-                    <Button.Resources>
-                        <Style TargetType="Border">
-                            <Setter Property="CornerRadius" Value="8"/>
-                        </Style>
-                    </Button.Resources>
-                </Button>
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="Dış Servis Kayıtları" FontSize="20" FontWeight="Bold" Foreground="{StaticResource TextPrimary}"/>
+                    <TextBlock Text="Yetkili servislere ve harici atölyelere gönderilen cihazlar" FontSize="11" Foreground="{StaticResource TextMuted}"/>
+                </StackPanel>
             </StackPanel>
 
-            <Button x:Name="geridöndisservis" Content="← GERİ DÖN" FontWeight="Bold" Foreground="White" 
-                    Background="#252B36" HorizontalAlignment="Right" VerticalAlignment="Center" 
-                    Width="160" Height="40" Command="{Binding GeriDonCommand}">
-                <Button.Resources>
-                    <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="20"/>
-                    </Style>
-                </Button.Resources>
+            <!-- Geri Dön Butonu -->
+            <Button Grid.Column="1" x:Name="geridöndisservis" Command="{Binding GeriDonCommand}" Cursor="Hand" RenderTransformOrigin="0.5,0.5">
+                <Button.RenderTransform>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Button.RenderTransform>
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bd" Background="#181D29" BorderBrush="{StaticResource BorderNormal}" BorderThickness="1" CornerRadius="8" Padding="14,8">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE72B;" FontFamily="Segoe MDL2 Assets" FontSize="11" Foreground="{StaticResource TextSecondary}" Margin="0,1,8,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="Ana Menü" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource TextPrimary}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="#252D3D"/>
+                                <Setter TargetName="bd" Property="BorderBrush" Value="{StaticResource BorderFocus}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.96" ScaleY="0.96"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="bd" Property="Background" Value="#11141C"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
             </Button>
         </Grid>
 
-        <Border Grid.Row="2" Background="White" Margin="20,0,20,20" CornerRadius="10" Padding="10">
+        <!-- FILTERS & ACTIONS BAR -->
+        <Grid Grid.Row="1" Margin="24,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <!-- Arama Kutusu -->
+                <Border CornerRadius="8" 
+                        Background="{StaticResource BgInput}"
+                        BorderBrush="{StaticResource BorderNormal}" 
+                        BorderThickness="1"
+                        Width="280" Height="38">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="34"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="&#xE721;" FontFamily="Segoe MDL2 Assets" FontSize="12" 
+                                   Foreground="{StaticResource TextMuted}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <TextBox Grid.Column="1" x:Name="aramadisservis1" 
+                                 Text="{Binding AramaMetni, UpdateSourceTrigger=PropertyChanged}" 
+                                 GotFocus="aramadisservis1_GotFocus" 
+                                 LostFocus="aramadisservis1_LostFocus" 
+                                 Background="Transparent" BorderThickness="0" 
+                                 VerticalContentAlignment="Center" Padding="0,0,10,0" 
+                                 Foreground="{StaticResource TextPrimary}" FontSize="13"/>
+                    </Grid>
+                </Border>
+
+                <!-- Tarih Filtresi -->
+                <DatePicker x:Name="dtpServisTarihi" 
+                            Width="160" Margin="12,0,0,0"
+                            SelectedDate="{Binding SecilenTarih, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <!-- Filtreyi Temizle -->
+                <Button x:Name="btnFiltreTemizle" 
+                        Content="Filtreyi Temizle" 
+                        Margin="10,0,0,0" 
+                        Height="38" 
+                        Style="{StaticResource ModernButtonStyle}"
+                        Command="{Binding FiltreTemizleCommand}"/>
+            </StackPanel>
+
+            <!-- Fiş Yazdır Butonu -->
+            <Button Grid.Column="1" x:Name="btnFisiYazdir" 
+                    Height="38"
+                    Cursor="Hand"
+                    RenderTransformOrigin="0.5,0.5"
+                    Command="{Binding FisiYazdirCommand}"
+                    CommandParameter="{Binding SelectedItem, ElementName=dgdisservisVeriler}">
+                <Button.RenderTransform>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Button.RenderTransform>
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bd" Background="#0C201A" BorderBrush="#065F46" BorderThickness="1" CornerRadius="8" Padding="14,0">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="&#xE749;" FontFamily="Segoe MDL2 Assets" FontSize="11" Foreground="#10B981" Margin="0,1,8,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="Fiş Yazdır" FontSize="12" FontWeight="SemiBold" Foreground="#10B981" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="#14342A"/>
+                                <Setter TargetName="bd" Property="BorderBrush" Value="#059669"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.96" ScaleY="0.96"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="bd" Property="Background" Value="#061A13"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </Grid>
+
+        <!-- DATAGRID KARTI -->
+        <Border Grid.Row="2" Background="{StaticResource BgCard}" Margin="24,0,24,24" CornerRadius="10" BorderBrush="{StaticResource BorderNormal}" BorderThickness="1">
             <DataGrid x:Name="dgdisservisVeriler"
                       AutoGenerateColumns="False"
+                      AlternationCount="2"
                       ItemsSource="{Binding Veriler}"
-                      MouseDoubleClick="disMouseDoubleClick">
+                      MouseDoubleClick="disMouseDoubleClick"
+                      Margin="8">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="DIŞ SERVİS TARİHİ" 
-                                      Binding="{Binding KayitTarihi, StringFormat=\{0:dd.MM.yyyy\}}" 
-                                      Width="1.1*" MinWidth="150">
+                                        Binding="{Binding KayitTarihi, StringFormat=\{0:dd.MM.yyyy\}}" 
+                                        Width="140">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="TextAlignment" Value="Center"/>
@@ -246,18 +397,20 @@
                     </DataGridTextColumn>
 
                     <DataGridTextColumn Header="MÜŞTERİ ADI" 
-                                      Binding="{Binding IsimSoyisim}" 
-                                      Width="1.3*" MinWidth="180">
+                                        Binding="{Binding IsimSoyisim}" 
+                                        Width="180">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="TextAlignment" Value="Center"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                <Setter Property="Foreground" Value="#C084FC"/>
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
 
                     <DataGridTextColumn Header="MARKA" 
-                                      Binding="{Binding Marka}" 
-                                      Width="0.8*" MinWidth="100">
+                                        Binding="{Binding Marka}" 
+                                        Width="110">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="TextAlignment" Value="Center"/>
@@ -266,8 +419,8 @@
                     </DataGridTextColumn>
 
                     <DataGridTextColumn Header="MODEL" 
-                                      Binding="{Binding Model}" 
-                                      Width="1*" MinWidth="120">
+                                        Binding="{Binding Model}" 
+                                        Width="130">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="TextAlignment" Value="Center"/>
@@ -276,8 +429,8 @@
                     </DataGridTextColumn>
 
                     <DataGridTextColumn Header="ARIZA DETAYI" 
-                                      Binding="{Binding Ariza}" 
-                                      Width="1.6*" MinWidth="200">
+                                        Binding="{Binding Ariza}" 
+                                        Width="*">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="TextAlignment" Value="Left"/>
@@ -293,6 +446,3 @@
         <local:OverlayHost x:Name="OverlayHost" Panel.ZIndex="999"/>
     </Grid>
 </Page>
-
-
-

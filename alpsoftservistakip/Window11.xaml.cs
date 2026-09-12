@@ -10,7 +10,7 @@ namespace alpsoftservistakip
 {
     public partial class Window11 : Window
     {
-        private const string CURRENT_VERSION = "1.0.2";
+        private const string CURRENT_VERSION = "1.0.5";
         private const string VERSION_URL = "https://github.com/alperngrpnr/alpsoftupdates/releases/latest/download/version.txt";
         private const string SETUP_URL = "https://github.com/alperngrpnr/alpsoftupdates/releases/latest/download/AlpsoftSetup.exe";
 
@@ -141,7 +141,7 @@ namespace alpsoftservistakip
                 await Task.Delay(20);
             }
 
-            new LoginWindow().Show();
+            new LoginHostWindow().Show();
             Close();
         }
     }

@@ -6,45 +6,59 @@
       xmlns:local="clr-namespace:alpsoftservistakip"
       mc:Ignorable="d" 
       d:DesignHeight="950" d:DesignWidth="1400"
-      Background="#F0F4F8"
-      Title="PageCariListesi">
+      Background="#0D1017"
+      Title="Cari Takip">
 
     <Page.Resources>
-        <SolidColorBrush x:Key="PrimaryColor" Color="#3498DB"/>
-        <SolidColorBrush x:Key="SecondaryDark" Color="#2C3E50"/>
+        <!-- Theme Colors -->
+        <SolidColorBrush x:Key="BgPage" Color="#0D1017"/>
+        <SolidColorBrush x:Key="BgCard" Color="#151923"/>
+        <SolidColorBrush x:Key="BgInput" Color="#181D29"/>
+        <SolidColorBrush x:Key="BorderNormal" Color="#252D3D"/>
+        <SolidColorBrush x:Key="BorderFocus" Color="#3B82F6"/>
+        <SolidColorBrush x:Key="TextPrimary" Color="#F8FAFC"/>
+        <SolidColorBrush x:Key="TextSecondary" Color="#94A3B8"/>
+        <SolidColorBrush x:Key="TextMuted" Color="#64748B"/>
+        <SolidColorBrush x:Key="AccentCyan" Color="#06B6D4"/>
 
+        <!-- DataGrid Dark Styles -->
         <Style TargetType="DataGrid">
-            <Setter Property="Background" Value="White"/>
+            <Setter Property="Background" Value="{StaticResource BgCard}"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="RowHeight" Value="55"/>
+            <Setter Property="RowHeight" Value="50"/>
             <Setter Property="FontFamily" Value="Segoe UI"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontSize" Value="13"/>
             <Setter Property="HeadersVisibility" Value="Column"/>
             <Setter Property="GridLinesVisibility" Value="Horizontal"/>
-            <Setter Property="HorizontalGridLinesBrush" Value="#EDF2F7"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#1F2533"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
         </Style>
 
         <Style TargetType="DataGridColumnHeader">
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="Foreground" Value="#718096"/>
+            <Setter Property="Background" Value="#11141C"/>
+            <Setter Property="Foreground" Value="{StaticResource TextSecondary}"/>
             <Setter Property="FontFamily" Value="Segoe UI"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Padding" Value="15,10"/>
-            <Setter Property="BorderThickness" Value="0,0,0,2"/>
-            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Padding" Value="14,12"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderNormal}"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
         </Style>
 
         <Style TargetType="DataGridRow">
-            <Setter Property="Background" Value="White"/>
+            <Setter Property="Background" Value="{StaticResource BgCard}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
             <Style.Triggers>
-                <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Background" Value="#E1F0FA"/>
-                    <Setter Property="Foreground" Value="#2C3E50"/>
+                <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                    <Setter Property="Background" Value="#171C27"/>
                 </Trigger>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#F8FAFC"/>
+                    <Setter Property="Background" Value="#222938"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#155E75"/>
+                    <Setter Property="Foreground" Value="White"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -56,7 +70,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="DataGridCell">
                         <Border Background="{TemplateBinding Background}">
-                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5"/>
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" Margin="6,2"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -67,69 +81,86 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-
-        <Style x:Key="TopActionBtn" TargetType="Button">
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Height" Value="45"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" CornerRadius="10">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20,10"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style x:Key="TopBackBtn" TargetType="Button" BasedOn="{StaticResource TopActionBtn}">
-            <Setter Property="Background" Value="{StaticResource SecondaryDark}"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#1F2D3A"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style x:Key="TopPrimaryBtn" TargetType="Button" BasedOn="{StaticResource TopActionBtn}">
-            <Setter Property="Background" Value="{StaticResource PrimaryColor}"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#2980B9"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
     </Page.Resources>
 
-    <Grid Margin="30">
+    <Grid Background="{StaticResource BgPage}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="70"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!-- Üst Başlık ve Geri Dön Butonu -->
-        <Grid Grid.Row="0" Margin="0,0,0,20">
-            <StackPanel Orientation="Horizontal">
-                <Border Width="5" Height="35" Background="{StaticResource PrimaryColor}" Margin="0,0,15,0"/>
-                <TextBlock Text="Cari / Müşteri Takibi" FontSize="30" FontWeight="ExtraBold" Foreground="{StaticResource SecondaryDark}"/>
+        <Grid Grid.Row="0" Margin="24,20,24,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Border Width="4" Height="28" Background="{StaticResource AccentCyan}" Margin="0,0,12,0" CornerRadius="2"/>
+                <Border Width="30" Height="30" CornerRadius="7" Background="#083344" BorderBrush="#0E7490" BorderThickness="1" Margin="0,0,10,0" VerticalAlignment="Center">
+                    <TextBlock Text="&#xE716;" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="#22D3EE" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="Cari &amp; Müşteri Takibi" FontSize="20" FontWeight="Bold" Foreground="{StaticResource TextPrimary}"/>
+                    <TextBlock Text="Müşteri bakiyeleri, hesap hareketleri ve cari hesap yönetimi" FontSize="11" Foreground="{StaticResource TextMuted}"/>
+                </StackPanel>
             </StackPanel>
 
-            <Button HorizontalAlignment="Right" Content="ANA MENÜYE DÖN" Width="220" Click="btnGeri_Click" Style="{StaticResource TopBackBtn}"/>
+            <Button Grid.Column="1" Click="btnGeri_Click" Cursor="Hand" RenderTransformOrigin="0.5,0.5">
+                <Button.RenderTransform>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Button.RenderTransform>
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bd" Background="#181D29" BorderBrush="{StaticResource BorderNormal}" BorderThickness="1" CornerRadius="8" Padding="14,8">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE72B;" FontFamily="Segoe MDL2 Assets" FontSize="11" Foreground="{StaticResource TextSecondary}" Margin="0,1,8,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="Ana Menü" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource TextPrimary}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="#252D3D"/>
+                                <Setter TargetName="bd" Property="BorderBrush" Value="{StaticResource BorderFocus}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.96" ScaleY="0.96"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="bd" Property="Background" Value="#11141C"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
         </Grid>
 
         <!-- Arama ve Cari Ekle -->
-        <Grid Grid.Row="1" Margin="0,0,0,20">
-            <StackPanel Orientation="Horizontal">
+        <Grid Grid.Row="1" Margin="24,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                 <!-- Arama Kutusu -->
-                <Border Width="400" Height="45" CornerRadius="22.5" Background="White" BorderBrush="#E2E8F0" BorderThickness="1">
+                <Border Width="340" Height="38" CornerRadius="8" Background="{StaticResource BgInput}" BorderBrush="{StaticResource BorderNormal}" BorderThickness="1">
                     <Grid>
-                        <TextBox x:Name="txtArama" Background="Transparent" BorderThickness="0" Padding="20,0" 
-                                 VerticalContentAlignment="Center" FontSize="14" TextChanged="txtArama_TextChanged"/>
-                        <TextBlock Text="Müşteri Adı Ara..." Foreground="#A0AEC0" Margin="20,0" VerticalAlignment="Center" IsHitTestVisible="False">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="34"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="&#xE721;" FontFamily="Segoe MDL2 Assets" FontSize="12" 
+                                   Foreground="{StaticResource TextMuted}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <TextBox Grid.Column="1" x:Name="txtArama" Background="Transparent" BorderThickness="0" Padding="0,0,10,0" 
+                                 VerticalContentAlignment="Center" FontSize="13" Foreground="{StaticResource TextPrimary}" 
+                                 CaretBrush="#22D3EE" TextChanged="txtArama_TextChanged"/>
+                        <TextBlock Grid.Column="1" Text="Müşteri Adı / Ünvan Ara..." Foreground="{StaticResource TextMuted}" 
+                                   VerticalAlignment="Center" IsHitTestVisible="False" FontSize="13">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -145,35 +176,83 @@
                 </Border>
 
                 <!-- Arama Temizle -->
-                <Button Content="Temizle" Margin="10,0,0,0" Height="45" Width="100" Click="btnTemizle_Click"
-                        Background="White" Foreground="#2C3E50" FontWeight="SemiBold" BorderBrush="#E2E8F0" BorderThickness="1" Cursor="Hand">
-                    <Button.Resources>
-                        <Style TargetType="Border">
-                            <Setter Property="CornerRadius" Value="22.5"/>
-                        </Style>
-                    </Button.Resources>
+                <Button Content="Temizle" Margin="10,0,0,0" Height="38" Click="btnTemizle_Click"
+                        Background="#1E2433" Foreground="{StaticResource TextSecondary}" FontWeight="SemiBold" 
+                        BorderBrush="{StaticResource BorderNormal}" BorderThickness="1" Cursor="Hand" Padding="14,0"
+                        RenderTransformOrigin="0.5,0.5">
+                    <Button.RenderTransform>
+                        <ScaleTransform ScaleX="1" ScaleY="1"/>
+                    </Button.RenderTransform>
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="8" Padding="{TemplateBinding Padding}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="bd" Property="Background" Value="#2A3447"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="RenderTransform">
+                                        <Setter.Value>
+                                            <ScaleTransform ScaleX="0.96" ScaleY="0.96"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter TargetName="bd" Property="Background" Value="#131824"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
                 </Button>
             </StackPanel>
 
-            <!-- Sağ Taraf: CARİ EKLE BUTONU -->
-            <Button Content="+ YENİ CARİ EKLE" Style="{StaticResource TopPrimaryBtn}" Width="220" HorizontalAlignment="Right" Click="btnYeniCari_Click"/>
+            <!-- Sağ Taraf: CARİ EKLE BUTONU (Orantılı Yükseklik 38px) -->
+            <Button Grid.Column="1" Click="btnYeniCari_Click" Cursor="Hand"
+                    Height="38" VerticalAlignment="Center"
+                    RenderTransformOrigin="0.5,0.5">
+                <Button.RenderTransform>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Button.RenderTransform>
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bd" Background="#0891B2" BorderBrush="#0E7490" BorderThickness="1" CornerRadius="8" Padding="16,0">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="11" Foreground="White" Margin="0,1,8,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="Yeni Cari Ekle" FontSize="12" FontWeight="SemiBold" Foreground="White" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="#06B6D4"/>
+                                <Setter TargetName="bd" Property="BorderBrush" Value="#22D3EE"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.96" ScaleY="0.96"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="bd" Property="Background" Value="#083344"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
         </Grid>
 
         <!-- DataGrid (Tablo) -->
-        <Border Grid.Row="2" Background="White" CornerRadius="15" Padding="15">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="30" Opacity="0.05" ShadowDepth="5" Color="Black"/>
-            </Border.Effect>
-
+        <Border Grid.Row="2" Background="{StaticResource BgCard}" Margin="24,0,24,24" CornerRadius="10" BorderBrush="{StaticResource BorderNormal}" BorderThickness="1">
             <DataGrid x:Name="dgCariler" AutoGenerateColumns="False" IsReadOnly="True" 
-                      SelectionMode="Single" MouseDoubleClick="dgCariler_MouseDoubleClick">
+                      AlternationCount="2"
+                      SelectionMode="Single" MouseDoubleClick="dgCariler_MouseDoubleClick"
+                      Margin="8">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Kayıt No" Binding="{Binding CariID}" Width="100"/>
+                    <DataGridTextColumn Header="Kayıt No" Binding="{Binding CariID}" Width="90"/>
                     <DataGridTextColumn Header="Müşteri / Ünvan" Binding="{Binding AdSoyadUnvan}" Width="*">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
-                                <Setter Property="FontWeight" Value="Bold"/>
-                                <Setter Property="Foreground" Value="{StaticResource SecondaryDark}"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                <Setter Property="Foreground" Value="#38BDF8"/>
                                 <Setter Property="VerticalAlignment" Value="Center"/>
                             </Style>
                         </DataGridTextColumn.ElementStyle>
@@ -187,10 +266,10 @@
                                 <Setter Property="HorizontalAlignment" Value="Right"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding BakiyeDurumu}" Value="Borclu">
-                                        <Setter Property="Foreground" Value="#E74C3C"/> <!-- Kırmızı -->
+                                        <Setter Property="Foreground" Value="#F87171"/> <!-- Kırmızı -->
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding BakiyeDurumu}" Value="Alacakli">
-                                        <Setter Property="Foreground" Value="#2ECC71"/> <!-- Yeşil -->
+                                        <Setter Property="Foreground" Value="#34D399"/> <!-- Yeşil -->
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
