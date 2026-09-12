@@ -1,0 +1,274 @@
+<Page x:Class="alpsoftservistakip.PageAyarlar"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d" 
+      Title="Kişisel Ayarlar"
+      Background="Transparent">
+
+    <Grid Background="#121418" Margin="0,0,0,0">
+        <!-- Main Content Area -->
+        <Border Background="#181A20" CornerRadius="16" BorderBrush="#1E232B" BorderThickness="1" Margin="20">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Header -->
+                <Border Grid.Row="0" BorderBrush="#1E232B" BorderThickness="0,0,0,1" Padding="20">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" FontSize="20" Foreground="#FFD026" Margin="0,0,15,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="Kişisel Ayarlar (Firma Bilgileri)" Foreground="#F1F5F9" FontSize="20" FontWeight="Bold" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+                
+                <TextBlock Grid.Row="1" Text="Bu bilgiler faturalarda, barkodlarda ve teknik servis fişlerinde marka adınız olarak görünecektir." Foreground="#94A3B8" FontSize="13" Margin="20,15,20,5"/>
+
+                <!-- Form Area -->
+                <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Margin="20,10,20,20">
+                    <StackPanel Width="600" HorizontalAlignment="Left">
+                        
+                        <!-- Firma Adı -->
+                        <TextBlock Text="Firma Adı *" Foreground="#94A3B8" FontWeight="SemiBold" Margin="0,15,0,5"/>
+                        <Border Background="#0F1115" BorderBrush="#2A2E35" BorderThickness="1" CornerRadius="8" Height="42">
+                            <TextBox x:Name="txtFirmaAdi" Background="Transparent" Foreground="#F8FAFC" BorderThickness="0" FontSize="14" Padding="10,0" VerticalContentAlignment="Center"/>
+                        </Border>
+
+                        <!-- Telefon -->
+                        <TextBlock Text="Telefon Numarası" Foreground="#94A3B8" FontWeight="SemiBold" Margin="0,15,0,5"/>
+                        <Border Background="#0F1115" BorderBrush="#2A2E35" BorderThickness="1" CornerRadius="8" Height="42">
+                            <TextBox x:Name="txtTelefon" Background="Transparent" Foreground="#F8FAFC" BorderThickness="0" FontSize="14" Padding="10,0" VerticalContentAlignment="Center"/>
+                        </Border>
+                        
+                        <!-- Adres -->
+                        <TextBlock Text="Açık Adres" Foreground="#94A3B8" FontWeight="SemiBold" Margin="0,15,0,5"/>
+                        <Border Background="#0F1115" BorderBrush="#2A2E35" BorderThickness="1" CornerRadius="8" Height="84">
+                            <TextBox x:Name="txtAdres" Background="Transparent" Foreground="#F8FAFC" BorderThickness="0" FontSize="14" Padding="10,10" TextWrapping="Wrap" AcceptsReturn="True"/>
+                        </Border>
+                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="15"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0">
+                                <!-- Vergi Dairesi -->
+                                <TextBlock Text="Vergi Dairesi" Foreground="#94A3B8" FontWeight="SemiBold" Margin="0,15,0,5"/>
+                                <Border Background="#0F1115" BorderBrush="#2A2E35" BorderThickness="1" CornerRadius="8" Height="42">
+                                    <TextBox x:Name="txtVergiDairesi" Background="Transparent" Foreground="#F8FAFC" BorderThickness="0" FontSize="14" Padding="10,0" VerticalContentAlignment="Center"/>
+                                </Border>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2">
+                                <!-- Vergi No -->
+                                <TextBlock Text="Vergi Numarası (VKN/TCKN)" Foreground="#94A3B8" FontWeight="SemiBold" Margin="0,15,0,5"/>
+                                <Border Background="#0F1115" BorderBrush="#2A2E35" BorderThickness="1" CornerRadius="8" Height="42">
+                                    <TextBox x:Name="txtVergiNo" Background="Transparent" Foreground="#F8FAFC" BorderThickness="0" FontSize="14" Padding="10,0" VerticalContentAlignment="Center"/>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+                        
+                        <!-- Logo URL (Optional) -->
+                        <TextBlock Text="Logo Bağlantısı (URL)" Foreground="#94A3B8" FontWeight="SemiBold" Margin="0,15,0,5"/>
+                        <Border Background="#0F1115" BorderBrush="#2A2E35" BorderThickness="1" CornerRadius="8" Height="42">
+                            <TextBox x:Name="txtLogoUrl" Background="Transparent" Foreground="#F8FAFC" BorderThickness="0" FontSize="14" Padding="10,0" VerticalContentAlignment="Center" ToolTip="Örn: https://siteniz.com/logo.png"/>
+                        </Border>
+
+                        <!-- Google Haritalar Yorum Linki -->
+                        <TextBlock Text="⭐ Google Haritalar Değerlendirme Bağlantısı" Foreground="#94A3B8" FontWeight="SemiBold" Margin="0,15,0,5"/>
+                        <Border Background="#0F1115" BorderBrush="#2A2E35" BorderThickness="1" CornerRadius="8" Height="42">
+                            <TextBox x:Name="txtGoogleYorumUrl" Background="Transparent" Foreground="#F8FAFC" BorderThickness="0" FontSize="13" Padding="10,0" VerticalContentAlignment="Center" ToolTip="Örn: https://g.page/r/XXXXX/review veya işletmenizin Google Haritalar linki"/>
+                        </Border>
+                        <TextBlock Text="Cihaz teslim edildiğinde müşteriye giden WhatsApp/SMS bildirimine otomatik 5 yıldız isteme linki eklenir." Foreground="#64748B" FontSize="11" Margin="0,3,0,0"/>
+
+                        <!-- GÜN SONU PATRON RAPORU BÖLÜMÜ -->
+                        <Border Margin="0,25,0,15" BorderBrush="#2A2E35" BorderThickness="0,1,0,0" Padding="0,15,0,0">
+                            <StackPanel Orientation="Horizontal">
+                                <Border Width="28" Height="28" CornerRadius="7" Background="#162E20" BorderBrush="#10B981" BorderThickness="1" Margin="0,0,10,0" VerticalAlignment="Center">
+                                    <TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#10B981" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="Gün Sonu Patron Özeti (Otomatik Rapor)" Foreground="#F8FAFC" FontSize="15" FontWeight="Bold"/>
+                                    <TextBlock Text="Her akşam dükkan kapandığında günün ciro, cihaz ve kasa özetini WhatsApp ile iletir" Foreground="#64748B" FontSize="11"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="15"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Rapor Saati -->
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Rapor Gönderim Saati (SS:DD)" Foreground="#94A3B8" FontWeight="SemiBold" Margin="0,10,0,5"/>
+                                <Border Background="#0F1115" BorderBrush="#2A2E35" BorderThickness="1" CornerRadius="8" Height="42">
+                                    <TextBox x:Name="txtGunSonuSaat" Text="20:00" Background="Transparent" Foreground="#F8FAFC" BorderThickness="0" FontSize="14" Padding="10,0" VerticalContentAlignment="Center" ToolTip="Örn: 20:00 veya 19:30"/>
+                                </Border>
+                            </StackPanel>
+
+                            <!-- Patron Telefon -->
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="Patron WhatsApp / Telefon No" Foreground="#94A3B8" FontWeight="SemiBold" Margin="0,10,0,5"/>
+                                <Border Background="#0F1115" BorderBrush="#2A2E35" BorderThickness="1" CornerRadius="8" Height="42">
+                                    <TextBox x:Name="txtPatronTelefon" Background="Transparent" Foreground="#F8FAFC" BorderThickness="0" FontSize="14" Padding="10,0" VerticalContentAlignment="Center" ToolTip="Örn: 05466480160"/>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+
+                        <CheckBox x:Name="chkGunSonuAktif" Content="Belirlenen saatte gün sonu raporu otomatik hatırlatılsın" Foreground="#F8FAFC" FontSize="13" Margin="0,12,0,8" IsChecked="True"/>
+
+                        <!-- Şimdi Gönder Butonu -->
+                        <Border Background="#151923" BorderBrush="#252D3D" BorderThickness="1" CornerRadius="8" Padding="12,10" Margin="0,5,0,10">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="Bugünün Raporunu Şimdi Gönder" Foreground="#F8FAFC" FontSize="12" FontWeight="Bold"/>
+                                    <TextBlock Text="Bugünkü ciro, nakit/kart dağılımı ve teslim edilen cihaz özetini WhatsApp'a hazırlar" Foreground="#64748B" FontSize="11"/>
+                                </StackPanel>
+                                <Button Grid.Column="1" Click="btnGunSonuRaporGonder_Click" Height="36" Padding="16,0" Background="#10B981" Foreground="#FFFFFF" FontWeight="Bold" FontSize="11" Cursor="Hand" BorderThickness="0">
+                                    <Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="6"/></Style></Button.Resources>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#FFFFFF" Margin="0,1,6,0" VerticalAlignment="Center"/>
+                                        <TextBlock Text="RAPORU ŞİMDİ GÖNDER" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
+                            </Grid>
+                        </Border>
+
+                        <!-- BİLDİRİM & SMS BÖLÜMÜ -->
+                        <Border Margin="0,25,0,15" BorderBrush="#2A2E35" BorderThickness="0,1,0,0" Padding="0,15,0,0">
+                            <StackPanel Orientation="Horizontal">
+                                <Border Width="28" Height="28" CornerRadius="7" Background="#262112" BorderBrush="#FFD026" BorderThickness="1" Margin="0,0,10,0" VerticalAlignment="Center">
+                                    <TextBlock Text="&#xE8BD;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#FFD026" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="Müşteri Bildirim &amp; SMS Ayarları" Foreground="#F8FAFC" FontSize="15" FontWeight="Bold"/>
+                                    <TextBlock Text="Netgsm, İletiMerkezi veya Özel HTTP SMS sağlayıcı bilgileri" Foreground="#64748B" FontSize="11"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="15"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- SMS Sağlayıcı -->
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="SMS Sağlayıcısı" Foreground="#94A3B8" FontWeight="SemiBold" Margin="0,10,0,5"/>
+                                <Border Background="#0F1115" BorderBrush="#2A2E35" BorderThickness="1" CornerRadius="8" Height="42">
+                                    <ComboBox x:Name="cmbSmsProvider" Background="Transparent" Foreground="#F8FAFC" BorderThickness="0" FontSize="14" VerticalContentAlignment="Center">
+                                        <ComboBoxItem Content="Netgsm" IsSelected="True"/>
+                                        <ComboBoxItem Content="İletiMerkezi"/>
+                                        <ComboBoxItem Content="MutluCell"/>
+                                        <ComboBoxItem Content="Özel HTTP API"/>
+                                    </ComboBox>
+                                </Border>
+                            </StackPanel>
+
+                            <!-- SMS Başlığı (Originator) -->
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="SMS Gönderici Başlığı (Header)" Foreground="#94A3B8" FontWeight="SemiBold" Margin="0,10,0,5"/>
+                                <Border Background="#0F1115" BorderBrush="#2A2E35" BorderThickness="1" CornerRadius="8" Height="42">
+                                    <TextBox x:Name="txtSmsHeader" Background="Transparent" Foreground="#F8FAFC" BorderThickness="0" FontSize="14" Padding="10,0" VerticalContentAlignment="Center" ToolTip="Örn: FIRMA_ADI"/>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid Margin="0,10,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="15"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- SMS Kullanıcı Kodu -->
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="SMS Kullanıcı Adı / Kodu" Foreground="#94A3B8" FontWeight="SemiBold" Margin="0,10,0,5"/>
+                                <Border Background="#0F1115" BorderBrush="#2A2E35" BorderThickness="1" CornerRadius="8" Height="42">
+                                    <TextBox x:Name="txtSmsUser" Background="Transparent" Foreground="#F8FAFC" BorderThickness="0" FontSize="14" Padding="10,0" VerticalContentAlignment="Center"/>
+                                </Border>
+                            </StackPanel>
+
+                            <!-- SMS Şifresi -->
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="SMS API Şifresi" Foreground="#94A3B8" FontWeight="SemiBold" Margin="0,10,0,5"/>
+                                <Border Background="#0F1115" BorderBrush="#2A2E35" BorderThickness="1" CornerRadius="8" Height="42">
+                                    <PasswordBox x:Name="txtSmsPassword" Background="Transparent" Foreground="#F8FAFC" BorderThickness="0" FontSize="14" Padding="10,0" VerticalContentAlignment="Center"/>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Özel API Şablonu -->
+                        <TextBlock Text="Özel API URL Şablonu (Sadece Özel HTTP API için)" Foreground="#94A3B8" FontWeight="SemiBold" Margin="0,15,0,5"/>
+                        <Border Background="#0F1115" BorderBrush="#2A2E35" BorderThickness="1" CornerRadius="8" Height="42">
+                            <TextBox x:Name="txtSmsApiUrlTemplate" Background="Transparent" Foreground="#F8FAFC" BorderThickness="0" FontSize="13" Padding="10,0" VerticalContentAlignment="Center" ToolTip="Örn: https://api.site.com/sms?user={user}&amp;pass={pass}&amp;to={to}&amp;msg={message}"/>
+                        </Border>
+
+                        <!-- Otomatik Bildirim Seçenekleri -->
+                        <StackPanel Margin="0,15,0,10">
+                            <CheckBox x:Name="chkAutoSmsOnCompleted" Content="Tamir tamamlandığında müşteriye bildirim sorma ekranı açılsın" Foreground="#F8FAFC" FontSize="13" Margin="0,0,0,8" IsChecked="True"/>
+                            <CheckBox x:Name="chkAutoSmsOnKabul" Content="Yeni cihaz kabul edildiğinde kabul fişi bildirimi sorulsun" Foreground="#F8FAFC" FontSize="13" Margin="0,0,0,8"/>
+                        </StackPanel>
+
+                        <!-- Test SMS Gönder -->
+                        <Border Background="#151923" BorderBrush="#252D3D" BorderThickness="1" CornerRadius="8" Padding="12,10" Margin="0,5,0,10">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="SMS Bağlantısını Test Et" Foreground="#F8FAFC" FontSize="12" FontWeight="Bold"/>
+                                    <TextBlock Text="Girdiğiniz kullanıcı bilgileriyle kendi telefonunuza anında test SMS'i gönderin" Foreground="#64748B" FontSize="11"/>
+                                </StackPanel>
+                                <Button Grid.Column="1" Click="btnTestSms_Click" Height="36" Padding="16,0" Background="#2563EB" Foreground="#FFFFFF" FontWeight="Bold" FontSize="11" Cursor="Hand" BorderThickness="0">
+                                    <Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="6"/></Style></Button.Resources>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="&#xE8BD;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#FFFFFF" Margin="0,1,6,0" VerticalAlignment="Center"/>
+                                        <TextBlock Text="TEST SMS GÖNDER" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
+                            </Grid>
+                        </Border>
+
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- Footer / Action Area -->
+                <Border Grid.Row="3" Background="#14161B" BorderBrush="#1E232B" BorderThickness="0,1,0,0" CornerRadius="0,0,16,16" Padding="20">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button x:Name="btnGeri" Content="GERİ DÖN" Width="120" Height="40" Background="#21252D" Foreground="#F1F5F9" FontWeight="SemiBold" Margin="0,0,15,0" Cursor="Hand" BorderThickness="0" Click="btnGeri_Click">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="8"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                        <Button x:Name="btnKaydet" Content="AYARLARI KAYDET" Width="160" Height="40" Background="#FFD026" Foreground="#121418" FontWeight="Bold" Cursor="Hand" BorderThickness="0" Click="btnKaydet_Click">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="8"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</Page>

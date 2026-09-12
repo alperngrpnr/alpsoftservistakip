@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows;
@@ -27,6 +27,48 @@ namespace alpsoftservistakip
             {
                 dgVeriler.MouseDoubleClick += dgVeriler_MouseDoubleClick;
             }
+
+            InitGunSonuTimer();
+        }
+
+        private System.Windows.Threading.DispatcherTimer _gunSonuTimer;
+        private DateTime _lastGunSonuDate = DateTime.MinValue;
+
+        private void InitGunSonuTimer()
+        {
+            _gunSonuTimer = new System.Windows.Threading.DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(45)
+            };
+            _gunSonuTimer.Tick += GunSonuTimer_Tick;
+            _gunSonuTimer.Start();
+        }
+
+        private async void GunSonuTimer_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                var settings = Helpers.PatronRaporSettings.Load();
+                if (!settings.GunSonuRaporAktif || string.IsNullOrWhiteSpace(settings.GunSonuRaporSaati)) return;
+
+                string currentHHmm = DateTime.Now.ToString("HH:mm");
+                if (currentHHmm == settings.GunSonuRaporSaati && _lastGunSonuDate.Date != DateTime.Today)
+                {
+                    _lastGunSonuDate = DateTime.Today;
+                    var res = MessageBox.Show(
+                        $"Gün sonu saatine geldiniz ({settings.GunSonuRaporSaati}).\nBugünkü hasılat ve cihaz özetini WhatsApp üzerinden patrona iletmek ister misiniz?",
+                        "📊 Gün Sonu Patron Raporu",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question);
+
+                    if (res == MessageBoxResult.Yes)
+                    {
+                        var result = await Services.NotificationService.SendGunSonuRaporuAsync(settings.PatronTelefon);
+                        if (!result.success) MessageBox.Show(result.message, "Bilgi", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                }
+            }
+            catch { }
         }
 
         private void dgVeriler_MouseDoubleClick(object sender, MouseButtonEventArgs e)
