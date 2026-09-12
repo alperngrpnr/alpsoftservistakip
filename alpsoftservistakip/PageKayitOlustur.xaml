@@ -16,12 +16,12 @@
         <SolidColorBrush x:Key="BgCardSub" Color="#1B202D"/>
         <SolidColorBrush x:Key="BgInput" Color="#181D29"/>
         <SolidColorBrush x:Key="BorderNormal" Color="#252D3D"/>
-        <SolidColorBrush x:Key="BorderFocus" Color="#3B82F6"/>
+        <SolidColorBrush x:Key="BorderFocus" Color="#FFD026"/>
         <SolidColorBrush x:Key="TextPrimary" Color="#F8FAFC"/>
         <SolidColorBrush x:Key="TextSecondary" Color="#94A3B8"/>
         <SolidColorBrush x:Key="TextMuted" Color="#64748B"/>
-        <SolidColorBrush x:Key="PrimaryBlue" Color="#2563EB"/>
-        <SolidColorBrush x:Key="PrimaryBlueHover" Color="#1D4ED8"/>
+        <SolidColorBrush x:Key="PrimaryBlue" Color="#FFD026"/>
+        <SolidColorBrush x:Key="PrimaryBlueHover" Color="#FFE0B310"/>
 
         <!-- TextBox Modern Dark -->
         <Style TargetType="TextBox">
@@ -34,7 +34,7 @@
             <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
             <Setter Property="Height" Value="40"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="CaretBrush" Value="#38BDF8"/>
+            <Setter Property="CaretBrush" Value="#FFD026"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
@@ -61,100 +61,7 @@
             </Setter>
         </Style>
 
-        <!-- ComboBox Modern Dark -->
-        <Style TargetType="ComboBox">
-            <Setter Property="Height" Value="40"/>
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="FontFamily" Value="Segoe UI"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Padding" Value="12,0"/>
-            <Setter Property="Background" Value="{StaticResource BgInput}"/>
-            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource BorderNormal}"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ComboBox">
-                        <Border x:Name="border" Background="{TemplateBinding Background}" 
-                                BorderBrush="{TemplateBinding BorderBrush}" 
-                                BorderThickness="{TemplateBinding BorderThickness}" 
-                                CornerRadius="8">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="36"/>
-                                </Grid.ColumnDefinitions>
-                                
-                                <ContentPresenter Grid.Column="0" Content="{TemplateBinding SelectionBoxItem}" 
-                                                  ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" 
-                                                  Margin="{TemplateBinding Padding}" 
-                                                  VerticalAlignment="Center" 
-                                                  HorizontalAlignment="Left"/>
-                                
-                                <ToggleButton Grid.Column="1" Focusable="false" 
-                                              IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
-                                    <ToggleButton.Template>
-                                        <ControlTemplate TargetType="ToggleButton">
-                                            <Border Background="Transparent" BorderThickness="0">
-                                                <TextBlock Text="&#xE70D;" FontFamily="Segoe MDL2 Assets" FontSize="10" 
-                                                           Foreground="{StaticResource TextSecondary}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                            </Border>
-                                        </ControlTemplate>
-                                    </ToggleButton.Template>
-                                </ToggleButton>
-                                
-                                <Popup Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" 
-                                       AllowsTransparency="True" Focusable="False" PopupAnimation="Fade">
-                                    <Grid Name="DropDown" SnapsToDevicePixels="True" 
-                                          MinWidth="{TemplateBinding ActualWidth}" MaxHeight="220" Margin="0,4,0,0">
-                                        <Border CornerRadius="8" Background="#1A202C" BorderThickness="1" BorderBrush="#333F54">
-                                            <ScrollViewer Margin="4" SnapsToDevicePixels="True">
-                                                <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
-                                            </ScrollViewer>
-                                        </Border>
-                                    </Grid>
-                                </Popup>
-                            </Grid>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="BorderBrush" Value="#3E4A62"/>
-                            </Trigger>
-                            <Trigger Property="IsDropDownOpen" Value="True">
-                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource BorderFocus}"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <!-- ComboBoxItem Style -->
-        <Style TargetType="ComboBoxItem">
-            <Setter Property="Padding" Value="12,8"/>
-            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ComboBoxItem">
-                        <Border x:Name="bd" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" CornerRadius="6" Margin="2">
-                            <ContentPresenter/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="bd" Property="Background" Value="#2A3447"/>
-                            </Trigger>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="bd" Property="Background" Value="{StaticResource PrimaryBlue}"/>
-                                <Setter Property="Foreground" Value="White"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+        <!-- ComboBox ve ComboBoxItem stilleri global App.xaml şablonundan miras alınır -->
 
         <!-- CheckBox Modern Dark -->
         <Style TargetType="CheckBox">
@@ -170,7 +77,7 @@
                             <Border x:Name="chkBorder" Width="18" Height="18" CornerRadius="5" 
                                     Background="#181D29" BorderBrush="{StaticResource BorderNormal}" BorderThickness="1.5"
                                     Margin="0,0,8,0" VerticalAlignment="Center">
-                                <Path x:Name="chkMark" Data="M3,9 L7,13 L15,4" Stroke="White" StrokeThickness="2" 
+                                <Path x:Name="chkMark" Data="M3,9 L7,13 L15,4" Stroke="#121418" StrokeThickness="2.2" 
                                       StrokeStartLineCap="Round" StrokeEndLineCap="Round"
                                       Visibility="Collapsed" Margin="1,-1,0,0" Stretch="Uniform" Width="11" Height="11"/>
                             </Border>
@@ -197,6 +104,107 @@
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Margin" Value="0,0,0,6"/>
+        </Style>
+
+        <!-- Modern Dark DatePicker Style -->
+        <Style TargetType="{x:Type DatePicker}">
+            <Setter Property="Background" Value="{StaticResource BgInput}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderNormal}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DatePicker}">
+                        <Grid x:Name="PART_Root">
+                            <Border x:Name="borderRoot" Background="{TemplateBinding Background}" 
+                                    BorderBrush="{TemplateBinding BorderBrush}" 
+                                    BorderThickness="{TemplateBinding BorderThickness}" 
+                                    CornerRadius="8">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <DatePickerTextBox x:Name="PART_TextBox" 
+                                                       Grid.Column="0"
+                                                       Foreground="{TemplateBinding Foreground}"
+                                                       Background="Transparent"
+                                                       BorderThickness="0"
+                                                       Padding="12,0"
+                                                       VerticalContentAlignment="Center"
+                                                       Focusable="False"
+                                                       IsReadOnly="True">
+                                        <DatePickerTextBox.Style>
+                                            <Style TargetType="{x:Type DatePickerTextBox}">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="{x:Type DatePickerTextBox}">
+                                                            <Grid>
+                                                                <TextBox x:Name="PART_TextBox"
+                                                                         Text="{Binding Path=SelectedDate, RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}, StringFormat='dd.MM.yyyy'}"
+                                                                         Background="Transparent"
+                                                                         Foreground="#F8FAFC"
+                                                                         FontWeight="SemiBold"
+                                                                         FontSize="12"
+                                                                         BorderThickness="0"
+                                                                         VerticalContentAlignment="Center"
+                                                                         Padding="0"
+                                                                         IsReadOnly="True"/>
+                                                                <TextBlock x:Name="PART_Watermark"
+                                                                           Text="Tarih Seç..."
+                                                                           Foreground="#64748B"
+                                                                           VerticalAlignment="Center"
+                                                                           FontSize="11"
+                                                                           Padding="2,0,0,0"
+                                                                           Visibility="Collapsed"/>
+                                                            </Grid>
+                                                            <ControlTemplate.Triggers>
+                                                                <DataTrigger Binding="{Binding Path=SelectedDate, RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" Value="{x:Null}">
+                                                                    <Setter TargetName="PART_Watermark" Property="Visibility" Value="Visible"/>
+                                                                </DataTrigger>
+                                                            </ControlTemplate.Triggers>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </DatePickerTextBox.Style>
+                                    </DatePickerTextBox>
+                                    <Button x:Name="PART_Button" 
+                                            Grid.Column="1"
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            Width="34"
+                                            Cursor="Hand"
+                                            Focusable="False">
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border x:Name="btnBorder" Background="Transparent" CornerRadius="0,7,7,0">
+                                                    <TextBlock Text="&#xE787;" FontFamily="Segoe MDL2 Assets" FontSize="12" 
+                                                               Foreground="#FFD026" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="btnBorder" Property="Background" Value="#252D3D"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                </Grid>
+                            </Border>
+                            <Popup x:Name="PART_Popup" AllowsTransparency="True" Placement="Bottom" PlacementTarget="{Binding ElementName=PART_Root}" StaysOpen="False"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="borderRoot" Property="BorderBrush" Value="#3E4A62"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <!-- Modern Card Style -->
@@ -244,8 +252,8 @@
 
                     <Rectangle Width="1" Height="24" Fill="{StaticResource BorderNormal}" Margin="0,0,16,0"/>
 
-                    <Border Width="28" Height="28" CornerRadius="7" Background="#1E293B" BorderBrush="#334155" BorderThickness="1" Margin="0,0,10,0" VerticalAlignment="Center">
-                        <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#38BDF8" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Border Width="28" Height="28" CornerRadius="7" Background="#262112" BorderBrush="#FFD026" BorderThickness="1" Margin="0,0,10,0" VerticalAlignment="Center">
+                        <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#FFD026" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
 
                     <StackPanel VerticalAlignment="Center">
@@ -261,8 +269,34 @@
                     </StackPanel>
 
                     <!-- Kayıt No Badge (Doluysa gösterilir) -->
-                    <Border Margin="16,0,0,0" Padding="10,4" CornerRadius="8" Background="#0C1E30" BorderBrush="#0369A1" BorderThickness="1" VerticalAlignment="Center">
-                        <TextBlock x:Name="txtKayitNo" Text="" FontSize="11" FontWeight="Bold" Foreground="#38BDF8" VerticalAlignment="Center"/>
+                    <Border Visibility="{Binding KayitNoBadgeVisibility}" Margin="16,0,0,0" Padding="10,4" CornerRadius="8" Background="#262112" BorderBrush="#FFD026" BorderThickness="1" VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE734;" FontFamily="Segoe MDL2 Assets" FontSize="11" Foreground="#FFD026" Margin="0,1,6,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding KayitBaslik}" FontSize="11" FontWeight="Bold" Foreground="#FFD026" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Kayıt Tarih/Saat Badge -->
+                    <Border Margin="10,0,0,0" Padding="10,4" CornerRadius="8" Background="#141824" BorderBrush="#252D3D" BorderThickness="1" VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE787;" FontFamily="Segoe MDL2 Assets" FontSize="11" Foreground="#FFD026" Margin="0,1,6,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding KayitTarihiFormatli}" FontSize="11" FontWeight="SemiBold" Foreground="#F8FAFC" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Şube Seçimi / Badge -->
+                    <Border Margin="10,0,0,0" Padding="8,3" CornerRadius="8" Background="#141824" BorderBrush="#252D3D" BorderThickness="1" VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="&#xE7F4;" FontFamily="Segoe MDL2 Assets" FontSize="11" Foreground="#FFD026" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="Şube:" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource TextSecondary}" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                            <ComboBox Width="130" Height="26"
+                                      ItemsSource="{Binding Subeler}"
+                                      DisplayMemberPath="BranchName"
+                                      SelectedValuePath="BranchId"
+                                      SelectedValue="{Binding SeciliSubeId, Mode=TwoWay}"
+                                      FontSize="11" FontWeight="SemiBold"
+                                      ToolTip="Kayıtlı olduğu şubeyi seçin veya değiştirin"/>
+                        </StackPanel>
                     </Border>
                 </StackPanel>
 
@@ -289,7 +323,7 @@
                     </Button>
 
                     <!-- Dış Servise Gönder -->
-                    <Button Command="{Binding DisServiseGonderCommand}" Margin="0,0,8,0" Cursor="Hand" ToolTip="Cihazı Dış Servise Sevk Et">
+                    <Button Visibility="{Binding DisServisGonderVisibility}" Command="{Binding DisServiseGonderCommand}" Margin="0,0,8,0" Cursor="Hand" ToolTip="Cihazı Dış Servise Sevk Et">
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
                                 <Border x:Name="bd" Background="#211A10" BorderBrush="#78350F" BorderThickness="1" CornerRadius="8" Padding="12,7">
@@ -309,7 +343,7 @@
                     </Button>
 
                     <!-- Fiş Yazdır -->
-                    <Button Command="{Binding FisiYazdirCommand}" Margin="0,0,10,0" Cursor="Hand" ToolTip="Servis Kabul Fişi Çıkart">
+                    <Button Visibility="{Binding FisiYazdirVisibility}" Command="{Binding FisiYazdirCommand}" Margin="0,0,10,0" Cursor="Hand" ToolTip="Servis Kabul Fişi Çıkart">
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
                                 <Border x:Name="bd" Background="#0C201A" BorderBrush="#065F46" BorderThickness="1" CornerRadius="8" Padding="12,7">
@@ -328,14 +362,74 @@
                         </Button.Template>
                     </Button>
 
+                    <!-- Cihaz Etiketi Yazdır -->
+                    <Button Visibility="{Binding FisiYazdirVisibility}" Command="{Binding EtiketiYazdirCommand}" Margin="0,0,10,0" Cursor="Hand" ToolTip="Cihaza Yapıştırılacak Termal Etiketi Yazdır">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="bd" Background="#252115" BorderBrush="#CA8A04" BorderThickness="1" CornerRadius="8" Padding="12,7">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="&#xE8EC;" FontFamily="Segoe MDL2 Assets" FontSize="11" Foreground="#FFD026" Margin="0,1,6,0" VerticalAlignment="Center"/>
+                                        <TextBlock Text="Cihaz Etiketi" FontSize="12" FontWeight="SemiBold" Foreground="#FFD026" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="bd" Property="Background" Value="#3D3216"/>
+                                        <Setter TargetName="bd" Property="BorderBrush" Value="#FACC15"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
+                    <!-- Müşteriye Bildir (WhatsApp & SMS) -->
+                    <Button Command="{Binding MusteriyeBildirCommand}" Margin="0,0,10,0" Cursor="Hand" ToolTip="Müşteriye WhatsApp veya SMS Bildirimi Gönder">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="bd" Background="#0F281E" BorderBrush="#16A34A" BorderThickness="1" CornerRadius="8" Padding="12,7">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="&#xE8BD;" FontFamily="Segoe MDL2 Assets" FontSize="11" Foreground="#22C55E" Margin="0,1,6,0" VerticalAlignment="Center"/>
+                                        <TextBlock Text="Müşteriye Bildir" FontSize="12" FontWeight="SemiBold" Foreground="#22C55E" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="bd" Property="Background" Value="#15422E"/>
+                                        <Setter TargetName="bd" Property="BorderBrush" Value="#4ADE80"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
+                    <!-- Sil -->
+                    <Button Visibility="{Binding KayitSilVisibility}" Command="{Binding KayitSilCommand}" Margin="0,0,10,0" Cursor="Hand" ToolTip="Bu Servis Kaydını Sil">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="bd" Background="#260C0C" BorderBrush="#7F1D1D" BorderThickness="1" CornerRadius="8" Padding="12,7">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="11" Foreground="#EF4444" Margin="0,1,6,0" VerticalAlignment="Center"/>
+                                        <TextBlock Text="Sil" FontSize="12" FontWeight="SemiBold" Foreground="#EF4444" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="bd" Property="Background" Value="#3D1515"/>
+                                        <Setter TargetName="bd" Property="BorderBrush" Value="#991B1B"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
                     <!-- Kaydet (Primary) -->
                     <Button Command="{Binding KaydetCommand}" Cursor="Hand">
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
                                 <Border x:Name="bd" Background="{StaticResource PrimaryBlue}" CornerRadius="8" Padding="16,8">
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="&#xE105;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="White" Margin="0,1,8,0" VerticalAlignment="Center"/>
-                                        <TextBlock Text="Kaydet" FontSize="13" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
+                                        <TextBlock Text="&#xE105;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#121418" Margin="0,1,8,0" VerticalAlignment="Center"/>
+                                        <TextBlock Text="Kaydet" FontSize="13" FontWeight="Bold" Foreground="#121418" VerticalAlignment="Center"/>
                                     </StackPanel>
                                 </Border>
                                 <ControlTemplate.Triggers>
@@ -375,14 +469,47 @@
                         <StackPanel>
                             <!-- Card Header -->
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,18">
-                                <Border Width="32" Height="32" CornerRadius="8" Background="#172554" BorderBrush="#1D4ED8" BorderThickness="1" Margin="0,0,10,0" VerticalAlignment="Center">
-                                    <TextBlock Text="&#xE77B;" FontFamily="Segoe MDL2 Assets" FontSize="14" Foreground="#60A5FA" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <Border Width="32" Height="32" CornerRadius="8" Background="#262112" BorderBrush="#FFD026" BorderThickness="1" Margin="0,0,10,0" VerticalAlignment="Center">
+                                    <TextBlock Text="&#xE77B;" FontFamily="Segoe MDL2 Assets" FontSize="14" Foreground="#FFD026" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 </Border>
                                 <StackPanel VerticalAlignment="Center">
                                     <TextBlock Text="MÜŞTERİ BİLGİLERİ" FontSize="13" FontWeight="Bold" Foreground="{StaticResource TextPrimary}"/>
                                     <TextBlock Text="Müşteri ve bayi iletişim kayıtları" FontSize="11" Foreground="{StaticResource TextMuted}"/>
                                 </StackPanel>
                             </StackPanel>
+
+                            <!-- Kayıt Tarihi ve Saati Düzenleme -->
+                            <Border Background="{StaticResource BgCardSub}" CornerRadius="8" Padding="12,10" BorderBrush="{StaticResource BorderNormal}" BorderThickness="1" Margin="0,0,0,14">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="12"/>
+                                        <ColumnDefinition Width="90"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Tarih -->
+                                    <StackPanel Grid.Column="0">
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                            <TextBlock Text="&#xE787;" FontFamily="Segoe MDL2 Assets" FontSize="11" Foreground="#FFD026" Margin="0,1,5,0" VerticalAlignment="Center"/>
+                                            <TextBlock Text="Kayıt Tarihi" Style="{StaticResource FieldLabel}" Margin="0"/>
+                                        </StackPanel>
+                                        <DatePicker SelectedDate="{Binding KayitTarihi, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    </StackPanel>
+
+                                    <!-- Saat -->
+                                    <StackPanel Grid.Column="2">
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                            <TextBlock Text="&#xE823;" FontFamily="Segoe MDL2 Assets" FontSize="11" Foreground="#FFD026" Margin="0,1,5,0" VerticalAlignment="Center"/>
+                                            <TextBlock Text="Saat" Style="{StaticResource FieldLabel}" Margin="0"/>
+                                        </StackPanel>
+                                        <TextBox Text="{Binding KayitSaati, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                 HorizontalContentAlignment="Center" 
+                                                 FontWeight="SemiBold"
+                                                 MaxLength="5" 
+                                                 ToolTip="Kayıt Saati (SS:DD, örn: 14:30)"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
 
                             <!-- Ad Soyad -->
                             <StackPanel Margin="0,0,0,14">
@@ -410,7 +537,7 @@
                                 <TextBox Text="{Binding CepTelefonu, UpdateSourceTrigger=PropertyChanged}" 
                                          PreviewTextInput="SayiSadece_PreviewTextInput" 
                                          TextChanged="Telefon_TextChanged" 
-                                         MaxLength="15" 
+                                         MaxLength="16" 
                                          ToolTip="Örn: 0532 123 45 67"/>
                             </StackPanel>
 
@@ -442,8 +569,8 @@
                             <StackPanel>
                                 <!-- Header -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,18">
-                                    <Border Width="32" Height="32" CornerRadius="8" Background="#2E1065" BorderBrush="#6B21A8" BorderThickness="1" Margin="0,0,10,0" VerticalAlignment="Center">
-                                        <TextBlock Text="&#xE8EA;" FontFamily="Segoe MDL2 Assets" FontSize="14" Foreground="#C084FC" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <Border Width="32" Height="32" CornerRadius="8" Background="#262112" BorderBrush="#FFD026" BorderThickness="1" Margin="0,0,10,0" VerticalAlignment="Center">
+                                        <TextBlock Text="&#xE8EA;" FontFamily="Segoe MDL2 Assets" FontSize="14" Foreground="#FFD026" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Border>
                                     <StackPanel VerticalAlignment="Center">
                                         <TextBlock Text="CİHAZ BİLGİLERİ" FontSize="13" FontWeight="Bold" Foreground="{StaticResource TextPrimary}"/>
@@ -511,14 +638,14 @@
                                             <ControlTemplate TargetType="Button">
                                                 <Border x:Name="bd" Background="#1E293B" BorderBrush="#334155" BorderThickness="1" CornerRadius="8" Padding="14,0">
                                                     <StackPanel Orientation="Horizontal">
-                                                        <TextBlock Text="&#xE721;" FontFamily="Segoe MDL2 Assets" FontSize="11" Foreground="#38BDF8" Margin="0,1,6,0" VerticalAlignment="Center"/>
-                                                        <TextBlock Text="BTK Sorgula" FontSize="12" FontWeight="SemiBold" Foreground="#38BDF8" VerticalAlignment="Center"/>
+                                                        <TextBlock Text="&#xE721;" FontFamily="Segoe MDL2 Assets" FontSize="11" Foreground="#FFD026" Margin="0,1,6,0" VerticalAlignment="Center"/>
+                                                        <TextBlock Text="BTK Sorgula" FontSize="12" FontWeight="SemiBold" Foreground="#FFD026" VerticalAlignment="Center"/>
                                                     </StackPanel>
                                                 </Border>
                                                 <ControlTemplate.Triggers>
                                                     <Trigger Property="IsMouseOver" Value="True">
-                                                        <Setter TargetName="bd" Property="Background" Value="#2A384F"/>
-                                                        <Setter TargetName="bd" Property="BorderBrush" Value="#0284C7"/>
+                                                        <Setter TargetName="bd" Property="Background" Value="#2A2210"/>
+                                                        <Setter TargetName="bd" Property="BorderBrush" Value="#FFD026"/>
                                                     </Trigger>
                                                 </ControlTemplate.Triggers>
                                             </ControlTemplate>
@@ -575,9 +702,14 @@
                                         <ComboBox SelectedItem="{Binding ServisDurumu, UpdateSourceTrigger=PropertyChanged}">
                                             <sys:String>Kabul Edildi</sys:String>
                                             <sys:String>İşlemde</sys:String>
-                                            <sys:String>Bitti</sys:String>
+                                            <sys:String>Fiyat Teklifi Verildi</sys:String>
+                                            <sys:String>Fiyat Onayı Bekliyor</sys:String>
+                                            <sys:String>Onaylandı - Tamir Aşamasında</sys:String>
+                                            <sys:String>Onaylanmadı - İade Edilecek</sys:String>
+                                            <sys:String>Parça Bekliyor</sys:String>
                                             <sys:String>Dış Servis'te</sys:String>
                                             <sys:String>Tamamlandı</sys:String>
+                                            <sys:String>Teslim Edildi</sys:String>
                                             <sys:String>İade Edildi</sys:String>
                                         </ComboBox>
                                     </StackPanel>
@@ -626,15 +758,17 @@
                 <Border Grid.Row="1" Style="{StaticResource SectionCard}">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*"/>
-                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="1.4*"/>
+                            <ColumnDefinition Width="16"/>
+                            <ColumnDefinition Width="1.6*"/>
+                            <ColumnDefinition Width="16"/>
                             <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
 
                         <!-- Ek Bilgiler -->
                         <StackPanel Grid.Column="0">
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                                <TextBlock Text="&#xE70B;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#38BDF8" Margin="0,1,6,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="&#xE70B;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#FFD026" Margin="0,1,6,0" VerticalAlignment="Center"/>
                                 <TextBlock Text="Ek Notlar (Kilit Parolası, Birlikte Alınan Aksesuarlar vb.)" Style="{StaticResource FieldLabel}" Margin="0"/>
                             </StackPanel>
                             <TextBox Text="{Binding EkBilgiler, UpdateSourceTrigger=PropertyChanged}" 
@@ -645,32 +779,217 @@
                                      Padding="12,8"/>
                         </StackPanel>
 
-                        <!-- Fiyatlandırma Kartı -->
-                        <Border Grid.Column="2" Background="#111726" BorderBrush="#1E3A8A" BorderThickness="1.5" CornerRadius="10" Padding="14,10">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
+                        <!-- ═══════════════════════════════════════════ -->
+                        <!-- TOPTANCI & PARÇA BİLGİLERİ KARTI           -->
+                        <!-- ═══════════════════════════════════════════ -->
+                        <!-- ═══════════════════════════════════════════ -->
+                        <!-- TOPTANCI & PARÇA BİLGİLERİ KARTI (ÇOKLU)   -->
+                        <!-- ═══════════════════════════════════════════ -->
+                        <Border Grid.Column="2" Background="#0E1520" BorderBrush="#2D3A52" BorderThickness="1" CornerRadius="10" Padding="12,10">
+                            <DockPanel LastChildFill="True">
+                                <!-- 1. Kart Başlığı -->
+                                <Grid DockPanel.Dock="Top" Margin="0,0,0,8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <Border Width="26" Height="26" CornerRadius="6" Background="#1A2540" BorderBrush="#3B4F78" BorderThickness="1" Margin="0,0,8,0" VerticalAlignment="Center">
+                                            <TextBlock Text="&#xE8EC;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#6B9FFF" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <StackPanel VerticalAlignment="Center">
+                                            <TextBlock Text="TOPTANCI &amp; PARÇA MALİYETLERİ" FontSize="11" FontWeight="Bold" Foreground="#F8FAFC"/>
+                                            <TextBlock Text="Kullanılan parçaları ekleyin ($ USD)" FontSize="9" Foreground="#64748B"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <Border Grid.Column="1" Background="#1E293B" CornerRadius="10" Padding="8,2" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding ParcaListesi.Count, StringFormat={}{0} Parça}" FontSize="10" FontWeight="Bold" Foreground="#38BDF8"/>
+                                    </Border>
+                                </Grid>
 
-                                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <TextBlock Text="&#xE825;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#60A5FA" Margin="0,1,6,0" VerticalAlignment="Center"/>
-                                    <TextBlock Text="TAHMİNİ / İŞLEM ÜCRETİ" FontSize="11" FontWeight="Bold" Foreground="#93C5FD"/>
+                                <!-- 2. Maliyet & Kar Özeti (Dock: Bottom) -->
+                                <Border DockPanel.Dock="Bottom" Margin="0,6,0,0" Background="#141A26" BorderBrush="#253248" BorderThickness="1" CornerRadius="6" Padding="8,5"
+                                        Visibility="{Binding NetKarGorunurluk}">
+                                    <TextBlock Text="{Binding NetKarOzet}"
+                                               FontSize="10" FontWeight="SemiBold"
+                                               Foreground="#34D399"
+                                               TextWrapping="Wrap"
+                                               HorizontalAlignment="Center"/>
+                                </Border>
+
+                                <!-- 3. Parça Giriş Formu (Dock: Top) -->
+                                <StackPanel DockPanel.Dock="Top" Margin="0,0,0,6">
+                                    <!-- Üst Satır: Toptancı & Parça Adı -->
+                                    <Grid Margin="0,0,0,6">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="8"/>
+                                            <ColumnDefinition Width="1.2*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="Toptancı" FontSize="10" FontWeight="SemiBold" Foreground="#94A3B8" Margin="0,0,0,2"/>
+                                            <ComboBox SelectedItem="{Binding SeciliToptanci, UpdateSourceTrigger=PropertyChanged}"
+                                                      ItemsSource="{Binding ToptanciListesi}"
+                                                      DisplayMemberPath="FirmaAdi"
+                                                      Background="#181D29"
+                                                      BorderBrush="#252D3D"
+                                                      Foreground="#F8FAFC"
+                                                      Height="28" FontSize="11"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="2">
+                                            <TextBlock Text="Parça Adı" FontSize="10" FontWeight="SemiBold" Foreground="#94A3B8" Margin="0,0,0,2"/>
+                                            <TextBox Text="{Binding ParcaAdi, UpdateSourceTrigger=PropertyChanged}"
+                                                     Height="28" FontSize="11"
+                                                     ToolTip="Örn: Ekran, Batarya, Kasa"/>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <!-- Alt Satır: Adet, Fiyat ve [+ Parça Ekle] Butonu -->
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="50"/>
+                                            <ColumnDefinition Width="6"/>
+                                            <ColumnDefinition Width="85"/>
+                                            <ColumnDefinition Width="8"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="Adet" FontSize="10" FontWeight="SemiBold" Foreground="#94A3B8" Margin="0,0,0,2"/>
+                                            <TextBox Text="{Binding ParcaAdet, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:#}}"
+                                                     HorizontalContentAlignment="Center"
+                                                     Height="28" FontSize="11"
+                                                     PreviewTextInput="SayiSadece_PreviewTextInput"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="2">
+                                            <TextBlock Text="Birim Fiyat ($)" FontSize="10" FontWeight="SemiBold" Foreground="#94A3B8" Margin="0,0,0,2"/>
+                                            <TextBox Text="{Binding ParcaBirimFiyati, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:#.##}}"
+                                                     HorizontalContentAlignment="Right"
+                                                     Height="28" FontSize="11"
+                                                     ToolTip="USD Dolar birim fiyatı"/>
+                                        </StackPanel>
+                                        <Button Grid.Column="4" Command="{Binding ParcaEkleCommand}"
+                                                Height="28" Margin="0,14,0,0"
+                                                Background="#2563EB" Foreground="White" BorderThickness="0"
+                                                FontWeight="Bold" FontSize="11" Cursor="Hand">
+                                            <Button.Template>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Border Background="{TemplateBinding Background}" CornerRadius="5">
+                                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                            <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="10" Margin="0,0,4,0"/>
+                                                            <TextBlock Text="Parça Ekle" FontSize="10" FontWeight="Bold"/>
+                                                        </StackPanel>
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </Button.Template>
+                                        </Button>
+                                    </Grid>
                                 </StackPanel>
 
-                                <Grid Grid.Row="1" Margin="0,4,0,0">
+                                <!-- 4. Eklenen Parçalar Listesi (Kalan alanı doldurur) -->
+                                <Border Background="#090D14" BorderBrush="#1C2433" BorderThickness="1" CornerRadius="6" Padding="4" Margin="0,2,0,0" MinHeight="60">
+                                    <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="100">
+                                        <Grid>
+                                            <!-- Liste boşken mesaj -->
+                                            <TextBlock Text="Henüz parça eklenmedi (opsiyonel)"
+                                                       Foreground="#475569" FontSize="10" FontStyle="Italic"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Margin="0,18,0,0">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding ParcaListesi.Count}" Value="0">
+                                                                <Setter Property="Visibility" Value="Visible"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+
+                                            <!-- Parça Listesi -->
+                                            <ItemsControl ItemsSource="{Binding ParcaListesi}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Border Background="#131926" BorderBrush="#1E293B" BorderThickness="1" CornerRadius="4" Padding="6,4" Margin="0,0,0,3">
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="*"/>
+                                                                    <ColumnDefinition Width="Auto"/>
+                                                                    <ColumnDefinition Width="Auto"/>
+                                                                </Grid.ColumnDefinitions>
+                                                                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                                                    <TextBlock Text="{Binding ParcaAdi}" FontSize="10" FontWeight="Bold" Foreground="#F1F5F9" TextTrimming="CharacterEllipsis"/>
+                                                                    <TextBlock Text="{Binding ToptanciAdi}" FontSize="8.5" Foreground="#64748B" TextTrimming="CharacterEllipsis"/>
+                                                                </StackPanel>
+                                                                <TextBlock Grid.Column="1" Text="{Binding FiyatOzet}" FontSize="10" FontWeight="SemiBold" Foreground="#38BDF8" VerticalAlignment="Center" Margin="6,0"/>
+                                                                <Button Grid.Column="2"
+                                                                        Command="{Binding DataContext.ParcaSilCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                                        CommandParameter="{Binding}"
+                                                                        Background="Transparent" BorderThickness="0"
+                                                                        Foreground="#EF4444" Cursor="Hand" Width="20" Height="20"
+                                                                        ToolTip="Bu parçayı sil">
+                                                                    <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="9"/>
+                                                                </Button>
+                                                            </Grid>
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </Grid>
+                                    </ScrollViewer>
+                                </Border>
+                            </DockPanel>
+                        </Border>
+
+                        <!-- ═══════════════════════════════════════════ -->
+                        <!-- AYRI AYRI: ÜCRET KARTI & ÖDEME TÜRÜ KARTI  -->
+                        <!-- ═══════════════════════════════════════════ -->
+                        <Grid Grid.Column="4">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="10"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- 1. TAHMİNİ / İŞLEM ÜCRETİ KARTI (ALTIN VURGULU) -->
+                            <Border Grid.Row="0" Background="#17140B" BorderBrush="#FFD026" BorderThickness="1.5" CornerRadius="10" Padding="14,10">
+                                <StackPanel VerticalAlignment="Center">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,6">
+                                        <TextBlock Text="&#xE825;" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="#FFD026" Margin="0,1,6,0" VerticalAlignment="Center"/>
+                                        <TextBlock Text="TAHMİNİ / İŞLEM ÜCRETİ" FontSize="11" FontWeight="Bold" Foreground="#FFD026"/>
+                                    </StackPanel>
+
                                     <TextBox Text="{Binding FiyatBilgisi, UpdateSourceTrigger=PropertyChanged}" 
-                                             Height="42" 
-                                             FontSize="20" 
+                                             Height="44" 
+                                             FontSize="22" 
                                              FontWeight="Black" 
-                                             Foreground="#38BDF8"
-                                             Background="#0F1420"
-                                             BorderBrush="#1E40AF"
+                                             Foreground="#FFD026"
+                                             Background="#110E07"
+                                             BorderBrush="#66520B"
                                              HorizontalContentAlignment="Center" 
                                              VerticalContentAlignment="Center"/>
-                                </Grid>
-                            </Grid>
-                        </Border>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- 2. ÖDEME TÜRÜ KARTI (AYRI KART) -->
+                            <Border Grid.Row="2" Background="#141824" BorderBrush="#252D3D" BorderThickness="1" CornerRadius="10" Padding="14,10">
+                                <StackPanel VerticalAlignment="Center">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,6">
+                                        <TextBlock Text="&#xE8C7;" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="#94A3B8" Margin="0,1,6,0" VerticalAlignment="Center"/>
+                                        <TextBlock Text="ÖDEME TÜRÜ" FontSize="11" FontWeight="Bold" Foreground="#94A3B8"/>
+                                    </StackPanel>
+
+                                    <ComboBox SelectedItem="{Binding OdemeTuru, UpdateSourceTrigger=PropertyChanged}"
+                                              ItemsSource="{Binding OdemeTuruListesi}"
+                                              Height="40"
+                                              Background="#161B26"
+                                              BorderBrush="#283347"
+                                              Foreground="#F8FAFC"
+                                              FontWeight="SemiBold"
+                                              HorizontalContentAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
                     </Grid>
                 </Border>
 

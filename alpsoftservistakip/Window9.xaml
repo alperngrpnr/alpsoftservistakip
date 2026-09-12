@@ -1,4 +1,4 @@
-﻿<Window x:Class="alpsoftservistakip.Window9"
+<Window x:Class="alpsoftservistakip.Window9"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -353,12 +353,18 @@
             FontSize="16" 
                 
             FontWeight="Bold" Tag="" Margin="584,124,598,720" SelectionChanged="servisdurumu_SelectionChanged" >
-                <ComboBoxItem Content="SERVİSTE"/>
-                <ComboBoxItem Content="BEKLİYOR"/>
+                <ComboBoxItem Content="KABUL EDİLDİ"/>
+                <ComboBoxItem Content="İŞLEMDE"/>
+                <ComboBoxItem Content="FİYAT TEKLİFİ VERİLDİ"/>
+                <ComboBoxItem Content="FİYAT ONAYI BEKLİYOR"/>
+                <ComboBoxItem Content="ONAYLANDI - TAMİRDE"/>
+                <ComboBoxItem Content="ONAYLANMADI - İADE"/>
                 <ComboBoxItem Content="PARÇA BEKLİYOR"/>
                 <ComboBoxItem Content="DIŞ SERVİSTE"/>
+                <ComboBoxItem Content="TAMAMLANDI"/>
                 <ComboBoxItem Content="TESLİM EDİLECEK"/>
                 <ComboBoxItem Content="TESLİM EDİLDİ"/>
+                <ComboBoxItem Content="İADE EDİLDİ"/>
             </ComboBox>
             <Border x:Name="ilgiliteknisyen"
             CornerRadius="10" Background="White"

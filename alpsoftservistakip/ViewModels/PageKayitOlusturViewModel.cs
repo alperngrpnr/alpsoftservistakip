@@ -1,6 +1,5 @@
 using System;
 using System.Data;
-using System.Data.SqlClient;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -8,15 +7,19 @@ using System.Windows.Input;
 using System.Windows.Controls;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using Newtonsoft.Json;
 using alpsoftservistakip;
+using alpsoftservistakip.Helpers;
+using alpsoftservistakip.Models;
 using alpsoftservistakip.Services;
 
 namespace alpsoftservistakip.ViewModels
 {
     public class PageKayitOlusturViewModel : BaseViewModel
     {
-        private const string ConnectionString = "Server=91.247.168.204,1433;Database=alpsoftservistakip;User Id=sa;Password=Alperengurpinar4160552009;TrustServerCertificate=True;";
-
         private bool _degisiklikVar = false;
         private int _kayitId;
         private bool _yuklemeDevamEdiyor = false;
@@ -35,6 +38,24 @@ namespace alpsoftservistakip.ViewModels
             set => SetProperty(ref _yuklemeDevamEdiyor, value);
         }
 
+        private bool _isFromDisServis = false;
+        public bool IsFromDisServis
+        {
+            get => _isFromDisServis;
+            set
+            {
+                if (SetProperty(ref _isFromDisServis, value))
+                {
+                    OnPropertyChanged(nameof(DisServisGonderVisibility));
+                    OnPropertyChanged(nameof(FisiYazdirVisibility));
+                }
+            }
+        }
+
+        public Visibility DisServisGonderVisibility => IsFromDisServis ? Visibility.Collapsed : Visibility.Visible;
+        public Visibility FisiYazdirVisibility => IsFromDisServis ? Visibility.Collapsed : Visibility.Visible;
+        public Visibility KayitSilVisibility => _kayitId > 0 && !IsFromDisServis ? Visibility.Visible : Visibility.Collapsed;
+
         // Properties
         private string _bayiAdi;
         private string _adSoyad;
@@ -48,6 +69,7 @@ namespace alpsoftservistakip.ViewModels
         private string _ekBilgiler;
         private string _sikayetAriza;
         private string _fiyatBilgisi;
+        private string _odemeTuru = "Nakit";
         private string _ilgiliTeknisyen;
         private string _servisDurumu;
         private bool _yeni;
@@ -60,6 +82,51 @@ namespace alpsoftservistakip.ViewModels
         private System.Collections.ObjectModel.ObservableCollection<string> _bayiListesi;
         private System.Collections.ObjectModel.ObservableCollection<string> _tekniksijenListesi;
 
+        // ── Toptancı & Parça ────────────────────────────────────────────────
+        private System.Collections.ObjectModel.ObservableCollection<Models.ToptanciListeDto> _toptanciListesi;
+        private System.Collections.ObjectModel.ObservableCollection<Models.ServisParcaItemDto> _parcaListesi = new System.Collections.ObjectModel.ObservableCollection<Models.ServisParcaItemDto>();
+        private Models.ToptanciListeDto _seciliToptanci;
+        private string _parcaAdi = "";
+        private int _parcaAdet = 1;
+        private decimal _parcaBirimFiyati = 0;
+
+        private DateTime _kayitTarihi = DateTime.Today;
+        private string _kayitSaati = DateTime.Now.ToString("HH:mm");
+
+        public DateTime KayitTarihi
+        {
+            get => _kayitTarihi;
+            set
+            {
+                if (_kayitTarihi != value)
+                {
+                    _kayitTarihi = value;
+                    OnPropertyChanged(nameof(KayitTarihi));
+                    OnPropertyChanged(nameof(KayitTarihiFormatli));
+                    if (!YuklemeDevamEdiyor) DegisiklikVar = true;
+                }
+            }
+        }
+
+        public string KayitSaati
+        {
+            get => _kayitSaati;
+            set
+            {
+                if (_kayitSaati != value)
+                {
+                    _kayitSaati = value;
+                    OnPropertyChanged(nameof(KayitSaati));
+                    OnPropertyChanged(nameof(KayitTarihiFormatli));
+                    if (!YuklemeDevamEdiyor) DegisiklikVar = true;
+                }
+            }
+        }
+
+        public string KayitBaslik => _kayitId > 0 ? $"Servis #{_kayitId}" : "Yeni Servis Kaydı";
+        public string KayitTarihiFormatli => $"{KayitTarihi:dd.MM.yyyy} {KayitSaati}";
+        public Visibility KayitNoBadgeVisibility => _kayitId > 0 ? Visibility.Visible : Visibility.Collapsed;
+
         public string BayiAdi { get => _bayiAdi; set => SetProperty(ref _bayiAdi, value); }
         public string AdSoyad { get => _adSoyad; set { SetProperty(ref _adSoyad, value); if (!YuklemeDevamEdiyor) DegisiklikVar = true; } }
         public string CepTelefonu { get => _cepTelefonu; set { SetProperty(ref _cepTelefonu, value); if (!YuklemeDevamEdiyor) DegisiklikVar = true; } }
@@ -71,9 +138,31 @@ namespace alpsoftservistakip.ViewModels
         public string ImeiNo { get => _imeiNo; set { SetProperty(ref _imeiNo, value); if (!YuklemeDevamEdiyor) DegisiklikVar = true; } }
         public string EkBilgiler { get => _ekBilgiler; set { SetProperty(ref _ekBilgiler, value); if (!YuklemeDevamEdiyor) DegisiklikVar = true; } }
         public string SikayetAriza { get => _sikayetAriza; set { SetProperty(ref _sikayetAriza, value); if (!YuklemeDevamEdiyor) DegisiklikVar = true; } }
-        public string FiyatBilgisi { get => _fiyatBilgisi; set { SetProperty(ref _fiyatBilgisi, value); if (!YuklemeDevamEdiyor) DegisiklikVar = true; } }
+        public string FiyatBilgisi
+        {
+            get => _fiyatBilgisi;
+            set
+            {
+                if (SetProperty(ref _fiyatBilgisi, value))
+                {
+                    OnPropertyChanged(nameof(NetKarOzet));
+                    OnPropertyChanged(nameof(NetKarGorunurluk));
+                    if (!YuklemeDevamEdiyor) DegisiklikVar = true;
+                }
+            }
+        }
+        public string OdemeTuru { get => _odemeTuru; set { SetProperty(ref _odemeTuru, value); if (!YuklemeDevamEdiyor) DegisiklikVar = true; } }
+        public System.Collections.ObjectModel.ObservableCollection<string> OdemeTuruListesi { get; } = new System.Collections.ObjectModel.ObservableCollection<string> { "Nakit", "Kredi Kartı", "Havale/EFT", "Veresiye" };
         public string IlgiliTeknisyen { get => _ilgiliTeknisyen; set { SetProperty(ref _ilgiliTeknisyen, value); if (!YuklemeDevamEdiyor) DegisiklikVar = true; } }
-        public string ServisDurumu { get => _servisDurumu; set { SetProperty(ref _servisDurumu, value); if (!YuklemeDevamEdiyor) DegisiklikVar = true; } }
+        public string ServisDurumu 
+        { 
+            get => _servisDurumu; 
+            set 
+            { 
+                SetProperty(ref _servisDurumu, value); 
+                if (!YuklemeDevamEdiyor) DegisiklikVar = true; 
+            } 
+        }
         public bool Yeni { get => _yeni; set { SetProperty(ref _yeni, value); if (!YuklemeDevamEdiyor) DegisiklikVar = true; } }
         public bool Eski { get => _eski; set { SetProperty(ref _eski, value); if (!YuklemeDevamEdiyor) DegisiklikVar = true; } }
         public bool TamirGormus { get => _tamirGormus; set { SetProperty(ref _tamirGormus, value); if (!YuklemeDevamEdiyor) DegisiklikVar = true; } }
@@ -94,12 +183,191 @@ namespace alpsoftservistakip.ViewModels
             set => SetProperty(ref _tekniksijenListesi, value);
         }
 
+        // ── Toptancı & Parça ────────────────────────────────────────────────
+        public System.Collections.ObjectModel.ObservableCollection<Models.ToptanciListeDto> ToptanciListesi
+        {
+            get => _toptanciListesi;
+            set => SetProperty(ref _toptanciListesi, value);
+        }
+
+        public Models.ToptanciListeDto SeciliToptanci
+        {
+            get => _seciliToptanci;
+            set
+            {
+                if (SetProperty(ref _seciliToptanci, value))
+                {
+                    OnPropertyChanged(nameof(NetKarOzet));
+                    OnPropertyChanged(nameof(NetKarGorunurluk));
+                    if (!YuklemeDevamEdiyor) DegisiklikVar = true;
+                }
+            }
+        }
+
+        public System.Collections.ObjectModel.ObservableCollection<Models.ServisParcaItemDto> ParcaListesi
+        {
+            get => _parcaListesi;
+            set => SetProperty(ref _parcaListesi, value);
+        }
+
+        public string ParcaAdi
+        {
+            get => _parcaAdi;
+            set
+            {
+                if (SetProperty(ref _parcaAdi, value))
+                {
+                    OnPropertyChanged(nameof(ToplamParcaMaliyeti));
+                    OnPropertyChanged(nameof(NetKarOzet));
+                    OnPropertyChanged(nameof(NetKarGorunurluk));
+                    if (!YuklemeDevamEdiyor) DegisiklikVar = true;
+                }
+            }
+        }
+
+        public int ParcaAdet
+        {
+            get => _parcaAdet;
+            set
+            {
+                if (SetProperty(ref _parcaAdet, value))
+                {
+                    OnPropertyChanged(nameof(ToplamParcaMaliyeti));
+                    OnPropertyChanged(nameof(NetKarOzet));
+                    if (!YuklemeDevamEdiyor) DegisiklikVar = true;
+                }
+            }
+        }
+
+        public decimal ParcaBirimFiyati
+        {
+            get => _parcaBirimFiyati;
+            set
+            {
+                if (SetProperty(ref _parcaBirimFiyati, value))
+                {
+                    OnPropertyChanged(nameof(ToplamParcaMaliyeti));
+                    OnPropertyChanged(nameof(NetKarOzet));
+                    if (!YuklemeDevamEdiyor) DegisiklikVar = true;
+                }
+            }
+        }
+
+        /// <summary>Toplam parça maliyeti (USD)</summary>
+        public decimal ToplamParcaMaliyeti
+        {
+            get
+            {
+                decimal total = _parcaListesi?.Sum(p => p.ToplamTutar) ?? 0;
+                if ((_parcaListesi == null || _parcaListesi.Count == 0) && ParcaAdet > 0 && ParcaBirimFiyati > 0)
+                {
+                    total += ParcaAdet * ParcaBirimFiyati;
+                }
+                return total;
+            }
+        }
+
+        /// <summary>Net kâr görsel özet — parça USD cinsinden gösterilir</summary>
+        public string NetKarOzet
+        {
+            get
+            {
+                decimal servisUcreti = 0;
+                if (!string.IsNullOrWhiteSpace(FiyatBilgisi))
+                    decimal.TryParse(System.Text.RegularExpressions.Regex.Replace(FiyatBilgisi, @"[^\d,\.]", "").Replace(',', '.'),
+                        System.Globalization.NumberStyles.Any,
+                        System.Globalization.CultureInfo.InvariantCulture,
+                        out servisUcreti);
+
+                decimal toplamUsd = ToplamParcaMaliyeti;
+                int count = _parcaListesi?.Count ?? 0;
+                if (count == 0 && toplamUsd > 0) count = 1;
+
+                if (toplamUsd > 0)
+                {
+                    decimal usdKur = DovizKuruHelper.VarsayilanUsdKur;
+                    decimal maliyetTl = Math.Round(toplamUsd * usdKur, 2);
+                    decimal netKar = servisUcreti - maliyetTl;
+                    return $"{count} Parça: ${toplamUsd:N2} (~{maliyetTl:N2} ₺) | Net Kâr: {(netKar >= 0 ? "+" : "")}{netKar:N2} ₺";
+                }
+                else if (servisUcreti > 0)
+                {
+                    return $"Servis Ücreti: {servisUcreti:N2} ₺";
+                }
+                return "";
+            }
+        }
+
+        public Visibility NetKarGorunurluk => !string.IsNullOrWhiteSpace(NetKarOzet) ? Visibility.Visible : Visibility.Collapsed;
+
+        private System.Collections.ObjectModel.ObservableCollection<BranchDto> _subeler = new System.Collections.ObjectModel.ObservableCollection<BranchDto>();
+        public System.Collections.ObjectModel.ObservableCollection<BranchDto> Subeler
+        {
+            get => _subeler;
+            set => SetProperty(ref _subeler, value);
+        }
+
+        private int? _seciliSubeId;
+        public int? SeciliSubeId
+        {
+            get => _seciliSubeId;
+            set
+            {
+                if (SetProperty(ref _seciliSubeId, value))
+                {
+                    if (!YuklemeDevamEdiyor) DegisiklikVar = true;
+                    OnPropertyChanged(nameof(SeciliSubeAdi));
+                }
+            }
+        }
+
+        public string SeciliSubeAdi
+        {
+            get
+            {
+                if (SeciliSubeId.HasValue && SeciliSubeId.Value > 0)
+                {
+                    var b = Subeler?.FirstOrDefault(x => x.BranchId == SeciliSubeId.Value);
+                    if (b != null) return b.BranchName;
+                }
+                return "Şube Seçiniz";
+            }
+        }
+
+        public async Task YukleSubelerAsync()
+        {
+            try
+            {
+                var list = await BranchService.GetBranchesAsync();
+                Subeler = new System.Collections.ObjectModel.ObservableCollection<BranchDto>(list);
+                if ((!SeciliSubeId.HasValue || SeciliSubeId.Value <= 0) && Subeler.Count > 0)
+                {
+                    if (Class1.AktifSubeId > 0 && Subeler.Any(x => x.BranchId == Class1.AktifSubeId))
+                    {
+                        SeciliSubeId = Class1.AktifSubeId;
+                    }
+                    else
+                    {
+                        var merkez = Subeler.FirstOrDefault(x => x.IsMerkez) ?? Subeler.First();
+                        SeciliSubeId = merkez.BranchId;
+                    }
+                }
+            }
+            catch { }
+        }
+
+        public ICommand ParcaEkleCommand { get; }
+        public ICommand ParcaSilCommand { get; }
+
         public ICommand KaydetCommand { get; }
+        public ICommand KayitSilCommand { get; }
         public ICommand GeriDonCommand { get; }
         public ICommand ImeiSorgulaCommand { get; }
         public ICommand ServisDurumuChangedCommand { get; }
         public ICommand TelefonFormatlaCommand { get; }
         public ICommand FisiYazdirCommand { get; }
+        public ICommand EtiketiYazdirCommand { get; }
+        public ICommand MusteriyeBildirCommand { get; }
         public ICommand KopyalaCommand { get; }
         public ICommand DisServisGonderCommand { get; }
         public ICommand DisServiseGonderCommand => DisServisGonderCommand;
@@ -108,37 +376,47 @@ namespace alpsoftservistakip.ViewModels
         {
             _kayitId = kayitId;
             KaydetCommand = new RelayCommand(_ => Kaydet());
+            KayitSilCommand = new RelayCommand(_ => KayitSil());
             GeriDonCommand = new RelayCommand(_ => GeriDon());
             ImeiSorgulaCommand = new RelayCommand(_ => ImeiSorgula());
             ServisDurumuChangedCommand = new RelayCommand<string>(ServisDurumuChanged);
             TelefonFormatlaCommand = new RelayCommand<string>(TelefonFormatla);
             FisiYazdirCommand = new RelayCommand(_ => FisiYazdir());
+            EtiketiYazdirCommand = new RelayCommand(_ => EtiketiYazdir());
+            MusteriyeBildirCommand = new RelayCommand(_ => MusteriyeBildir());
             KopyalaCommand = new RelayCommand(_ => Kopyala());
             DisServisGonderCommand = new RelayCommand(_ => DisServisGonder());
+            ParcaEkleCommand = new RelayCommand(_ => ParcaEkle());
+            ParcaSilCommand = new RelayCommand<Models.ServisParcaItemDto>(ParcaSil);
 
             // Listeleri yükle
             BayiListesi = new System.Collections.ObjectModel.ObservableCollection<string>();
             TekniksijenListesi = new System.Collections.ObjectModel.ObservableCollection<string>();
+            ToptanciListesi = new System.Collections.ObjectModel.ObservableCollection<Models.ToptanciListeDto>();
 
-            YukleBayiListesi();
-            YukluTekniksijenListesi();
+            _ = YukleBayiListesiAsync();
+            _ = YukluTekniksijenListesiAsync();
+            _ = YukleToptanciListesiAsync();
+            _ = YukleSubelerAsync();
 
             if (kayitId > 0)
             {
-                YuklemeDevamEdiyor = true;
-                VerileriYukle(kayitId);
-                YuklemeDevamEdiyor = false;
+                CarregarKayit(kayitId);
             }
         }
 
-        public void CarregarKayit(int id)
+        public async void CarregarKayit(int id)
         {
             _kayitId = id;
+            OnPropertyChanged(nameof(KayitSilVisibility));
+            OnPropertyChanged(nameof(KayitBaslik));
+            OnPropertyChanged(nameof(KayitNoBadgeVisibility));
             _disServisSatirKaynagi = false;
             _disServisAdayKayitId = 0;
             YuklemeDevamEdiyor = true;
-            VerileriYukle(id);
+            await VerileriYukleAsync(id);
             YuklemeDevamEdiyor = false;
+            DegisiklikVar = false;
         }
 
         public void DisServisSatirindanYukle(DataRowView row)
@@ -162,53 +440,176 @@ namespace alpsoftservistakip.ViewModels
             IlgiliTeknisyen = GetRowString(row, "ServisTeknisyen", "Teknisyen", "SorumluTeknisyen");
 
             _disServisSatirKaynagi = true;
+            IsFromDisServis = true;
             _disServisAdayKayitId = GetRowInt(row, "ServisKayitID", "ServisKayitId", "CihazKayitID", "CihazKayitId", "KaynakKayitID", "KaynakKayitId", "KayitID", "KayitId", "ID");
 
             int bagliKayitId = GetRowInt(row, "ServisKayitID", "ServisKayitId", "CihazKayitID", "CihazKayitId", "KaynakKayitID", "KaynakKayitId");
             _kayitId = bagliKayitId > 0 ? bagliKayitId : 0;
+            OnPropertyChanged(nameof(KayitSilVisibility));
 
             DegisiklikVar = false;
             YuklemeDevamEdiyor = false;
         }
 
-        private void VerileriYukle(int id)
+        // JObject overload: PageDisServis.xaml.cs'den gelen API verisi için
+        public void DisServisSatirindanYukle(Newtonsoft.Json.Linq.JObject row)
+        {
+            if (row == null)
+                return;
+
+            string GetStr(params string[] keys)
+            {
+                foreach (var k in keys)
+                {
+                    var t = row.GetValue(k, System.StringComparison.OrdinalIgnoreCase);
+                    if (t != null && t.Type != Newtonsoft.Json.Linq.JTokenType.Null)
+                        return t.ToString();
+                }
+                return "";
+            }
+            int GetInt(params string[] keys)
+            {
+                foreach (var k in keys)
+                {
+                    var t = row.GetValue(k, System.StringComparison.OrdinalIgnoreCase);
+                    if (t != null && t.Type != Newtonsoft.Json.Linq.JTokenType.Null)
+                        if (int.TryParse(t.ToString(), out int v)) return v;
+                }
+                return 0;
+            }
+
+            YuklemeDevamEdiyor = true;
+
+            AdSoyad = GetStr("IsimSoyisim", "MusteriAdSoyad", "MusteriAdi");
+            BayiAdi = GetStr("BayiAdi", "YetkiliBayi", "DisServisYeri");
+            CepTelefonu = GetStr("CepTelefonu", "Telefon", "TelefonNo", "Gsm");
+            EPosta = GetStr("EPosta", "Email", "Mail");
+            CihazTuru = GetStr("CihazTuru", "UrunTuru", "Tur");
+            Marka = GetStr("Marka");
+            Model = GetStr("Model");
+            ImeiNo = GetStr("IMEI", "ImeiNo", "SeriNo");
+            EkBilgiler = GetStr("EkBilgiler", "Notlar", "Aciklama");
+            SikayetAriza = GetStr("Ariza", "ArizaDetayi", "Sikayet");
+            ServisDurumu = GetStr("ServisDurumu", "Durum");
+            IlgiliTeknisyen = GetStr("ServisTeknisyen", "Teknisyen", "SorumluTeknisyen");
+
+            _disServisSatirKaynagi = true;
+            IsFromDisServis = true;
+            _disServisAdayKayitId = GetInt("ServisKayitID", "ServisKayitId", "CihazKayitID", "CihazKayitId", "KaynakKayitID", "KaynakKayitId", "KayitID", "KayitId", "ID");
+
+            int bagliKayitId = GetInt("ServisKayitID", "ServisKayitId", "CihazKayitID", "CihazKayitId", "KaynakKayitID", "KaynakKayitId");
+            _kayitId = bagliKayitId > 0 ? bagliKayitId : 0;
+            OnPropertyChanged(nameof(KayitSilVisibility));
+
+            DegisiklikVar = false;
+            YuklemeDevamEdiyor = false;
+        }
+
+        private async Task VerileriYukleAsync(int id)
         {
             try
             {
-                using (SqlConnection con = new SqlConnection(ConnectionString))
+                using (HttpClient client = new HttpClient())
                 {
-                    con.Open();
-                    string sorgu = "SELECT * FROM kayitlicihazlar WHERE ID = @ID";
-                    SqlCommand cmd = new SqlCommand(sorgu, con);
-                    cmd.Parameters.AddWithValue("@ID", id);
-
-                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Class1.JwtToken);
+                    var response = await client.GetAsync($"{ApiConfig.Api}/KayitliCihazlar/{id}");
+                    if (response.IsSuccessStatusCode)
                     {
-                        if (reader.Read())
+                        var json = await response.Content.ReadAsStringAsync();
+                        var data = JsonConvert.DeserializeObject<KayitliCihazDto>(json);
+                        if (data != null)
                         {
-                            AdSoyad = reader["IsimSoyisim"]?.ToString() ?? "";
-                            BayiAdi = reader["BayiAdi"]?.ToString() ?? "";
-                            CepTelefonu = reader["CepTelefonu"]?.ToString() ?? "";
-                            Adres = reader["Adres"]?.ToString() ?? "";
-                            EPosta = reader["EPosta"]?.ToString() ?? "";
-                            CihazTuru = reader["CihazTuru"]?.ToString() ?? "";
-                            Marka = reader["Marka"]?.ToString() ?? "";
-                            Model = reader["Model"]?.ToString() ?? "";
-                            ImeiNo = reader["IMEI"]?.ToString() ?? "";
-                            EkBilgiler = reader["EkBilgiler"]?.ToString() ?? "";
-                            SikayetAriza = reader["Ariza"]?.ToString() ?? "";
-                            FiyatBilgisi = reader["FiyatBilgisi"]?.ToString() ?? "";
-                            IlgiliTeknisyen = reader["ServisTeknisyen"]?.ToString() ?? "";
-                            ServisDurumu = reader["ServisDurumu"]?.ToString() ?? "";
+                            AdSoyad = data.IsimSoyisim ?? "";
+                            BayiAdi = data.BayiAdi ?? "";
+                            CepTelefonu = data.CepTelefonu ?? "";
+                            Adres = data.Adres ?? "";
+                            EPosta = data.EPosta ?? "";
+                            CihazTuru = data.CihazTuru ?? "";
+                            Marka = data.Marka ?? "";
+                            Model = data.Model ?? "";
+                            ImeiNo = data.IMEI ?? "";
+                            EkBilgiler = data.EkBilgiler ?? "";
+                            SikayetAriza = data.Ariza ?? "";
+                            FiyatBilgisi = data.FiyatBilgisi ?? "";
+                            OdemeTuru = string.IsNullOrWhiteSpace(data.OdemeTuru) ? "Nakit" : data.OdemeTuru;
+                            IlgiliTeknisyen = data.ServisTeknisyen ?? "";
+                            ServisDurumu = data.ServisDurumu ?? "";
 
-                            Yeni = reader["Yeni"] != DBNull.Value && (bool)reader["Yeni"];
-                            Eski = reader["Eski"] != DBNull.Value && (bool)reader["Eski"];
-                            TamirGormus = reader["TamirGormus"] != DBNull.Value && (bool)reader["TamirGormus"];
-                            Garantili = reader["Garantili"] != DBNull.Value && (bool)reader["Garantili"];
-                            Garantisiz = reader["Garantisiz"] != DBNull.Value && (bool)reader["Garantisiz"];
-                            ServisGarantili = reader["ServisGarantili"] != DBNull.Value && (bool)reader["ServisGarantili"];
-                            YedeklemeYapilsin = reader["YedeklemeYapilsin"] != DBNull.Value && (bool)reader["YedeklemeYapilsin"];
+                            Yeni = data.Yeni;
+                            Eski = data.Eski;
+                            TamirGormus = data.TamirGormus;
+                            Garantili = data.Garantili;
+                            Garantisiz = data.Garantisiz;
+                            ServisGarantili = data.ServisGarantili;
+                            YedeklemeYapilsin = data.YedeklemeYapilsin;
+
+                            if (data.BranchId.HasValue && data.BranchId.Value > 0)
+                            {
+                                SeciliSubeId = data.BranchId.Value;
+                            }
+                            else if (Class1.AktifSubeId > 0)
+                            {
+                                SeciliSubeId = Class1.AktifSubeId;
+                            }
+
+                            if (data.KayitTarihi != default(DateTime) && data.KayitTarihi.Year > 2000)
+                            {
+                                KayitTarihi = data.KayitTarihi.Date;
+                                KayitSaati = data.KayitTarihi.ToString("HH:mm");
+                            }
+
+                            // Toptancı ve parça maliyet bilgilerini yükle
+                            if (ToptanciListesi == null || ToptanciListesi.Count == 0)
+                            {
+                                await YukleToptanciListesiAsync();
+                            }
+
+                            ParcaListesi.Clear();
+                            if (data.Parcalar != null && data.Parcalar.Count > 0)
+                            {
+                                foreach (var p in data.Parcalar)
+                                {
+                                    ParcaListesi.Add(new Models.ServisParcaItemDto
+                                    {
+                                        ID = p.ID,
+                                        ToptanciID = p.ToptanciID,
+                                        ToptanciAdi = p.ToptanciAdi ?? ToptanciListesi.FirstOrDefault(t => t.ID == p.ToptanciID)?.FirmaAdi ?? "Toptancı",
+                                        ParcaAdi = p.ParcaAdi,
+                                        Adet = p.Adet,
+                                        BirimFiyati = p.BirimFiyati
+                                    });
+                                }
+                            }
+                            else if (data.ToptanciID.HasValue && data.ToptanciID.Value > 0 && !string.IsNullOrWhiteSpace(data.ParcaAdi))
+                            {
+                                ParcaListesi.Add(new Models.ServisParcaItemDto
+                                {
+                                    ToptanciID = data.ToptanciID.Value,
+                                    ToptanciAdi = ToptanciListesi.FirstOrDefault(t => t.ID == data.ToptanciID.Value)?.FirmaAdi ?? "Toptancı",
+                                    ParcaAdi = data.ParcaAdi,
+                                    Adet = data.ParcaAdet.GetValueOrDefault(1),
+                                    BirimFiyati = data.ParcaBirimFiyati.GetValueOrDefault(0)
+                                });
+                            }
+
+                            SeciliToptanci = null;
+                            ParcaAdi = "";
+                            ParcaAdet = 1;
+                            ParcaBirimFiyati = 0;
+
+                            OnPropertyChanged(nameof(SeciliToptanci));
+                            OnPropertyChanged(nameof(ParcaAdi));
+                            OnPropertyChanged(nameof(ParcaAdet));
+                            OnPropertyChanged(nameof(ParcaBirimFiyati));
+                            OnPropertyChanged(nameof(ToplamParcaMaliyeti));
+                            OnPropertyChanged(nameof(NetKarOzet));
+                            OnPropertyChanged(nameof(NetKarGorunurluk));
                         }
+                    }
+                    else
+                    {
+                        var err = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show("Veri yükleme hatası: " + err);
                     }
                 }
             }
@@ -218,26 +619,25 @@ namespace alpsoftservistakip.ViewModels
             }
         }
 
-        private void YukleBayiListesi()
+        private async Task YukleBayiListesiAsync()
         {
             try
             {
                 BayiListesi.Clear();
-                using (SqlConnection con = new SqlConnection(ConnectionString))
+                using (HttpClient client = new HttpClient())
                 {
-                    con.Open();
-                    string sorgu = "SELECT DISTINCT AdSoyadUnvan FROM Cariler WHERE SirketID = @SirketID ORDER BY AdSoyadUnvan";
-                    SqlCommand cmd = new SqlCommand(sorgu, con);
-                    cmd.Parameters.AddWithValue("@SirketID", Class1.AktifKullanici.SirketID);
-
-                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Class1.JwtToken);
+                    var response = await client.GetAsync($"{ApiConfig.Api}/Cariler/bayiler");
+                    if (response.IsSuccessStatusCode)
                     {
-                        while (reader.Read())
+                        var json = await response.Content.ReadAsStringAsync();
+                        var liste = JsonConvert.DeserializeObject<List<string>>(json);
+                        if (liste != null)
                         {
-                            string bayiAdi = reader["AdSoyadUnvan"]?.ToString() ?? "";
-                            if (!string.IsNullOrWhiteSpace(bayiAdi))
+                            foreach (var item in liste)
                             {
-                                BayiListesi.Add(bayiAdi);
+                                if (!string.IsNullOrWhiteSpace(item))
+                                    BayiListesi.Add(item);
                             }
                         }
                     }
@@ -249,26 +649,25 @@ namespace alpsoftservistakip.ViewModels
             }
         }
 
-        private void YukluTekniksijenListesi()
+        private async Task YukluTekniksijenListesiAsync()
         {
             try
             {
                 TekniksijenListesi.Clear();
-                using (SqlConnection con = new SqlConnection(ConnectionString))
+                using (HttpClient client = new HttpClient())
                 {
-                    con.Open();
-                    string sorgu = "SELECT DISTINCT FullName FROM Users WHERE CompanyId = @SirketID ORDER BY FullName";
-                    SqlCommand cmd = new SqlCommand(sorgu, con);
-                    cmd.Parameters.AddWithValue("@SirketID", Class1.AktifKullanici.SirketID);
-
-                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Class1.JwtToken);
+                    var response = await client.GetAsync($"{ApiConfig.Api}/Users/teknisyenler");
+                    if (response.IsSuccessStatusCode)
                     {
-                        while (reader.Read())
+                        var json = await response.Content.ReadAsStringAsync();
+                        var liste = JsonConvert.DeserializeObject<List<string>>(json);
+                        if (liste != null)
                         {
-                            string teknisyen = reader["FullName"]?.ToString() ?? "";
-                            if (!string.IsNullOrWhiteSpace(teknisyen))
+                            foreach (var item in liste)
                             {
-                                TekniksijenListesi.Add(teknisyen);
+                                if (!string.IsNullOrWhiteSpace(item))
+                                    TekniksijenListesi.Add(item);
                             }
                         }
                     }
@@ -280,147 +679,323 @@ namespace alpsoftservistakip.ViewModels
             }
         }
 
-        private async void Kaydet()
+        private async Task YukleToptanciListesiAsync()
         {
-            
+            try
+            {
+                ToptanciListesi.Clear();
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Class1.JwtToken);
+                    var response = await client.GetAsync($"{ApiConfig.Api}/Toptanci/liste");
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var json = await response.Content.ReadAsStringAsync();
+                        var liste = JsonConvert.DeserializeObject<List<Models.ToptanciListeDto>>(json);
+                        if (liste != null)
+                        {
+                            foreach (var item in liste)
+                                ToptanciListesi.Add(item);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Toptancı listesi yükleme hatası: " + ex.Message);
+            }
+        }
 
-            using (SqlConnection con = new SqlConnection(ConnectionString))
+        private async void KayitSil()
+        {
+            if (_kayitId <= 0) return;
+
+            var result = MessageBox.Show($"Seçili servis kaydını (Kayıt No: {_kayitId}) silmek istediğinize emin misiniz?",
+                "Kayıt Sil", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            
+            if (result == MessageBoxResult.Yes)
             {
                 try
                 {
-                    con.Open();
-
-                    if (_kayitId <= 0 && _disServisSatirKaynagi)
+                    using (HttpClient client = new HttpClient())
                     {
-                        int bulunanKayitId = DisServisKaydindanKayitIdCoz(con);
-                        if (bulunanKayitId > 0)
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Class1.JwtToken);
+                        var response = await client.DeleteAsync($"{ApiConfig.Api}/kayitlicihazlar/{_kayitId}");
+
+                        if (response.IsSuccessStatusCode)
                         {
-                            _kayitId = bulunanKayitId;
-                        }
-                    }
-
-                    string query;
-                    if (_kayitId > 0)
-                    {
-                        query = @"UPDATE kayitlicihazlar SET 
-                            BayiAdi=@BayiAdi, IsimSoyisim=@IsimSoyisim, CepTelefonu=@CepTelefonu, Adres=@Adres, 
-                            EPosta=@EPosta, ServisTeknisyen=@ServisTeknisyen, ServisDurumu=@ServisDurumu, 
-                            CihazTuru=@CihazTuru, Marka=@Marka, Model=@Model, IMEI=@IMEI, 
-                            EkBilgiler=@EkBilgiler, Ariza=@Ariza, FiyatBilgisi=@FiyatBilgisi,
-                            Yeni=@Yeni, Eski=@Eski, TamirGormus=@TamirGormus, Garantili=@Garantili,
-                            Garantisiz=@Garantisiz, ServisGarantili=@ServisGarantili, YedeklemeYapilsin=@YedeklemeYapilsin
-                            WHERE ID=@ID";
-                    }
-                    else
-                    {
-                        query = @"INSERT INTO kayitlicihazlar 
-                            (KullaniciID, CompanyId, BayiAdi, IsimSoyisim, CepTelefonu, Adres, EPosta, 
-                            ServisTeknisyen, ServisDurumu, CihazTuru, Marka, Model, IMEI, 
-                            EkBilgiler, Ariza, FiyatBilgisi, Yeni, Eski, TamirGormus, 
-                            Garantili, Garantisiz, ServisGarantili, YedeklemeYapilsin) 
-                            VALUES 
-                            (@KullaniciID, @CompanyId, @BayiAdi, @IsimSoyisim, @CepTelefonu, @Adres, @EPosta, 
-                            @ServisTeknisyen, @ServisDurumu, @CihazTuru, @Marka, @Model, @IMEI, 
-                            @EkBilgiler, @Ariza, @FiyatBilgisi, @Yeni, @Eski, @TamirGormus, 
-                            @Garantili, @Garantisiz, @ServisGarantili, @YedeklemeYapilsin);
-                            SELECT CAST(SCOPE_IDENTITY() AS INT);";
-                    }
-
-                    SqlCommand cmd = new SqlCommand(query, con);
-
-                    cmd.Parameters.AddWithValue("@BayiAdi", GetSqlValue(BayiAdi, "Bayi Adı"));
-                    cmd.Parameters.AddWithValue("@IsimSoyisim", GetSqlValue(AdSoyad, "Ad Soyad*"));
-                    cmd.Parameters.AddWithValue("@CepTelefonu", CepTelefonu);
-                    cmd.Parameters.AddWithValue("@Adres", GetSqlValue(Adres, "Adres"));
-                    cmd.Parameters.AddWithValue("@EPosta", GetSqlValue(EPosta, "E-Posta"));
-                    cmd.Parameters.AddWithValue("@ServisTeknisyen", GetSqlValue(IlgiliTeknisyen, "İlgili Teknisyen"));
-                    cmd.Parameters.AddWithValue("@ServisDurumu", string.IsNullOrWhiteSpace(ServisDurumu) ? (object)DBNull.Value : ServisDurumu);
-                    cmd.Parameters.AddWithValue("@CihazTuru", GetSqlValue(CihazTuru, "Cihaz Türü*"));
-                    cmd.Parameters.AddWithValue("@Marka", GetSqlValue(Marka, "Marka*"));
-                    cmd.Parameters.AddWithValue("@Model", GetSqlValue(Model, "Model*"));
-                    cmd.Parameters.AddWithValue("@IMEI", GetSqlValue(ImeiNo, "IMEI No"));
-                    cmd.Parameters.AddWithValue("@EkBilgiler", GetSqlValue(EkBilgiler, "Ek Bilgiler"));
-                    cmd.Parameters.AddWithValue("@Ariza", GetSqlValue(SikayetAriza, "Şikayet/Arıza*"));
-                    cmd.Parameters.AddWithValue("@FiyatBilgisi", GetSqlValue(FiyatBilgisi, "Fiyat Bilgisi"));
-                    cmd.Parameters.AddWithValue("@Yeni", Yeni);
-                    cmd.Parameters.AddWithValue("@Eski", Eski);
-                    cmd.Parameters.AddWithValue("@TamirGormus", TamirGormus);
-                    cmd.Parameters.AddWithValue("@Garantili", Garantili);
-                    cmd.Parameters.AddWithValue("@Garantisiz", Garantisiz);
-                    cmd.Parameters.AddWithValue("@ServisGarantili", ServisGarantili);
-                    cmd.Parameters.AddWithValue("@YedeklemeYapilsin", YedeklemeYapilsin);
-
-                    if (_kayitId > 0)
-                    {
-                        cmd.Parameters.AddWithValue("@ID", _kayitId);
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue("@KullaniciID", LoginWindow.aktifKullaniciID);
-                        cmd.Parameters.AddWithValue("@CompanyId", Class1.AktifKullanici.SirketID);
-                    }
-
-                    int etkilenenSatir;
-
-                    if (_kayitId > 0)
-                    {
-                        etkilenenSatir = cmd.ExecuteNonQuery();
-                    }
-                    else
-                    {
-                        object yeniIdObj = cmd.ExecuteScalar();
-                        if (yeniIdObj != null && yeniIdObj != DBNull.Value)
-                        {
-                            _kayitId = Convert.ToInt32(yeniIdObj);
-                            etkilenenSatir = 1;
+                            MessageBox.Show("Kayıt başarıyla silindi.", "Başarılı", MessageBoxButton.OK, MessageBoxImage.Information);
+                            GeriDon(); // Silindikten sonra detay penceresini kapat
                         }
                         else
                         {
-                            etkilenenSatir = 0;
-                        }
-                    }
-
-                    if (etkilenenSatir == 0)
-                    {
-                        MessageBox.Show("⚠️ Hiçbir satır güncellenmedi!", "Uyarı");
-                        return;
-                    }
-
-                    if (_kayitId > 0)
-                    {
-                        MessageBox.Show("✅ Kayıt başarıyla güncellendi!", "Başarılı", MessageBoxButton.OK, MessageBoxImage.Information);
-                    }
-                    else
-                    {
-                        MessageBox.Show("✅ Yeni kayıt başarıyla eklendi!", "Başarılı", MessageBoxButton.OK, MessageBoxImage.Information);
-                    }
-
-                    DegisiklikVar = false;
-                    _disServisSatirKaynagi = false;
-                    _disServisAdayKayitId = 0;
-
-                    foreach (Window window in Application.Current.Windows)
-                    {
-                        if (window is Window3 window3)
-                        {
-                            // Window3'te Page5'i yenile
-                            window3.HideOverlay();
-                            await System.Threading.Tasks.Task.Delay(120);
-                            window3.ShowOverlayPage(new Page5());
-                            break;
-                        }
-                        else if (window is Window5 window5)
-                        {
-                            window5.VerileriYukle();
-                            window5.HideOverlay();
-                            break;
+                            string err = await response.Content.ReadAsStringAsync();
+                            MessageBox.Show("Silme işlemi başarısız: " + err, "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"❌ HATA:\n\n{ex.Message}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Bağlantı hatası: " + ex.Message, "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
+            }
+        }
+
+        private async void Kaydet()
+        {
+            try
+            {
+                DateTime sonKayitTarihi = KayitTarihi.Date;
+                if (TimeSpan.TryParse(KayitSaati, out TimeSpan ts))
+                {
+                    sonKayitTarihi = sonKayitTarihi.Add(ts);
+                }
+                else
+                {
+                    sonKayitTarihi = sonKayitTarihi.Add(DateTime.Now.TimeOfDay);
+                }
+
+                var dto = new CreateKayitliCihazDto
+                {
+                    KayitTarihi = sonKayitTarihi,
+                    BayiAdi = (BayiAdi == "Bayi Adı" || string.IsNullOrWhiteSpace(BayiAdi)) ? null : BayiAdi,
+                    IsimSoyisim = (AdSoyad == "Ad Soyad*" || string.IsNullOrWhiteSpace(AdSoyad)) ? "" : AdSoyad,
+                    CepTelefonu = (CepTelefonu == "Cep Telefonu*" || string.IsNullOrWhiteSpace(CepTelefonu)) ? "" : CepTelefonu,
+                    Adres = (Adres == "Adres" || string.IsNullOrWhiteSpace(Adres)) ? null : Adres,
+                    EPosta = (EPosta == "E-Posta" || string.IsNullOrWhiteSpace(EPosta)) ? null : EPosta,
+                    ServisTeknisyen = (IlgiliTeknisyen == "İlgili Teknisyen" || string.IsNullOrWhiteSpace(IlgiliTeknisyen)) ? null : IlgiliTeknisyen,
+                    ServisDurumu = string.IsNullOrWhiteSpace(ServisDurumu) ? null : ServisDurumu,
+                    // "Teslim" geçiyorsa kasaya bugünün tarihiyle yazılır
+                    TeslimTarihi = (!string.IsNullOrWhiteSpace(ServisDurumu) &&
+                                    ServisDurumu.IndexOf("Teslim", StringComparison.OrdinalIgnoreCase) >= 0)
+                                   ? DateTime.Now
+                                   : (DateTime?)null,
+                    CihazTuru = (CihazTuru == "Cihaz Türü*" || string.IsNullOrWhiteSpace(CihazTuru)) ? "" : CihazTuru,
+                    Marka = (Marka == "Marka*" || string.IsNullOrWhiteSpace(Marka)) ? "" : Marka,
+                    Model = (Model == "Model*" || string.IsNullOrWhiteSpace(Model)) ? "" : Model,
+                    IMEI = (ImeiNo == "IMEI No" || string.IsNullOrWhiteSpace(ImeiNo)) ? null : ImeiNo,
+                    EkBilgiler = (EkBilgiler == "Ek Bilgiler" || string.IsNullOrWhiteSpace(EkBilgiler)) ? null : EkBilgiler,
+                    Ariza = (SikayetAriza == "Şikayet/Arıza*" || string.IsNullOrWhiteSpace(SikayetAriza)) ? "" : SikayetAriza,
+                    FiyatBilgisi = (FiyatBilgisi == "Fiyat Bilgisi" || string.IsNullOrWhiteSpace(FiyatBilgisi)) ? null : FiyatBilgisi,
+                    OdemeTuru = string.IsNullOrWhiteSpace(OdemeTuru) ? "Nakit" : OdemeTuru,
+                    Yeni = Yeni,
+                    Eski = Eski,
+                    TamirGormus = TamirGormus,
+                    Garantili = Garantili,
+                    Garantisiz = Garantisiz,
+                    ServisGarantili = ServisGarantili,
+                    YedeklemeYapilsin = YedeklemeYapilsin,
+                    // Toptancı & Parça
+                    ToptanciID = SeciliToptanci != null ? SeciliToptanci.ID : 0,
+                    ParcaAdi = string.IsNullOrWhiteSpace(ParcaAdi) ? "" : ParcaAdi,
+                    ParcaAdet = ParcaAdet,
+                    ParcaBirimFiyati = ParcaBirimFiyati,
+                    BranchId = (SeciliSubeId.HasValue && SeciliSubeId.Value > 0)
+                        ? SeciliSubeId.Value
+                        : (Class1.AktifSubeId > 0 ? Class1.AktifSubeId : (Subeler?.FirstOrDefault(x => x.IsMerkez)?.BranchId ?? Subeler?.FirstOrDefault()?.BranchId))
+                };
+
+                // Eğer kullanıcı alanları doldurup "+ Ekle" butonuna basmadıysa otomatik ekle
+                if (SeciliToptanci != null && !string.IsNullOrWhiteSpace(ParcaAdi) && ParcaAdet > 0 && ParcaBirimFiyati > 0)
+                {
+                    ParcaListesi.Add(new Models.ServisParcaItemDto
+                    {
+                        ToptanciID = SeciliToptanci.ID,
+                        ToptanciAdi = SeciliToptanci.FirmaAdi,
+                        ParcaAdi = ParcaAdi.Trim(),
+                        Adet = ParcaAdet,
+                        BirimFiyati = ParcaBirimFiyati
+                    });
+                    ParcaAdi = "";
+                    ParcaAdet = 1;
+                    ParcaBirimFiyati = 0;
+                }
+
+                // Çoklu parça listesini DTO'ya ekle
+                dto.Parcalar = ParcaListesi.ToList();
+                if (dto.Parcalar.Count > 0)
+                {
+                    var first = dto.Parcalar[0];
+                    dto.ToptanciID = first.ToptanciID;
+                    dto.ParcaAdi = string.Join(", ", dto.Parcalar.Select(x => x.ParcaAdi));
+                    dto.ParcaAdet = dto.Parcalar.Sum(x => x.Adet);
+                    dto.ParcaBirimFiyati = first.BirimFiyati;
+                }
+
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Class1.JwtToken);
+                    var content = new StringContent(JsonConvert.SerializeObject(dto), Encoding.UTF8, "application/json");
+
+                    if (_kayitId > 0)
+                    {
+                        var response = await client.PutAsync($"{ApiConfig.Api}/KayitliCihazlar/{_kayitId}", content);
+                        if (!response.IsSuccessStatusCode)
+                        {
+                            var err = await response.Content.ReadAsStringAsync();
+                            MessageBox.Show($"Güncelleme başarısız: {err}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+                            return;
+                        }
+                        MessageBox.Show("✅ Kayıt başarıyla güncellendi!", "Başarılı", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    else
+                    {
+                        var response = await client.PostAsync($"{ApiConfig.Api}/KayitliCihazlar", content);
+                        if (!response.IsSuccessStatusCode)
+                        {
+                            var err = await response.Content.ReadAsStringAsync();
+                            MessageBox.Show($"Kayıt oluşturulamadı: {err}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+                            return;
+                        }
+                        var resJson = await response.Content.ReadAsStringAsync();
+                        var resObj = JsonConvert.DeserializeObject<dynamic>(resJson);
+                        if (resObj?.ID != null)
+                        {
+                            _kayitId = (int)resObj.ID;
+                        }
+                        MessageBox.Show("✅ Yeni kayıt başarıyla eklendi!", "Başarılı", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                }
+
+                // ── MÜŞTERİ BİLDİRİMİ (WHATSAPP / SMS) ──
+                if (_kayitId > 0 && !string.IsNullOrWhiteSpace(dto.CepTelefonu))
+                {
+                    if (dto.ServisDurumu == "Tamamlandı" || dto.ServisDurumu == "Teslim Edildi" ||
+                        dto.ServisDurumu == "Fiyat Onayı Bekliyor" || dto.ServisDurumu == "Fiyat Teklifi Verildi")
+                    {
+                        var bildirimSonuc = MessageBox.Show(
+                            $"Cihaz servis durumu '{dto.ServisDurumu}' olarak kaydedildi.\n\nMüşteriye WhatsApp veya SMS ile durum bildirimi göndermek ister misiniz?",
+                            "Müşteri Bilgilendirmesi",
+                            MessageBoxButton.YesNo,
+                            MessageBoxImage.Question);
+
+                        if (bildirimSonuc == MessageBoxResult.Yes)
+                        {
+                            MusteriyeBildir();
+                        }
+                    }
+                }
+
+                // ── VERESİYE DEFTERİ ENTEGRASYONU ──
+                if (_kayitId > 0)
+                {
+                    string srvNo = $"SRV-{_kayitId:D6}";
+                    if (string.Equals(dto.OdemeTuru, "Veresiye", StringComparison.OrdinalIgnoreCase))
+                    {
+                        try
+                        {
+                            decimal servisUcreti = 0;
+                            if (!string.IsNullOrWhiteSpace(dto.FiyatBilgisi))
+                            {
+                                var clean = System.Text.RegularExpressions.Regex.Replace(dto.FiyatBilgisi, @"[^\d,\.]", "").Replace(",", ".");
+                                decimal.TryParse(clean, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out servisUcreti);
+                            }
+
+                            if (servisUcreti > 0 && !string.IsNullOrWhiteSpace(dto.IsimSoyisim))
+                            {
+                                int custId = await VeresiyeService.GetOrCreateCustomerByNamePhoneAsync(dto.IsimSoyisim, dto.CepTelefonu);
+                                if (custId > 0)
+                                {
+                                    string aciklama = $"Servis Borcu: {srvNo} ({dto.Marka} {dto.Model} - {dto.Ariza})";
+                                    await VeresiyeService.AddOrUpdateVeresiyeBorcByRefAsync(custId, servisUcreti, aciklama, srvNo);
+                                }
+                            }
+                        }
+                        catch (Exception vEx)
+                        {
+                            Console.WriteLine("Veresiye defteri servis borç kaydetme hatası: " + vEx.Message);
+                        }
+                    }
+                    else
+                    {
+                        // Eğer önceden veresiye olup şimdi başka bir ödeme türüne alındıysa borç defterinden kaldır
+                        try
+                        {
+                            await VeresiyeService.RemoveVeresiyeBorcByRefAsync(srvNo);
+                        }
+                        catch { }
+                    }
+                }
+
+                DegisiklikVar = false;
+                _disServisSatirKaynagi = false;
+                _disServisAdayKayitId = 0;
+
+                foreach (Window window in Application.Current.Windows)
+                {
+                    if (window is Window3 window3)
+                    {
+                        window3.GoBack();
+                        break;
+                    }
+                    else if (window is Window5 window5)
+                    {
+                        window5.VerileriYukle();
+                        window5.HideOverlay();
+                        break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"❌ HATA:\n\n{ex.Message}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void ParcaEkle()
+        {
+            if (SeciliToptanci == null)
+            {
+                MessageBox.Show("Lütfen bir toptancı seçin.", "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(ParcaAdi))
+            {
+                MessageBox.Show("Lütfen parça adı girin (Örn: Ekran, Batarya).", "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (ParcaAdet <= 0)
+            {
+                MessageBox.Show("Lütfen geçerli bir adet girin.", "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (ParcaBirimFiyati <= 0)
+            {
+                MessageBox.Show("Lütfen parçanın dolar birim fiyatını ($) girin.", "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            ParcaListesi.Add(new Models.ServisParcaItemDto
+            {
+                ToptanciID = SeciliToptanci.ID,
+                ToptanciAdi = SeciliToptanci.FirmaAdi,
+                ParcaAdi = ParcaAdi.Trim(),
+                Adet = ParcaAdet,
+                BirimFiyati = ParcaBirimFiyati
+            });
+
+            ParcaAdi = "";
+            ParcaAdet = 1;
+            ParcaBirimFiyati = 0;
+
+            OnPropertyChanged(nameof(ToplamParcaMaliyeti));
+            OnPropertyChanged(nameof(NetKarOzet));
+            OnPropertyChanged(nameof(NetKarGorunurluk));
+            if (!YuklemeDevamEdiyor) DegisiklikVar = true;
+        }
+
+        private void ParcaSil(Models.ServisParcaItemDto item)
+        {
+            if (item != null && ParcaListesi.Contains(item))
+            {
+                ParcaListesi.Remove(item);
+                OnPropertyChanged(nameof(ToplamParcaMaliyeti));
+                OnPropertyChanged(nameof(NetKarOzet));
+                OnPropertyChanged(nameof(NetKarGorunurluk));
+                if (!YuklemeDevamEdiyor) DegisiklikVar = true;
             }
         }
 
@@ -444,7 +1019,7 @@ namespace alpsoftservistakip.ViewModels
             {
                 if (window is Window3 window3)
                 {
-                    window3.HideOverlay();
+                    window3.GoBack();
                     break;
                 }
                 else if (window is Window5 window5)
@@ -498,10 +1073,20 @@ namespace alpsoftservistakip.ViewModels
                     return;
                 }
 
+                DateTime fisiKayitTarihi = KayitTarihi.Date;
+                if (TimeSpan.TryParse(KayitSaati, out TimeSpan ts))
+                {
+                    fisiKayitTarihi = fisiKayitTarihi.Add(ts);
+                }
+                else
+                {
+                    fisiKayitTarihi = fisiKayitTarihi.Add(DateTime.Now.TimeOfDay);
+                }
+
                 var fisiData = new alpsoftservistakip.Models.ServisKayitFisiData
                 {
                     KayitID = _kayitId,
-                    KayitTarihi = System.DateTime.Now,
+                    KayitTarihi = fisiKayitTarihi,
                     IsimSoyisim = AdSoyad,
                     CepTelefonu = CepTelefonu,
                     BayiAdi = BayiAdi,
@@ -511,7 +1096,8 @@ namespace alpsoftservistakip.ViewModels
                     ImeiNo = ImeiNo,
                     ServisDurumu = ServisDurumu,
                     IlgiliTeknisyen = IlgiliTeknisyen,
-                    EkBilgiler = EkBilgiler
+                    EkBilgiler = EkBilgiler,
+                    FiyatBilgisi = FiyatBilgisi
                 };
 
                 var fisi = new alpsoftservistakip.Controls.ServisKayitFisi()
@@ -524,6 +1110,89 @@ namespace alpsoftservistakip.ViewModels
             catch (Exception ex)
             {
                 MessageBox.Show("Fiş yazdırma hatası: " + ex.Message, "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void EtiketiYazdir()
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(AdSoyad) || string.IsNullOrWhiteSpace(Marka) || string.IsNullOrWhiteSpace(Model))
+                {
+                    MessageBox.Show("Müşteri adı, marka ve model bilgileri zorunludur!", "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                DateTime fisiKayitTarihi = KayitTarihi.Date;
+                if (TimeSpan.TryParse(KayitSaati, out TimeSpan ts))
+                {
+                    fisiKayitTarihi = fisiKayitTarihi.Add(ts);
+                }
+                else
+                {
+                    fisiKayitTarihi = fisiKayitTarihi.Add(DateTime.Now.TimeOfDay);
+                }
+
+                string srvNo = _kayitId > 0 ? $"SRV-{_kayitId:D6}" : "SRV-YENİ";
+
+                var model = new Models.CihazEtiketiModel
+                {
+                    ServisNo = srvNo,
+                    MusteriAdi = AdSoyad,
+                    Telefon = CepTelefonu,
+                    Marka = Marka,
+                    Model = Model,
+                    Ariza = SikayetAriza,
+                    CihazSifresi = EkBilgiler,
+                    KayitTarihi = fisiKayitTarihi,
+                    FirmaAdi = Class1.AktifKullanici?.SirketAdi ?? "AlpSoft Teknik Servis"
+                };
+
+                var win = new WindowCihazEtiketYazdir(model)
+                {
+                    Owner = Application.Current.MainWindow
+                };
+                win.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Etiket yazdırma hatası: " + ex.Message, "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void MusteriyeBildir()
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(CepTelefonu))
+                {
+                    MessageBox.Show("Müşteriye bildirim gönderebilmek için bir cep telefonu numarası girilmelidir.", "Telefon Eksik", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                var ctx = new Services.NotificationContext
+                {
+                    MusteriAdi = AdSoyad ?? "",
+                    Telefon = CepTelefonu ?? "",
+                    Cihaz = $"{Marka} {Model}".Trim(),
+                    ServisNo = _kayitId > 0 ? $"SRV-{_kayitId:D6}" : "",
+                    Ariza = SikayetAriza ?? "",
+                    Tutar = FiyatBilgisi ?? "",
+                    Durum = ServisDurumu ?? ""
+                };
+
+                Services.NotificationTemplateType initialTemplate = Services.NotificationTemplateType.Tamamlandi;
+                if (ServisDurumu == "Kabul Edildi") initialTemplate = Services.NotificationTemplateType.Kabul;
+                else if (ServisDurumu == "İşlemde" || ServisDurumu == "Fiyat Onayı Bekliyor" || ServisDurumu == "Fiyat Teklifi Verildi") initialTemplate = Services.NotificationTemplateType.FiyatOnay;
+                else if (ServisDurumu == "Teslim Edildi") initialTemplate = Services.NotificationTemplateType.TeslimEdildi;
+
+                var wnd = new MusteriBildirimWindow(ctx, initialTemplate);
+                wnd.Owner = Application.Current.MainWindow;
+                wnd.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Bildirim penceresi açılırken hata: " + ex.Message, "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -631,181 +1300,41 @@ namespace alpsoftservistakip.ViewModels
             pencere.ShowDialog();
         }
 
-        private void TaşıDısServisKayıtlarına(string disServisYeri, string ilgiliKisi)
+        private async void TaşıDısServisKayıtlarına(string disServisYeri, string ilgiliKisi)
         {
             try
             {
                 if (_kayitId <= 0)
                     return;
 
-                using (SqlConnection con = new SqlConnection(ConnectionString))
+                var dto = new DisServisTasimaDto
                 {
-                    con.Open();
+                    KayitId = _kayitId,
+                    DisServisYeri = disServisYeri,
+                    IlgiliKisi = ilgiliKisi
+                };
 
-                    var kolonlar = GetDisServisKolonBilgileri(con);
-                    var eklenecekKolonlar = new List<string>();
-                    var eklenecekParametreler = new List<string>();
-                    var ekCmd = new SqlCommand();
-                    ekCmd.Connection = con;
-
-                    void AlanEkle(string kolon, string parametre, object deger)
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Class1.JwtToken);
+                    var content = new StringContent(JsonConvert.SerializeObject(dto), Encoding.UTF8, "application/json");
+                    var response = await client.PostAsync($"{ApiConfig.Api}/DisServis/tasima", content);
+                    if (response.IsSuccessStatusCode)
                     {
-                        if (string.IsNullOrWhiteSpace(kolon)) return;
-                        eklenecekKolonlar.Add($"[{kolon}]");
-                        eklenecekParametreler.Add(parametre);
-                        ekCmd.Parameters.AddWithValue(parametre, deger ?? (object)DBNull.Value);
+                        MessageBox.Show("Kayıt başarıyla Dış Servis Kayıtlarına aktarıldı.", "Başarılı", 
+                            MessageBoxButton.OK, MessageBoxImage.Information);
                     }
-
-                    AlanEkle(KolonBul(kolonlar, "KullaniciID", "KullaniciId", "UserId"), "@KullaniciID", LoginWindow.aktifKullaniciID);
-                    AlanEkle(KolonBul(kolonlar, "KayitTarihi", "Tarih", "CreatedDate"), "@KayitTarihi", DateTime.Now);
-                    AlanEkle(KolonBul(kolonlar, "KayitID", "KayitId", "ServisKayitID", "ServisKayitId"), "@KayitID", _kayitId);
-                    AlanEkle(KolonBul(kolonlar, "IsimSoyisim", "MusteriAdi", "MusteriAdSoyad"), "@IsimSoyisim", AdSoyad ?? "");
-                    AlanEkle(KolonBul(kolonlar, "CepTelefonu", "Telefon", "TelefonNo", "Gsm"), "@CepTelefonu", CepTelefonu ?? "");
-                    AlanEkle(KolonBul(kolonlar, "YetkiliBayi", "BayiAdi", "DisServisYeri"), "@YetkiliBayi", disServisYeri ?? "");
-                    AlanEkle(KolonBul(kolonlar, "IrtibatKisi", "IlgiliKisi", "YetkiliKisi"), "@IrtibatKisi", ilgiliKisi ?? "");
-                    AlanEkle(KolonBul(kolonlar, "Marka"), "@Marka", Marka ?? "");
-                    AlanEkle(KolonBul(kolonlar, "Model"), "@Model", Model ?? "");
-                    AlanEkle(KolonBul(kolonlar, "IMEI", "ImeiNo", "SeriNo"), "@IMEI", ImeiNo ?? "");
-                    AlanEkle(KolonBul(kolonlar, "Ariza", "ArizaDetayi", "Sikayet"), "@Ariza", SikayetAriza ?? "");
-                    AlanEkle(KolonBul(kolonlar, "EkBilgiler", "Notlar", "Aciklama"), "@EkBilgiler", EkBilgiler ?? "");
-                    AlanEkle(KolonBul(kolonlar, "ServisDurumu", "Durum"), "@ServisDurumu", ServisDurumu ?? "Dış Servis'te");
-                    AlanEkle(KolonBul(kolonlar, "ServisTeknisyen", "Teknisyen", "SorumluTeknisyen"), "@ServisTeknisyen", IlgiliTeknisyen ?? "");
-
-                    if (eklenecekKolonlar.Count == 0)
+                    else
                     {
-                        MessageBox.Show("Dış servis tablosunda eşleşen kolon bulunamadı.", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
-                        return;
+                        var err = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Dış servis aktarma hatası: {err}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
-
-                    ekCmd.CommandText = $"INSERT INTO disserviskayitlarnew ({string.Join(", ", eklenecekKolonlar)}) VALUES ({string.Join(", ", eklenecekParametreler)})";
-                    ekCmd.ExecuteNonQuery();
-
-                    MessageBox.Show("Kayıt başarıyla Dış Servis Kayıtlarına aktarıldı.", "Başarılı", 
-                        MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Dış servis aktarma hatası: " + ex.Message, "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-        }
-
-        private Dictionary<string, bool> GetDisServisKolonBilgileri(SqlConnection con)
-        {
-            var kolonlar = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
-
-            string sorgu = @"SELECT c.COLUMN_NAME,
-                                    COLUMNPROPERTY(OBJECT_ID(c.TABLE_SCHEMA + '.' + c.TABLE_NAME), c.COLUMN_NAME, 'IsIdentity') AS IsIdentity
-                             FROM INFORMATION_SCHEMA.COLUMNS c
-                             WHERE c.TABLE_NAME = 'disserviskayitlarnew'";
-            using (SqlCommand cmd = new SqlCommand(sorgu, con))
-            using (SqlDataReader reader = cmd.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    string kolonAdi = reader["COLUMN_NAME"]?.ToString();
-                    if (!string.IsNullOrWhiteSpace(kolonAdi))
-                    {
-                        bool isIdentity = reader["IsIdentity"] != DBNull.Value && Convert.ToInt32(reader["IsIdentity"]) == 1;
-                        kolonlar[kolonAdi] = isIdentity;
-                    }
-                }
-            }
-
-            return kolonlar;
-        }
-
-        private string KolonBul(Dictionary<string, bool> mevcutKolonlar, params string[] adaylar)
-        {
-            foreach (var aday in adaylar)
-            {
-                if (mevcutKolonlar.TryGetValue(aday, out bool isIdentity) && !isIdentity)
-                {
-                    return aday;
-                }
-            }
-
-            return null;
-        }
-
-        private int DisServisKaydindanKayitIdCoz(SqlConnection con)
-        {
-            string adSoyad = Temizle(AdSoyad);
-            string marka = Temizle(Marka);
-            string model = Temizle(Model);
-            string imei = Temizle(ImeiNo);
-            string cep = Temizle(CepTelefonu);
-
-            if (_disServisAdayKayitId > 0)
-            {
-                string idSorgu = @"SELECT TOP 1 ID FROM kayitlicihazlar
-                                   WHERE CompanyId = @CompanyId
-                                   AND ID = @ID
-                                   AND (@IsimSoyisim = '' OR IsimSoyisim = @IsimSoyisim)
-                                   AND (@Marka = '' OR Marka = @Marka)
-                                   AND (@Model = '' OR Model = @Model)
-                                   AND (@IMEI = '' OR IMEI = @IMEI)";
-
-                using (SqlCommand cmd = new SqlCommand(idSorgu, con))
-                {
-                    cmd.Parameters.AddWithValue("@CompanyId", Class1.AktifKullanici.SirketID);
-                    cmd.Parameters.AddWithValue("@ID", _disServisAdayKayitId);
-                    cmd.Parameters.AddWithValue("@IsimSoyisim", adSoyad);
-                    cmd.Parameters.AddWithValue("@Marka", marka);
-                    cmd.Parameters.AddWithValue("@Model", model);
-                    cmd.Parameters.AddWithValue("@IMEI", imei);
-
-                    object sonuc = cmd.ExecuteScalar();
-                    if (sonuc != null && sonuc != DBNull.Value)
-                    {
-                        return Convert.ToInt32(sonuc);
-                    }
-                }
-            }
-
-            if (string.IsNullOrWhiteSpace(adSoyad) || string.IsNullOrWhiteSpace(marka) || string.IsNullOrWhiteSpace(model))
-            {
-                return 0;
-            }
-
-            string eslesmeSorgu = @"SELECT TOP 1 ID FROM kayitlicihazlar
-                                    WHERE CompanyId = @CompanyId
-                                    AND IsimSoyisim = @IsimSoyisim
-                                    AND Marka = @Marka
-                                    AND Model = @Model
-                                    AND (@IMEI = '' OR IMEI = @IMEI)
-                                    AND (@CepTelefonu = '' OR CepTelefonu = @CepTelefonu)
-                                    ORDER BY ID DESC";
-
-            using (SqlCommand cmd = new SqlCommand(eslesmeSorgu, con))
-            {
-                cmd.Parameters.AddWithValue("@CompanyId", Class1.AktifKullanici.SirketID);
-                cmd.Parameters.AddWithValue("@IsimSoyisim", adSoyad);
-                cmd.Parameters.AddWithValue("@Marka", marka);
-                cmd.Parameters.AddWithValue("@Model", model);
-                cmd.Parameters.AddWithValue("@IMEI", imei);
-                cmd.Parameters.AddWithValue("@CepTelefonu", cep);
-
-                object sonuc = cmd.ExecuteScalar();
-                if (sonuc != null && sonuc != DBNull.Value)
-                {
-                    return Convert.ToInt32(sonuc);
-                }
-            }
-
-            return 0;
-        }
-
-        private string Temizle(string text)
-        {
-            return string.IsNullOrWhiteSpace(text) ? "" : text.Trim();
-        }
-
-        private object GetSqlValue(string value, string placeholder)
-        {
-            return (value == placeholder || string.IsNullOrWhiteSpace(value))
-                ? (object)DBNull.Value
-                : (object)value;
         }
 
         private string GetRowString(DataRowView row, params string[] kolonlar)
