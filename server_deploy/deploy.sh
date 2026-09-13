@@ -26,7 +26,61 @@ echo "[2/3] Web Sitesi (Takip Barı & Buton) güncelleniyor..."
 mkdir -p /root/app/web
 curl -sL "${BASE_URL}/index.html" -o /root/app/web/index.html
 curl -sL "${BASE_URL}/style.css" -o /root/app/web/style.css
-docker exec web nginx -s reload 2>/dev/null || true
+# Nginx /randevu ve /takip Proxy Ayarı
+docker exec -i web sh -c 'cat << "EOF" > /etc/nginx/conf.d/default.conf
+server {
+    listen 80;
+    listen [::]:80;
+    server_name localhost;
+
+    location / {
+        root /usr/share/nginx/html;
+        index index.html index.htm;
+    }
+
+    location /takip {
+        proxy_pass http://172.18.0.1:5000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection keep-alive;
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location /randevu {
+        proxy_pass http://172.18.0.1:5000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection keep-alive;
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location /api {
+        proxy_pass http://172.18.0.1:5000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection keep-alive;
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    error_page 500 502 503 504 /50x.html;
+    location = /50x.html {
+        root /usr/share/nginx/html;
+    }
+}
+EOF
+nginx -s reload' 2>/dev/null || true
 echo ">>> Web sayfaları güncellendi ve Nginx yenilendi."
 
 # 3. Test
