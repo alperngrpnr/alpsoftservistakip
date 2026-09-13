@@ -87,8 +87,11 @@ echo ">>> Web sayfaları güncellendi ve Nginx yenilendi."
 echo "[3/3] Canlı Sistem Test Ediliyor..."
 HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:80/takip || echo "ERR")
 echo ">>> /takip yanıt kodu: ${HTTP_STATUS}"
+HTTP_STATUS_RANDEVU=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:80/randevu || echo "ERR")
+echo ">>> /randevu yanıt kodu: ${HTTP_STATUS_RANDEVU}"
 
 echo "=========================================="
 echo " TÜM İŞLEMLER BAŞARIYLA TAMAMLANDI! 🚀 "
-echo " https://alpsoftservistakip.com/takip "
+echo " Takip:   https://alpsoftservistakip.com/takip "
+echo " Randevu: https://alpsoftservistakip.com/randevu "
 echo "=========================================="
