@@ -48,7 +48,6 @@ namespace alpsoftservistakip
         private async Task CheckMusteriOnaylariAsync()
         {
             if (_musteriOnayChecking) return;
-            if (string.IsNullOrWhiteSpace(Class1.JwtToken)) return;
 
             try
             {
@@ -56,10 +55,18 @@ namespace alpsoftservistakip
                 using (var client = new System.Net.Http.HttpClient())
                 {
                     client.BaseAddress = new Uri(Helpers.ApiConfig.BaseUrl + "/");
-                    client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Class1.JwtToken);
+                    if (!string.IsNullOrWhiteSpace(Class1.JwtToken))
+                    {
+                        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Class1.JwtToken);
+                    }
                     client.Timeout = TimeSpan.FromSeconds(6);
 
-                    var res = await client.GetAsync("api/takip/yeni-onay-bildirimleri");
+                    int companyId = Class1.AktifKullanici?.SirketID ?? 0;
+                    string endpoint = companyId > 0 
+                        ? $"api/takip/yeni-onay-bildirimleri?companyId={companyId}" 
+                        : "api/takip/yeni-onay-bildirimleri";
+
+                    var res = await client.GetAsync(endpoint);
                     if (res.IsSuccessStatusCode)
                     {
                         string json = await res.Content.ReadAsStringAsync();

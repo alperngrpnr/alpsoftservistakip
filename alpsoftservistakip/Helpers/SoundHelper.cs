@@ -23,12 +23,19 @@ namespace alpsoftservistakip.Helpers
                     using (var ms = new MemoryStream(_cachedChimeWav))
                     using (var player = new SoundPlayer(ms))
                     {
-                        player.Play();
+                        player.PlaySync();
                     }
                 }
                 catch
                 {
-                    try { SystemSounds.Asterisk.Play(); } catch { }
+                    try
+                    {
+                        SystemSounds.Asterisk.Play();
+                    }
+                    catch
+                    {
+                        try { Console.Beep(1200, 300); } catch { }
+                    }
                 }
             });
         }
