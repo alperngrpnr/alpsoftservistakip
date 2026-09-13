@@ -167,5 +167,26 @@ namespace alpsoftservistakip
                 btnKaydet.Content = "💾 Ayarları Kaydet";
             }
         }
+
+        private void btnKonumTest_Click(object sender, RoutedEventArgs e)
+        {
+            string adres = txtAdres.Text.Trim();
+            if (string.IsNullOrWhiteSpace(adres))
+            {
+                MessageBox.Show("Lütfen önce bir adres giriniz.", "Adres Gerekli", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            string url = $"https://www.google.com/maps/search/?api=1&query={Uri.EscapeDataString(adres)}";
+            try
+            {
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = url,
+                    UseShellExecute = true
+                });
+            }
+            catch { }
+        }
     }
 }
