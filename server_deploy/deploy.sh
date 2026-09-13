@@ -11,6 +11,13 @@ BASE_URL="https://raw.githubusercontent.com/alperngrpnr/alpsoftservistakip/main/
 echo "[1/3] Yeni API (TakipController & CORS) indiriliyor..."
 mkdir -p /root/app/api
 curl -sL "${BASE_URL}/AlpSoftConApi.dll" -o /root/app/api/AlpSoftConApi.dll
+
+# SQL Bildirim Tablosu ve İzinleri
+CREATE_SQL="USE alpsoftservistakip; IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'MusteriOnayBildirimleri') CREATE TABLE MusteriOnayBildirimleri (Id INT IDENTITY(1,1) PRIMARY KEY, ServisId INT NOT NULL, CompanyId INT NOT NULL, MusteriAdi NVARCHAR(200), Cihaz NVARCHAR(200), FiyatBilgisi NVARCHAR(100), Karar NVARCHAR(50), Tarih DATETIME DEFAULT GETDATE(), Okundu BIT DEFAULT 0, Ip NVARCHAR(100)); GRANT SELECT, INSERT, UPDATE, DELETE ON MusteriOnayBildirimleri TO alpsoft_api;"
+/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'Alperengurpinar4160552009.' -C -Q "$CREATE_SQL" 2>/dev/null || \
+/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 'Alperengurpinar4160552009.' -Q "$CREATE_SQL" 2>/dev/null || \
+docker exec -i $(docker ps -q -f name=sql | head -n 1) /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'Alperengurpinar4160552009.' -C -Q "$CREATE_SQL" 2>/dev/null || true
+
 systemctl restart alpsoft-api
 echo ">>> API servisi güncellendi ve yeniden başlatıldı."
 
