@@ -40,6 +40,9 @@ namespace alpsoftservistakip.Models
     public class RandevuAyarClientDto
     {
         public int CompanyId { get; set; } = 1;
+        public string CompanyName { get; set; } = "";
+        public string Address { get; set; } = "";
+        public string Phone { get; set; } = "";
         public string BaslangicSaati { get; set; } = "09:00";
         public string BitisSaati { get; set; } = "19:00";
         public int RandevuAraligiDk { get; set; } = 30;

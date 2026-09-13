@@ -120,11 +120,12 @@ namespace alpsoftservistakip
 
         private void btnLinkKopyala_Click(object sender, RoutedEventArgs e)
         {
-            string link = $"{ApiConfig.WebTakipUrl}/randevu";
+            int companyId = Class1.AktifKullanici?.SirketID ?? 1;
+            string link = $"{ApiConfig.WebTakipUrl}/randevu?servis={companyId}";
             try
             {
                 Clipboard.SetText(link);
-                MessageBox.Show($"Müşteri Randevu Linki Kopyalandı:\n\n{link}\n\nBu linki müşterilerinize WhatsApp veya Instagram'dan göndererek dükkanınıza özel randevu almalarını sağlayabilirsiniz.", "Web Randevu Linki", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show($"Dükkanınıza Özel Randevu Linki Kopyalandı:\n\n{link}\n\nBu linki müşterilerinize gönderdiğinizde doğrudan sizin dükkanınız ve çalışma saatleriniz seçili olarak açılır.", "Web Randevu Linki", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch
             {

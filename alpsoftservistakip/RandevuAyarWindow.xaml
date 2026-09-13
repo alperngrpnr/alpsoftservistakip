@@ -55,6 +55,15 @@
                         </Grid>
                     </Border>
 
+                    <!-- 1.5 Dükkan Adresi ve Konum Bilgisi -->
+                    <Border Background="#161C28" BorderBrush="#252D3D" BorderThickness="1" CornerRadius="12" Padding="14" Margin="0,0,0,14">
+                        <StackPanel>
+                            <TextBlock Text="📍 Dükkan / Servis Adresi (Web Randevu Sayfasında Gözükecek Adres)" FontWeight="Bold" Foreground="#38BDF8" FontSize="13" Margin="0,0,0,4"/>
+                            <TextBlock Text="Müşterilerin web randevu sayfasında işletmenizi ve konumunuzu görebilmesi için açık adresinizi yazın." FontSize="11.5" Foreground="#94A3B8" Margin="0,0,0,8"/>
+                            <TextBox x:Name="txtAdres" Height="36" Background="#0F1523" Foreground="#FFFFFF" BorderBrush="#252D3D" BorderThickness="1" Padding="10,0" FontSize="13" VerticalContentAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+
                     <!-- 2. Çalışma Günleri -->
                     <Border Background="#161C28" BorderBrush="#252D3D" BorderThickness="1" CornerRadius="12" Padding="14" Margin="0,0,0,14">
                         <StackPanel>

@@ -44,6 +44,11 @@ namespace alpsoftservistakip
                         {
                             chkAktif.IsChecked = ayar.Aktif;
 
+                            // Dükkan Adresi
+                            txtAdres.Text = !string.IsNullOrWhiteSpace(ayar.Address) 
+                                ? ayar.Address 
+                                : (Class1.AktifKullanici?.SirketAdres ?? "");
+
                             // Günler
                             var gunler = (ayar.CalismaGunleri ?? "").Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
                             chkPzt.IsChecked = gunler.Contains("1");
@@ -112,9 +117,12 @@ namespace alpsoftservistakip
                 int.TryParse(new string(kapText.Where(char.IsDigit).ToArray()), out kapasite);
                 if (kapasite <= 0) kapasite = 1;
 
+                string adres = txtAdres.Text.Trim();
+
                 var payload = new RandevuAyarClientDto
                 {
                     CompanyId = Class1.AktifKullanici?.SirketID ?? 1,
+                    Address = adres,
                     BaslangicSaati = baslangic,
                     BitisSaati = bitis,
                     RandevuAraligiDk = aralik,
@@ -134,6 +142,11 @@ namespace alpsoftservistakip
 
                     if (res.IsSuccessStatusCode)
                     {
+                        if (Class1.AktifKullanici != null)
+                        {
+                            Class1.AktifKullanici.SirketAdres = adres;
+                        }
+
                         MessageBox.Show("Randevu ve çalışma saatleri ayarları başarıyla kaydedildi!", "Başarılı", MessageBoxButton.OK, MessageBoxImage.Information);
                         this.DialogResult = true;
                         this.Close();
