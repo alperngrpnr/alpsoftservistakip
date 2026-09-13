@@ -860,8 +860,12 @@ namespace alpsoftservistakip.ViewModels
                 // ── MÜŞTERİ BİLDİRİMİ (WHATSAPP / SMS) ──
                 if (_kayitId > 0 && !string.IsNullOrWhiteSpace(dto.CepTelefonu))
                 {
-                    if (dto.ServisDurumu == "Tamamlandı" || dto.ServisDurumu == "Teslim Edildi" ||
-                        dto.ServisDurumu == "Fiyat Onayı Bekliyor" || dto.ServisDurumu == "Fiyat Teklifi Verildi")
+                    if (dto.ServisDurumu == "Fiyat Onayı Bekliyor" || dto.ServisDurumu == "Fiyat Teklifi Verildi")
+                    {
+                        // Fiyat teklifi verildiğinde doğrudan mesaj bildirim ekranını aç
+                        MusteriyeBildir();
+                    }
+                    else if (dto.ServisDurumu == "Tamamlandı" || dto.ServisDurumu == "Teslim Edildi")
                     {
                         var bildirimSonuc = MessageBox.Show(
                             $"Cihaz servis durumu '{dto.ServisDurumu}' olarak kaydedildi.\n\nMüşteriye WhatsApp veya SMS ile durum bildirimi göndermek ister misiniz?",

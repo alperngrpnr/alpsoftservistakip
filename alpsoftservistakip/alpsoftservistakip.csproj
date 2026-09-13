@@ -171,6 +171,11 @@
     <Compile Include="Models\DisServisTasimaDto.cs" />
     <Compile Include="Helper\ApiConfig.cs" />
     <Compile Include="Helpers\PatronRaporSettings.cs" />
+    <Compile Include="Helpers\SoundHelper.cs" />
+    <Compile Include="Models\MusteriOnayItemDto.cs" />
+    <Compile Include="MusteriOnayAlertWindow.xaml.cs">
+      <DependentUpon>MusteriOnayAlertWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\TelefonAlimDto.cs" />
     <Compile Include="Models\TelefonEnvanterDto.cs" />
     <Compile Include="Models\TelefonMusteriDto.cs" />
@@ -529,6 +534,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MusteriBildirimWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MusteriOnayAlertWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

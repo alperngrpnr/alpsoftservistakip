@@ -29,6 +29,67 @@ namespace alpsoftservistakip
             }
 
             InitGunSonuTimer();
+            InitMusteriOnayListener();
+        }
+
+        private System.Windows.Threading.DispatcherTimer _musteriOnayTimer;
+        private bool _musteriOnayChecking = false;
+
+        private void InitMusteriOnayListener()
+        {
+            _musteriOnayTimer = new System.Windows.Threading.DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(10)
+            };
+            _musteriOnayTimer.Tick += async (s, e) => await CheckMusteriOnaylariAsync();
+            _musteriOnayTimer.Start();
+        }
+
+        private async Task CheckMusteriOnaylariAsync()
+        {
+            if (_musteriOnayChecking) return;
+            if (string.IsNullOrWhiteSpace(Class1.JwtToken)) return;
+
+            try
+            {
+                _musteriOnayChecking = true;
+                using (var client = new System.Net.Http.HttpClient())
+                {
+                    client.BaseAddress = new Uri(Helpers.ApiConfig.BaseUrl + "/");
+                    client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Class1.JwtToken);
+                    client.Timeout = TimeSpan.FromSeconds(6);
+
+                    var res = await client.GetAsync("api/takip/yeni-onay-bildirimleri");
+                    if (res.IsSuccessStatusCode)
+                    {
+                        string json = await res.Content.ReadAsStringAsync();
+                        var list = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Collections.Generic.List<Models.MusteriOnayItemDto>>(json);
+                        if (list != null && list.Count > 0)
+                        {
+                            // 🔔 Sesli bildirim çal!
+                            Helpers.SoundHelper.PlayOnayChime();
+
+                            // 💬 Her onay/red için görsel popup göster
+                            foreach (var item in list)
+                            {
+                                bool isApproved = !string.Equals(item.Karar, "Reddedildi", StringComparison.OrdinalIgnoreCase);
+                                MusteriOnayAlertWindow.ShowAlert(item.ServisNo, item.MusteriAdi, item.Cihaz, item.FiyatBilgisi, isApproved);
+                            }
+
+                            // 🔄 Tabloyu anında otomatik yenile
+                            if (ViewModel != null)
+                            {
+                                ViewModel.KayitlariListele(ViewModel.AramaMetni);
+                            }
+                        }
+                    }
+                }
+            }
+            catch { }
+            finally
+            {
+                _musteriOnayChecking = false;
+            }
         }
 
         private System.Windows.Threading.DispatcherTimer _gunSonuTimer;
