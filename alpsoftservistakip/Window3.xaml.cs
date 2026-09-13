@@ -213,7 +213,7 @@ namespace alpsoftservistakip
                             // 💬 Her yeni randevu için görsel popup göster
                             foreach (var r in rList)
                             {
-                                MusteriOnayAlertWindow.ShowAlert("📅 YENİ RANDEVU", r.MusteriAdi, $"{r.Cihaz} - {r.IslemTuru}", $"{r.RandevuTarihi} {r.RandevuSaati}", true);
+                                MusteriOnayAlertWindow.ShowRandevuAlert(r.MusteriAdi, r.Cihaz, r.IslemTuru, $"{r.RandevuTarihi} {r.RandevuSaati}");
                             }
                         }
                     }

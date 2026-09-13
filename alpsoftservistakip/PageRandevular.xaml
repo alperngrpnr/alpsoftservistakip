@@ -181,11 +181,11 @@
                     </DataGridTemplateColumn>
 
                     <!-- Aksiyonlar -->
-                    <DataGridTemplateColumn Header="İşlemler" Width="240">
+                    <DataGridTemplateColumn Header="İşlemler" Width="290">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0">
-                                    <Button Content="🚀 Servise Çevir" Height="28" Background="#3B82F6" Foreground="#FFFFFF" FontWeight="Bold" BorderThickness="0" Padding="8,0" Margin="0,0,6,0" Cursor="Hand" Click="btnServiseCevir_Click">
+                                    <Button Content="🚀 Servise Çevir" Height="28" Background="#2563EB" Foreground="#FFFFFF" FontWeight="Bold" FontSize="11" BorderThickness="0" Padding="8,0" Margin="0,0,6,0" Cursor="Hand" Click="btnServiseCevir_Click">
                                         <Button.Resources>
                                             <Style TargetType="Border">
                                                 <Setter Property="CornerRadius" Value="6"/>
@@ -193,20 +193,28 @@
                                         </Button.Resources>
                                     </Button>
 
-                                    <Button Content="💬 WA" Height="28" Background="#10B981" Foreground="#FFFFFF" FontWeight="Bold" BorderThickness="0" Padding="8,0" Margin="0,0,6,0" Cursor="Hand" Click="btnWhatsApp_Click">
+                                    <Button Height="28" Background="#10B981" Foreground="#FFFFFF" FontWeight="Bold" FontSize="11" BorderThickness="0" Padding="8,0" Margin="0,0,6,0" Cursor="Hand" Click="btnWhatsApp_Click" ToolTip="Müşteriye WhatsApp Mesajı Gönder">
                                         <Button.Resources>
                                             <Style TargetType="Border">
                                                 <Setter Property="CornerRadius" Value="6"/>
                                             </Style>
                                         </Button.Resources>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock Text="💬" FontSize="11" Margin="0,0,3,0"/>
+                                            <TextBlock Text="WhatsApp" FontSize="11" FontWeight="Bold"/>
+                                        </StackPanel>
                                     </Button>
 
-                                    <Button Content="✕" Height="28" Width="28" Background="#334155" Foreground="#F87171" FontWeight="Bold" BorderThickness="0" Cursor="Hand" Click="btnIptal_Click" ToolTip="Randevuyu İptal Et">
+                                    <Button Height="28" Background="#3B1824" BorderBrush="#EF4444" BorderThickness="1" Padding="8,0" Cursor="Hand" Click="btnIptal_Click" ToolTip="Randevuyu İptal Et">
                                         <Button.Resources>
                                             <Style TargetType="Border">
                                                 <Setter Property="CornerRadius" Value="6"/>
                                             </Style>
                                         </Button.Resources>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock Text="✕" Foreground="#EF4444" FontWeight="Bold" FontSize="11" Margin="0,0,3,0"/>
+                                            <TextBlock Text="İptal" Foreground="#EF4444" FontWeight="Bold" FontSize="11"/>
+                                        </StackPanel>
                                     </Button>
                                 </StackPanel>
                             </DataTemplate>
