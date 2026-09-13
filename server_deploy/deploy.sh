@@ -26,6 +26,10 @@ echo "[2/3] Web Sitesi (Takip Barı & Buton) güncelleniyor..."
 mkdir -p /root/app/web
 curl -sL "${BASE_URL}/index.html" -o /root/app/web/index.html
 curl -sL "${BASE_URL}/style.css" -o /root/app/web/style.css
+curl -sL "${BASE_URL}/logo.png" -o /root/app/web/logo.png
+docker cp /root/app/web/index.html web:/usr/share/nginx/html/index.html 2>/dev/null || true
+docker cp /root/app/web/style.css web:/usr/share/nginx/html/style.css 2>/dev/null || true
+docker cp /root/app/web/logo.png web:/usr/share/nginx/html/logo.png 2>/dev/null || true
 # Nginx /randevu ve /takip Proxy Ayarı
 docker exec -i web sh -c 'cat << "EOF" > /etc/nginx/conf.d/default.conf
 server {
