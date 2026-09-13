@@ -16,10 +16,12 @@ namespace alpsoftservistakip
     public partial class PageRandevular : Page
     {
         private List<RandevuItemDto> _allRandevular = new List<RandevuItemDto>();
+        private bool _isLoaded = false;
 
         public PageRandevular()
         {
             InitializeComponent();
+            _isLoaded = true;
             this.Loaded += async (s, e) => await RandevulariYukleAsync();
         }
 
@@ -51,40 +53,53 @@ namespace alpsoftservistakip
 
         private void FiltreleVeGoster()
         {
+            if (!_isLoaded || dgRandevular == null) return;
+
             string todayStr = DateTime.Today.ToString("dd.MM.yyyy");
 
+            if (_allRandevular == null) _allRandevular = new List<RandevuItemDto>();
+
             // İstatistikleri güncelle
-            txtBugunSayisi.Text = _allRandevular.Count(r => r.RandevuTarihi == todayStr).ToString();
-            txtBekleyenSayisi.Text = _allRandevular.Count(r => r.IsBekliyor).ToString();
-            txtOnaylananSayisi.Text = _allRandevular.Count(r => r.IsOnaylandi).ToString();
+            if (txtBugunSayisi != null)
+                txtBugunSayisi.Text = _allRandevular.Count(r => r != null && r.RandevuTarihi == todayStr).ToString();
+            if (txtBekleyenSayisi != null)
+                txtBekleyenSayisi.Text = _allRandevular.Count(r => r != null && r.IsBekliyor).ToString();
+            if (txtOnaylananSayisi != null)
+                txtOnaylananSayisi.Text = _allRandevular.Count(r => r != null && r.IsOnaylandi).ToString();
 
             IEnumerable<RandevuItemDto> list = _allRandevular;
 
-            if (rbBugun.IsChecked == true)
+            if (rbBugun?.IsChecked == true)
             {
-                list = list.Where(r => r.RandevuTarihi == todayStr);
+                list = list.Where(r => r != null && r.RandevuTarihi == todayStr);
             }
             else if (dpTarihSec?.SelectedDate != null)
             {
                 string seciliTarih = dpTarihSec.SelectedDate.Value.ToString("dd.MM.yyyy");
-                list = list.Where(r => r.RandevuTarihi == seciliTarih);
+                list = list.Where(r => r != null && r.RandevuTarihi == seciliTarih);
             }
 
-            dgRandevular.ItemsSource = list.OrderBy(r => r.RandevuTarihiRaw).ThenBy(r => r.RandevuSaati).ToList();
+            dgRandevular.ItemsSource = list
+                .Where(r => r != null)
+                .OrderBy(r => r.RandevuTarihiRaw ?? "")
+                .ThenBy(r => r.RandevuSaati ?? "")
+                .ToList();
         }
 
         private void Filtre_Changed(object sender, RoutedEventArgs e)
         {
+            if (!_isLoaded) return;
             if (dpTarihSec != null) dpTarihSec.SelectedDate = null;
             FiltreleVeGoster();
         }
 
         private void dpTarihSec_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (dpTarihSec.SelectedDate != null)
+            if (!_isLoaded) return;
+            if (dpTarihSec?.SelectedDate != null)
             {
-                rbBugun.IsChecked = false;
-                rbTumu.IsChecked = false;
+                if (rbBugun != null) rbBugun.IsChecked = false;
+                if (rbTumu != null) rbTumu.IsChecked = false;
                 FiltreleVeGoster();
             }
         }
