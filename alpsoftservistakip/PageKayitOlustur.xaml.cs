@@ -1,5 +1,3 @@
-using System.Windows.Controls;
-
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -16,6 +14,22 @@ namespace alpsoftservistakip
         {
             InitializeComponent();
             DataContext = new ViewModels.PageKayitOlusturViewModel();
+        }
+
+        public PageKayitOlustur(string adSoyad, string telefon, string marka, string model, string ariza, string notlar = "") : this()
+        {
+            if (DataContext is ViewModels.PageKayitOlusturViewModel vm)
+            {
+                vm.AdSoyad = adSoyad ?? "";
+                vm.CepTelefonu = telefon ?? "";
+                vm.Marka = marka ?? "";
+                vm.Model = model ?? "";
+                vm.SikayetAriza = ariza ?? "";
+                if (!string.IsNullOrWhiteSpace(notlar))
+                {
+                    vm.EkBilgiler = $"[Randevu Notu]: {notlar}";
+                }
+            }
         }
 
         private void SayiSadece_PreviewTextInput(object sender, TextCompositionEventArgs e)

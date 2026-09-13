@@ -29,14 +29,14 @@
     <Window.Resources>
         <!-- Sidebar Button Style -->
         <Style x:Key="SidebarButtonStyle" TargetType="Button">
-            <Setter Property="Height" Value="50"/>
+            <Setter Property="Height" Value="38"/>
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="#E2E8F0"/>
+            <Setter Property="Foreground" Value="#CBD5E1"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="HorizontalContentAlignment" Value="Left"/>
-            <Setter Property="Padding" Value="20,0,0,0"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="14,0,0,0"/>
+            <Setter Property="FontSize" Value="12.5"/>
             <Setter Property="FontFamily" Value="Segoe UI"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
@@ -48,21 +48,21 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="8" Margin="10,2">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="8" Margin="8,1">
                             <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="#21252D"/>
-                                <Setter Property="Foreground" Value="#FFFFFF"/>
+                                <Setter TargetName="Bd" Property="Background" Value="#1C222E"/>
+                                <Setter Property="Foreground" Value="#FFD026"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
                                 <Setter Property="RenderTransform">
                                     <Setter.Value>
-                                        <ScaleTransform ScaleX="0.97" ScaleY="0.97"/>
+                                        <ScaleTransform ScaleX="0.98" ScaleY="0.98"/>
                                     </Setter.Value>
                                 </Setter>
-                                <Setter TargetName="Bd" Property="Background" Value="#171A21"/>
+                                <Setter TargetName="Bd" Property="Background" Value="#141923"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -143,16 +143,68 @@
                     <TextBlock Text=" SERVİS YÖNETİM PLATFORMU" Foreground="#94A3B8" FontSize="10" FontWeight="SemiBold" VerticalAlignment="Center" Margin="5,2,0,0"/>
                 </StackPanel>
 
-                <!-- Top Center Active Badge -->
-                <Border Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#0C1B18" BorderBrush="#143329" BorderThickness="1" CornerRadius="12" Padding="15,4">
-                    <StackPanel Orientation="Horizontal">
-                        <Ellipse Width="6" Height="6" Fill="#10B981" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                        <TextBlock Text="SİSTEM AKTİF" Foreground="#10B981" FontSize="10" FontWeight="Bold" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Border>
+                <!-- Top Center Currency Ticker & Branch Selection -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <!-- Şube Göstergesi & Değiştirme Butonu (Üstte Belirgin) -->
+                    <Button x:Name="btnHeaderSube" Click="btnHeaderSube_Click" Cursor="Hand" Background="Transparent" BorderThickness="0" Margin="0,0,10,0" ToolTip="Aktif Çalışma Şubesi (Değiştirmek için tıklayın)">
+                        <Border Background="#161F30" BorderBrush="#3B82F6" BorderThickness="1.5" CornerRadius="14" Padding="12,5">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Border Width="20" Height="20" Background="#1E293B" CornerRadius="10" Margin="0,0,8,0" VerticalAlignment="Center">
+                                    <TextBlock Text="🏢" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <TextBlock Text="ŞUBE: " Foreground="#94A3B8" FontSize="10.5" FontWeight="Bold" VerticalAlignment="Center"/>
+                                <TextBlock x:Name="txtHeaderSubeAdi" Text="Tüm Şubeler (Merkez)" Foreground="#38BDF8" FontSize="11" FontWeight="Black" VerticalAlignment="Center" Margin="2,0,6,0"/>
+                                <TextBlock Text="▾" Foreground="#94A3B8" FontSize="10" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </Button>
+
+                    <!-- Yolda Olan Transfer Bildirimi -->
+                    <Button x:Name="btnHeaderYoldaTransfer" Click="btnHeaderYoldaTransfer_Click" Cursor="Hand" Background="Transparent" BorderThickness="0" Margin="0,0,10,0" Visibility="Collapsed" ToolTip="Yolda olan ürün transferleri var! Teslim almak için tıklayınız">
+                        <Border Background="#2E1C0A" BorderBrush="#F59E0B" BorderThickness="1.5" CornerRadius="14" Padding="10,5">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="🚚" FontSize="11" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                <TextBlock x:Name="txtHeaderYoldaTransferSayisi" Text="1 Transfer Yolda" Foreground="#FBBF24" FontSize="10.5" FontWeight="Black" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </Button>
+
+                    <Button x:Name="btnHeaderDoviz" Click="btnDovizHesaplayici_Click" Cursor="Hand" Background="Transparent" BorderThickness="0" ToolTip="TCMB Döviz Kurları ve Hızlı Çevirici">
+                        <Border Background="#161C28" BorderBrush="#2A354A" BorderThickness="1" CornerRadius="12" Padding="12,4">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="&#xE1D0;" FontFamily="Segoe MDL2 Assets" FontSize="10" Foreground="#FFD026" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                <TextBlock x:Name="txtHeaderDovizKur" Text="USD: $ --,-- ₺" Foreground="#CBD5E1" FontSize="10" FontWeight="Bold" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </Button>
+                </StackPanel>
 
                 <!-- Top Right Controls -->
                 <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,10,0">
+                    <!-- User Chip & Quick Logout Button -->
+                    <Border Background="#1A1F29" BorderBrush="#252B38" BorderThickness="1" CornerRadius="15" Padding="10,3,4,3" Margin="0,0,12,0">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="&#xE77B;" FontFamily="Segoe MDL2 Assets" Foreground="#FFD026" FontSize="11" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                            <TextBlock x:Name="txtHeaderKullaniciAdi" Text="Kullanıcı" Foreground="#E2E8F0" FontSize="11" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,8,0" MaxWidth="120" TextTrimming="CharacterEllipsis"/>
+                            
+                            <Button x:Name="btnHeaderCikis" Click="btnCikisYap_Click" Cursor="Hand" ToolTip="Oturumu Kapat (Çıkış Yap)" Width="24" Height="24">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border x:Name="hbd" Background="#28161B" CornerRadius="12" BorderBrush="#EF4444" BorderThickness="0.8">
+                                            <TextBlock Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" FontSize="10" Foreground="#F87171" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="hbd" Property="Background" Value="#EF4444"/>
+                                                <Setter TargetName="hbd" Property="BorderBrush" Value="#DC2626"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+
                     <Button Width="40" Height="30" Background="Transparent" BorderThickness="0" Foreground="#ADB5BD" Click="btnMinimize_Click" Cursor="Hand">
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
@@ -213,62 +265,180 @@
             </Grid.ColumnDefinitions>
 
             <!-- Sidebar -->
-            <Border Grid.Column="0" Background="#121418">
+            <Border Grid.Column="0" Background="#121418" BorderBrush="#1E232B" BorderThickness="0,0,1,0">
                 <Grid>
-                    <StackPanel Margin="0,20,0,0">
-                        <TextBlock Text="MENÜ" Foreground="#94A3B8" FontSize="11" FontWeight="Bold" Margin="20,0,0,10"/>
-                        
-                        <Button Style="{StaticResource SidebarButtonStyle}" Click="kayitlar_Click">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xE14C;" FontFamily="Segoe MDL2 Assets" Margin="0,0,15,0" VerticalAlignment="Center" Foreground="#3B82F6"/>
-                                <TextBlock Text="Kayıtlar" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
-                        <Button Style="{StaticResource SidebarButtonStyle}" Click="kayitolustur_Click">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" Margin="0,0,15,0" VerticalAlignment="Center" Foreground="#10B981"/>
-                                <TextBlock Text="Kayıt Oluştur" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
-                        <Button x:Name="btnAdminPanelAc" Style="{StaticResource SidebarButtonStyle}" Click="btnAdminPanelAc_Click">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" Margin="0,0,15,0" VerticalAlignment="Center" Foreground="#F59E0B"/>
-                                <TextBlock Text="Admin Paneli" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
-                        <Button Style="{StaticResource SidebarButtonStyle}" Click="disserviskayitlari_Click">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xE72D;" FontFamily="Segoe MDL2 Assets" Margin="0,0,15,0" VerticalAlignment="Center" Foreground="#8B5CF6"/>
-                                <TextBlock Text="Dış Servisler" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
-                        <Button Style="{StaticResource SidebarButtonStyle}" Click="caritakip_Click">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xE716;" FontFamily="Segoe MDL2 Assets" Margin="0,0,15,0" VerticalAlignment="Center" Foreground="#06B6D4"/>
-                                <TextBlock Text="Cari Takip" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
-                        <Button Style="{StaticResource SidebarButtonStyle}" Click="btnToptanciYonetimi_Click">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xE81E;" FontFamily="Segoe MDL2 Assets" Margin="0,0,15,0" VerticalAlignment="Center" Foreground="#F97316"/>
-                                <TextBlock Text="Toptancı" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
-                        <Button Style="{StaticResource SidebarButtonStyle}" Click="btnStokTakibi_Click">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xE8B1;" FontFamily="Segoe MDL2 Assets" Margin="0,0,15,0" VerticalAlignment="Center" Foreground="#10B981"/>
-                                <TextBlock Text="Stok Takibi" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
-                        <Button Style="{StaticResource SidebarButtonStyle}" Click="btnSatisGecmisi_Click">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xE81C;" FontFamily="Segoe MDL2 Assets" Margin="0,0,15,0" VerticalAlignment="Center" Foreground="#EC4899"/>
-                                <TextBlock Text="Satış Geçmişi" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
-                    </StackPanel>
-                    
-                    <TextBlock Text="v1.0.0 Stable" Foreground="#64748B" FontSize="11" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Navigation Items -->
+                    <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                        <StackPanel Margin="0,10,0,10">
+                            <!-- KATEGORİ 1: SERVİS YÖNETİMİ -->
+                            <TextBlock Text="SERVİS YÖNETİMİ" Foreground="#64748B" FontSize="10" FontWeight="Bold" Margin="18,6,0,4"/>
+                            <Button Style="{StaticResource SidebarButtonStyle}" Click="kayitlar_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE14C;" FontFamily="Segoe MDL2 Assets" Margin="0,0,12,0" VerticalAlignment="Center" Foreground="#FFD026"/>
+                                    <TextBlock Text="Kayıtlar" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{StaticResource SidebarButtonStyle}" Click="kayitolustur_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" Margin="0,0,12,0" VerticalAlignment="Center" Foreground="#FFD026"/>
+                                    <TextBlock Text="Kayıt Oluştur" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{StaticResource SidebarButtonStyle}" Click="disserviskayitlari_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE72D;" FontFamily="Segoe MDL2 Assets" Margin="0,0,12,0" VerticalAlignment="Center" Foreground="#FFD026"/>
+                                    <TextBlock Text="Dış Servisler" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{StaticResource SidebarButtonStyle}" Click="btnRandevular_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE787;" FontFamily="Segoe MDL2 Assets" Margin="0,0,12,0" VerticalAlignment="Center" Foreground="#FFD026"/>
+                                    <TextBlock Text="Randevular" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+
+                            <Border Height="1" Background="#191F2B" Margin="14,8,14,4"/>
+
+                            <!-- KATEGORİ 2: STOK & SATIŞ -->
+                            <TextBlock Text="STOK &amp; TOPTANCI" Foreground="#64748B" FontSize="10" FontWeight="Bold" Margin="18,4,0,4"/>
+                            <Button Style="{StaticResource SidebarButtonStyle}" Click="btnStokTakibi_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE8B1;" FontFamily="Segoe MDL2 Assets" Margin="0,0,12,0" VerticalAlignment="Center" Foreground="#FFD026"/>
+                                    <TextBlock Text="Stok Takibi" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{StaticResource SidebarButtonStyle}" Click="btnTelefonEnvanteri_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE8EA;" FontFamily="Segoe MDL2 Assets" Margin="0,0,12,0" VerticalAlignment="Center" Foreground="#FFD026"/>
+                                    <TextBlock Text="Telefon Envanteri" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{StaticResource SidebarButtonStyle}" Click="btnSatisGecmisi_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE81C;" FontFamily="Segoe MDL2 Assets" Margin="0,0,12,0" VerticalAlignment="Center" Foreground="#FFD026"/>
+                                    <TextBlock Text="Satış Geçmişi" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{StaticResource SidebarButtonStyle}" Click="btnToptanciYonetimi_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE81E;" FontFamily="Segoe MDL2 Assets" Margin="0,0,12,0" VerticalAlignment="Center" Foreground="#FFD026"/>
+                                    <TextBlock Text="Toptancı Yönetimi" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+
+                            <Border Height="1" Background="#191F2B" Margin="14,8,14,4"/>
+
+                            <!-- KATEGORİ 3: KASA & MUHASEBE -->
+                            <TextBlock Text="KASA &amp; FİNANS" Foreground="#64748B" FontSize="10" FontWeight="Bold" Margin="18,4,0,4"/>
+                            <Button Style="{StaticResource SidebarButtonStyle}" Click="btnKasaTakibi_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE8C7;" FontFamily="Segoe MDL2 Assets" Margin="0,0,12,0" VerticalAlignment="Center" Foreground="#FFD026"/>
+                                    <TextBlock Text="Günlük Kasa" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="btnAylikMuhasebe" Style="{StaticResource SidebarButtonStyle}" Click="btnAylikMuhasebe_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" Margin="0,0,12,0" VerticalAlignment="Center" Foreground="#FFD026"/>
+                                    <TextBlock Text="Aylık Muhasebe" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{StaticResource SidebarButtonStyle}" Click="caritakip_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE716;" FontFamily="Segoe MDL2 Assets" Margin="0,0,12,0" VerticalAlignment="Center" Foreground="#FFD026"/>
+                                    <TextBlock Text="Cari Takip" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="btnVeresiyeDefteri" Style="{StaticResource SidebarButtonStyle}" Click="btnVeresiyeDefteri_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE138;" FontFamily="Segoe MDL2 Assets" Margin="0,0,12,0" VerticalAlignment="Center" Foreground="#FFD026"/>
+                                    <TextBlock Text="Veresiye Defteri" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{StaticResource SidebarButtonStyle}" Click="btnDovizHesaplayici_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE1D0;" FontFamily="Segoe MDL2 Assets" Margin="0,0,12,0" VerticalAlignment="Center" Foreground="#FFD026"/>
+                                    <TextBlock Text="Döviz Hesaplayıcı" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+
+                            <Border Height="1" Background="#191F2B" Margin="14,8,14,4"/>
+
+                            <!-- KATEGORİ 4: SİSTEM & YÖNETİM -->
+                            <TextBlock Text="SİSTEM &amp; YÖNETİM" Foreground="#64748B" FontSize="10" FontWeight="Bold" Margin="18,4,0,4"/>
+                            <Button x:Name="btnSubeYonetimi" Style="{StaticResource SidebarButtonStyle}" Click="btnSubeYonetimi_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE7F4;" FontFamily="Segoe MDL2 Assets" Margin="0,0,12,0" VerticalAlignment="Center" Foreground="#FFD026"/>
+                                    <TextBlock Text="Şube Yönetimi" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="btnAdminPanelAc" Style="{StaticResource SidebarButtonStyle}" Click="btnAdminPanelAc_Click" ToolTip="Personel ve Yetki Yönetimi">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE77B;" FontFamily="Segoe MDL2 Assets" Margin="0,0,12,0" VerticalAlignment="Center" Foreground="#FFD026"/>
+                                    <TextBlock Text="Personel Yönetimi" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{StaticResource SidebarButtonStyle}" Click="btnAyarlar_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" Margin="0,0,12,0" VerticalAlignment="Center" Foreground="#FFD026"/>
+                                    <TextBlock Text="Kişisel Ayarlar" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- User Card & Logout Section -->
+                    <Border Grid.Row="1" Margin="10,0,10,12" Padding="12" Background="#181B22" BorderBrush="#252A34" BorderThickness="1" CornerRadius="12">
+                        <StackPanel>
+                            <!-- User Profile Info -->
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Avatar -->
+                                <Border Grid.Column="0" Width="34" Height="34" CornerRadius="17" Background="#212631" BorderBrush="#FFD026" BorderThickness="1.5" Margin="0,0,10,0">
+                                    <TextBlock x:Name="txtUserAvatarInitial" Text="A" Foreground="#FFD026" FontWeight="Bold" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+
+                                <!-- Name & Role -->
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                    <TextBlock x:Name="txtSidebarKullaniciAdi" Text="Kullanıcı" Foreground="#F1F5F9" FontSize="12" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                                    <TextBlock x:Name="txtSidebarKullaniciRol" Text="Yönetici" Foreground="#94A3B8" FontSize="10" FontWeight="Normal" Margin="0,1,0,0"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <!-- Modern Logout Button -->
+                            <Button x:Name="btnSidebarCikis" Click="btnCikisYap_Click" Cursor="Hand" Height="34">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border x:Name="b" Background="#2A181D" BorderBrush="#501A24" BorderThickness="1" CornerRadius="8">
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <TextBlock Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#F87171" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                                <TextBlock Text="Çıkış Yap" Foreground="#FCA5A5" FontSize="11" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="b" Property="Background" Value="#DC2626"/>
+                                                <Setter TargetName="b" Property="BorderBrush" Value="#EF4444"/>
+                                            </Trigger>
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="b" Property="Background" Value="#B91C1C"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                            
+                            <TextBlock Text="v1.0.6 Stable" Foreground="#475569" FontSize="10" HorizontalAlignment="Center" Margin="0,6,0,0"/>
+                        </StackPanel>
+                    </Border>
                 </Grid>
             </Border>
 
@@ -314,10 +484,16 @@
                                 <TextBlock Text="Satışlar" FontSize="12" HorizontalAlignment="Center"/>
                             </StackPanel>
                         </Button>
-                        <Button Style="{StaticResource MainButtonStyle}" Click="disserviskayitlari_Click">
+                        <Button Style="{StaticResource MainButtonStyle}" Click="disserviskayitlari_Click" Margin="0,0,15,0">
                             <StackPanel>
                                 <TextBlock Text="&#xE72D;" FontFamily="Segoe MDL2 Assets" FontSize="20" HorizontalAlignment="Center" Margin="0,0,0,10"/>
                                 <TextBlock Text="Dış Servisler" FontSize="12" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource MainButtonStyle}" Click="btnRandevular_Click">
+                            <StackPanel>
+                                <TextBlock Text="&#xE787;" FontFamily="Segoe MDL2 Assets" FontSize="20" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                                <TextBlock Text="Randevular" FontSize="12" HorizontalAlignment="Center"/>
                             </StackPanel>
                         </Button>
                     </StackPanel>
@@ -330,18 +506,18 @@
 
 
         <!-- Stok Kilit Tabakası (Premium Lock) -->
-        <Grid x:Name="StokKilitTabakasi" Visibility="Collapsed" Panel.ZIndex="201" Background="#EA000000">
-            <Border Width="450" Height="340" Background="#181A20" BorderThickness="1" BorderBrush="#3F4452" CornerRadius="16" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid x:Name="StokKilitTabakasi" Visibility="Collapsed" Grid.Row="0" Grid.RowSpan="2" Panel.ZIndex="9999" Background="#CC000000">
+            <Border Width="460" Height="360" Background="#181D29" BorderThickness="1" BorderBrush="#334155" CornerRadius="16" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Border.Effect>
-                    <DropShadowEffect BlurRadius="25" ShadowDepth="5" Opacity="0.4" Color="Black"/>
+                    <DropShadowEffect BlurRadius="30" ShadowDepth="8" Opacity="0.6" Color="Black"/>
                 </Border.Effect>
                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="30">
-                    <TextBlock Text="&#xE72E;" FontFamily="Segoe MDL2 Assets" Foreground="#FFF5C721" FontSize="48" HorizontalAlignment="Center" Margin="0,0,0,15"/>
-                    <TextBlock Text="Stok Modülü Kilitli" Foreground="#FFFFFF" FontSize="22" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                    <TextBlock Text="&#xE72E;" FontFamily="Segoe MDL2 Assets" Foreground="#FFD026" FontSize="48" HorizontalAlignment="Center" Margin="0,0,0,15"/>
+                    <TextBlock Text="Stok Modülü Kilitli" Foreground="#FFFFFF" FontSize="22" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,6"/>
                     <TextBlock Text="Bu modülü kullanabilmek için geçerli bir lisans anahtarı girmelisiniz. Lisans satın almak için destek ekibiyle iletişime geçin." 
-                               Foreground="#A0A5B1" FontSize="13" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,25" Width="360"/>
+                               Foreground="#94A3B8" FontSize="13" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,22" Width="360"/>
                     
-                    <TextBox x:Name="txtStokKodu" Width="360" Height="45" FontSize="16" FontWeight="SemiBold" TextAlignment="Center" Background="#252932" Foreground="#FFF5C721" BorderBrush="#3F4452" BorderThickness="1.5" Margin="0,0,0,20">
+                    <TextBox x:Name="txtStokKodu" Width="360" Height="45" FontSize="16" FontWeight="SemiBold" TextAlignment="Center" Background="#0F172A" Foreground="#FFD026" CaretBrush="#FFD026" BorderBrush="#334155" BorderThickness="1.5" Margin="0,0,0,20" KeyDown="txtStokKodu_KeyDown">
                         <TextBox.Resources>
                             <Style TargetType="Border">
                                 <Setter Property="CornerRadius" Value="8"/>
@@ -350,14 +526,14 @@
                     </TextBox>
 
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Button x:Name="btnStokIptal" Content="KAPAT" Click="btnStokIptal_Click" Width="140" Height="42" Background="#252932" Foreground="#FFFFFF" FontSize="14" FontWeight="Bold" Cursor="Hand" Margin="0,0,15,0" BorderThickness="0">
+                        <Button x:Name="btnStokIptal" Content="KAPAT" Click="btnStokIptal_Click" Width="140" Height="42" Background="#252D3D" Foreground="#F8FAFC" FontSize="14" FontWeight="Bold" Cursor="Hand" Margin="0,0,15,0" BorderThickness="0">
                             <Button.Resources>
                                 <Style TargetType="Border">
                                     <Setter Property="CornerRadius" Value="8"/>
                                 </Style>
                             </Button.Resources>
                         </Button>
-                        <Button x:Name="btnStokAktiflestir" Content="KİLİDİ AÇ" Click="btnStokAktiflestir_Click" Width="140" Height="42" Background="#FFF5C721" Foreground="#121418" FontSize="14" FontWeight="Bold" Cursor="Hand" BorderThickness="0">
+                        <Button x:Name="btnStokAktiflestir" Content="KİLİDİ AÇ" Click="btnStokAktiflestir_Click" Width="140" Height="42" Background="#FFD026" Foreground="#121418" FontSize="14" FontWeight="Bold" Cursor="Hand" BorderThickness="0">
                             <Button.Resources>
                                 <Style TargetType="Border">
                                     <Setter Property="CornerRadius" Value="8"/>

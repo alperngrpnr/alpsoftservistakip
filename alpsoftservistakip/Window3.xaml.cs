@@ -195,6 +195,28 @@ namespace alpsoftservistakip
                             }
                         }
                     }
+                    // 2. Randevu Bildirimlerini Kontrol Et
+                    string randevuEndpoint = companyId > 0
+                        ? $"api/randevu/yeni-bildirimler?companyId={companyId}"
+                        : "api/randevu/yeni-bildirimler";
+
+                    var resRandevu = await client.GetAsync(randevuEndpoint);
+                    if (resRandevu.IsSuccessStatusCode)
+                    {
+                        string jsonR = await resRandevu.Content.ReadAsStringAsync();
+                        var rList = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Collections.Generic.List<Models.RandevuItemDto>>(jsonR);
+                        if (rList != null && rList.Count > 0)
+                        {
+                            // 🔔 Özel melodi çal
+                            Helpers.SoundHelper.PlayOnayChime();
+
+                            // 💬 Her yeni randevu için görsel popup göster
+                            foreach (var r in rList)
+                            {
+                                MusteriOnayAlertWindow.ShowAlert("📅 YENİ RANDEVU", r.MusteriAdi, $"{r.Cihaz} - {r.IslemTuru}", $"{r.RandevuTarihi} {r.RandevuSaati}", true);
+                            }
+                        }
+                    }
                 }
             }
             catch { }
@@ -580,6 +602,11 @@ namespace alpsoftservistakip
         private void disserviskayitlari_Click(object sender, RoutedEventArgs e)
         {
             ShowOverlayPage(new PageDisServis(), isRoot: true);
+        }
+
+        private void btnRandevular_Click(object sender, RoutedEventArgs e)
+        {
+            ShowOverlayPage(new PageRandevular(), isRoot: true);
         }
 
         private void caritakip_Click(object sender, RoutedEventArgs e)

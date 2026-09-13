@@ -258,6 +258,13 @@
     <Compile Include="PageDisServis.xaml.cs">
       <DependentUpon>PageDisServis.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\RandevuDto.cs" />
+    <Compile Include="PageRandevular.xaml.cs">
+      <DependentUpon>PageRandevular.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="RandevuAyarWindow.xaml.cs">
+      <DependentUpon>RandevuAyarWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Page5.xaml.cs">
       <DependentUpon>Page5.xaml</DependentUpon>
     </Compile>
@@ -538,6 +545,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MusteriOnayAlertWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PageRandevular.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RandevuAyarWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
